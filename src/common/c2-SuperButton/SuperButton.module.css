@@ -1,0 +1,29 @@
+.default {
+    margin: 10px;
+    border-color: #3498db;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 40px 40px #3498db inset, 0 0 0 0 #3498db;
+    -webkit-transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
+}
+
+.red {
+    margin: 5px;
+    border-color: #3498db;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 40px 40px #e10a0a inset, 0 0 0 0 #f60505;
+    -webkit-transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
+}
+
+
+.default:hover {
+    box-shadow: 0 0 15px 0 #3498db inset, 0 0 10px 1px #3498db;
+}
+
+.default:disabled:hover {
+    border-color: #f7f8fa;
+    background-color: #e10a0a;
+}
