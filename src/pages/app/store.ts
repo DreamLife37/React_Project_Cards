@@ -1,9 +1,13 @@
-import {applyMiddleware, combineReducers, createStore} from "redux";
+import {applyMiddleware, combineReducers, legacy_createStore} from "redux";
 import {authReducer} from "../auth/auth-reducer";
 import thunk from "redux-thunk";
+import {ErrorReducer} from "../../Errors/ErrorsReducer";
 
 const reducers = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    error:ErrorReducer
 })
-export const store = createStore(reducers, applyMiddleware(thunk))
+
+export const store = legacy_createStore(reducers, applyMiddleware(thunk))
+
 export type AppStoreType = ReturnType<typeof reducers>
