@@ -1,17 +1,22 @@
 
 const initialState={
-    error:''
+    errors:[] as string[]
 }
-//обработка ошибок
-export const ErrorReducer = (state=initialState,action:any) => {
+
+type InitialStateType=typeof initialState
+export const ErrorReducer = (state:InitialStateType=initialState,action:any):InitialStateType => {
   switch (action.type) {
-      case 'CHANGE_ERROR':
-          return {...state, error:action.payload.error}
+      case 'ADD_ERROR':
+          return {...state, errors:[...state.errors,action.payload.error]}
+
+      case 'ClEAR_ERRORS':
+          return {...state, errors: []}
 
       default: return state
   }
 }
 
 export const actions={
-    changeError:(error:string)=>({type:'CHANGE_ERROR',payload:{error}}as const)
+    changeError:(error:string)=>({type:'ADD_ERROR',payload:{error}}as const),
+    clearErrors:()=>({type:'ClEAR_ERRORS'}as const)
 }
