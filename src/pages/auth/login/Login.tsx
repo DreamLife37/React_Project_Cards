@@ -4,7 +4,7 @@ import {handlerNetworkError} from "../../../utils/HandlerErrorsUtils";
 import {AppStoreType} from "../../app/store";
 
 export const Login = () => {
-const error=useSelector((state:AppStoreType)=>state.error.error)
+// const error=useSelector((state:AppStoreType)=>state.error.errors)
 const dispatch=useDispatch()
 
         const testRegister = () => {
@@ -16,7 +16,7 @@ const dispatch=useDispatch()
               handlerNetworkError(dispatch,e)
           })
         }
-        if(error){alert(error)}
+
 
     return (
         <div>
