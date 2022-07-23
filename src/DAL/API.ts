@@ -5,11 +5,11 @@ export const instance = axios.create({
     withCredentials: true,
 })
 
-type RegisterPayloadType = {
+export type RegisterPayloadType = {
     email: string
     password: string
 }
-type LoginPayloadType = {
+export type LoginPayloadType = {
     email: string
     password: string
     rememberMe: boolean
@@ -30,7 +30,7 @@ type ForgotPasswordPayloadType = {
     // хтмп-письмо, вместо $token$ бэк вставит токен
 }
 
-type setNewPassWordPayloadType = {
+export type setNewPassWordPayloadType = {
     password: string            //"some-new-pass"
     resetPasswordToken: string  //"some-token-from-url"
 }
@@ -49,29 +49,32 @@ type RegisterResponseDataType = {
     }
     error?: string;
 }
-type EntityUser = {
-    _id: string;
-    email: string;
-    name: string;
-    avatar?: string;
-    publicCardPacksCount: number; // количество колод
-    created: Date;
-    updated: Date;
-    isAdmin: boolean;
-    verified: boolean; // подтвердил ли почту
-    rememberMe: boolean;
-    error?: string;
+export type EntityUser = {
+    _id: string
+    __v: number
+    email: string
+    name: string
+    avatar?: string
+    publicCardPacksCount: number// количество колод
+    created: Date
+    updated: Date
+    isAdmin: boolean
+    verified: boolean // подтвердил ли почту
+    rememberMe: boolean
+    error?: string
+    token: string
+    tokenDeathTime: number
 }
 
-type LogOutData = {
+export type LogOutData = {
     info: string
     error?: string;
 }
-type ForgotPasswordData = {
+export type ForgotPasswordData = {
     info: string
     error?: string;
 }
-type setNewPassWordDataType = {
+export type setNewPassWordDataType = {
     info: string      //"setNewPassword success —ฅ/ᐠ.̫ .ᐟ\ฅ—"
     error?: string;
 }
@@ -87,14 +90,24 @@ export const API = {
     login: (loginPayload: LoginPayloadType) => instance.post(`/auth/login`, {...loginPayload})
         .then((response: AxiosResponse<EntityUser>) => {
             console.log(response)
-            return response.data
+            return {
+                data: {
+                    _id: response.data._id,
+                    email: response.data.email,
+                    name: response.data.name,
+                    avatar: response.data.avatar,
+                    publicCardPacksCount: response.data.publicCardPacksCount,
+                    isAdmin: response.data.isAdmin,
+                    token: response.data.token,
+                },
+                statusText: response.statusText
+            }
         }),
 
     logOut: () => instance.delete(`/auth/me`, {})
         .then((response: AxiosResponse<LogOutData>) => {
             /*разлогинивание бэк меняет токен и очищает куки*/
-            console.log(response)
-            return response
+            return {data: response.data, statusText: response.statusText}
         }),
 
     authMe: () => instance.post(`/auth/me`, {})

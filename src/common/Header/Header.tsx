@@ -1,11 +1,27 @@
 import {NavLink} from "react-router-dom";
 import {Path} from "../../pages/Routes";
 import s from "./header.module.css"
+import {thunkAuth} from "../../pages/auth/auth-reducer";
+import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 
 export const Header = () => {
+    const isAuthorized = useSelectorApp((state) => state.auth.isAuthorized)
+    const dispatch=useDispatchApp()
+    const logout = () => {
+        dispatch(thunkAuth.logout())
+    }
     return (<div>
-        <div className={`${s.item} ${s.activeLink}`}><NavLink to={Path.login}
-                                                              className={({isActive}) => isActive ? `${s.activeLink}` : `${s.item}`}>Login</NavLink>
+        <div className={`${s.item} ${s.activeLink}`}>
+            {
+                isAuthorized
+                    ?
+                    <div className={s.item} onClick={logout}>logout</div>
+                    :
+                    <NavLink to={Path.login}
+                             className={({isActive}) => isActive ? `${s.activeLink}` : `${s.item}`}>
+                        Login
+                    </NavLink>
+            }
         </div>
         <div className={`${s.item} ${s.activeLink}`}><NavLink to={Path.registration}
                                                               className={({isActive}) => isActive ? `${s.activeLink}` : `${s.item}`}>Registration</NavLink>

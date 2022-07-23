@@ -2,6 +2,9 @@ import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, G
 import {useFormik} from "formik";
 import React from "react";
 import { Navigate } from "react-router-dom";
+import {thunkAuth} from "../auth-reducer";
+import {Path} from "../../Routes";
+import {useDispatchApp, useSelectorApp} from "../../../CustomHooks/CustomHooks";
 
 
 type FormikErrorType = {
@@ -11,8 +14,9 @@ type FormikErrorType = {
 }
 
 export const Login = () => {
-    // const isAuthorized=useSelectorApp((state)=>state.authReducer.isAuthorized)
-    // const dispatch=useDispatchApp()
+
+    const isAuthorized=useSelectorApp((state)=>state.auth.isAuthorized)
+    const dispatch=useDispatchApp()
 
     const formik = useFormik({
         initialValues: {
@@ -35,12 +39,13 @@ export const Login = () => {
             return errors
         },
         onSubmit: values => {
-            // dispatch(thunkAuth.login(values))
-            alert(JSON.stringify(values))
+            dispatch(thunkAuth.login(values))
+
             formik.resetForm()
         },
     })
-    // if(isAuthorized){return <Navigate to='/'/>}
+
+    if(isAuthorized){return <Navigate to={Path.profile}/>}
     return (
         <Grid container justifyContent='center' bgcolor='white' padding={1} borderRadius={1} m={1}>
             <Grid item justifyContent='center'>
