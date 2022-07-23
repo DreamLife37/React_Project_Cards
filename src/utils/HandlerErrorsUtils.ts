@@ -1,7 +1,7 @@
 // import {appSlice} from "../Redux/AppReducer";
 // import {AppDispatchType} from "../Redux/ReduxStore";
 import {AxiosError} from "axios";
-import {actions} from "../Errors/ErrorsReducer";
+import {actionsErrors} from "../Errors/ErrorsReducer";
 import {Dispatch} from "redux";
 
 type ErrorResponse={
@@ -16,7 +16,7 @@ type ErrorResponse={
 export const handlerNetworkError = (dispatch: Dispatch, error: unknown) => {
     if (error instanceof AxiosError<ErrorResponse>) {
         console.log(error.response?.data)
-        dispatch(actions.changeError(error.response?.data.error))
+        dispatch(actionsErrors.changeError(error.response?.data.error))
     } else {
         throw error
     }

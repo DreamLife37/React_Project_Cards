@@ -2,7 +2,7 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../pages/app/store";
 import {TransitionAlerts} from "./TransitionErrorAlert";
-import {actions} from "./ErrorsReducer";
+import {actionsErrors} from "./ErrorsReducer";
 
 
 export const AlertErrorWrap = () => {
@@ -11,7 +11,7 @@ export const AlertErrorWrap = () => {
     const dispatch=useDispatch()
 
     const clearErrors = () => {
-      dispatch(actions.clearErrors())
+      dispatch(actionsErrors.clearErrors())
     }
 
     const mappedErrorAlerts=errors.map((err,index)=>
