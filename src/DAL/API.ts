@@ -5,7 +5,7 @@ export const instance = axios.create({
     withCredentials: true,
 })
 
-type RegisterPayloadType = {
+export type RegisterPayloadType = {
     email: string
     password: string
 }
