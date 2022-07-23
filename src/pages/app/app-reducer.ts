@@ -1,3 +1,6 @@
+import {InferActionsType} from "./store";
+import {actionsAuth} from "../auth/auth-reducer";
+
 const initialState: InitialStateType = {
     status: 'loading'
 }
@@ -17,11 +20,16 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
     }
 }
 
-export const setAppStatus = (status: RequestStatusType) => {
-    return {type: 'SET-APP-STATUS', status} as const
+
+
+
+export const actionsApp = {
+    setAppStatus: (status: RequestStatusType) => {
+        return {type: 'SET-APP-STATUS', status} as const
+    }
 }
 
-export type setAppStatusActionType = ReturnType<typeof setAppStatus>
+export type setAppStatusActionType = InferActionsType<typeof actionsApp>
 
 
 type ActionsType = setAppStatusActionType
