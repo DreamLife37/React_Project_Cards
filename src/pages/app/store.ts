@@ -1,9 +1,10 @@
-import {applyMiddleware, combineReducers, legacy_createStore} from "redux";
+import { combineReducers} from "redux";
 
 import {actionsAuth, authReducer} from "../auth/auth-reducer";
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {actionsErrors, ErrorReducer} from "../../Errors/ErrorsReducer";
 import { appReducer } from "./app-reducer";
+import {configureStore} from "@reduxjs/toolkit";
 
 
 const reducers = combineReducers({
@@ -12,7 +13,12 @@ const reducers = combineReducers({
     app: appReducer
 })
 
-export const store = legacy_createStore(reducers, applyMiddleware(thunk))
+// export const store = legacy_createStore(reducers, applyMiddleware(thunk))
+export let store = configureStore({
+        reducer:reducers,
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunk),
+    }
+)
 
 export type AppStoreType = ReturnType<typeof reducers>
 
