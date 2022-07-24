@@ -4,6 +4,7 @@ import './App.css';
 import {HashRouter} from "react-router-dom";
 import {Router} from '../Routes';
 import {Header} from "../../common/Header/Header";
+import { Profile } from '../profile/Profile';
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <HashRouter>
                     <Header/>
                     <Router/>
+                    <Profile />
                 </HashRouter>
 
             </header>

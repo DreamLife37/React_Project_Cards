@@ -1,0 +1,39 @@
+.profileWrapper {
+    width: 1008px;
+    height: 636px;
+    border-radius: 8px;
+    background: #FEFEFF;
+    display: flex;
+}
+
+.profile {
+    width: 243px;
+    height: 636px;
+    background: #ECECF9;
+}
+
+.profileInfo {
+    width: 243px;
+    height: 216px;
+    background: #D9D9F1;
+}
+
+.profileName {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    color: #2D2E46;
+}
+
+.jobTitle {
+    font-family: 'SF UI Display';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #2D2E46;
+    opacity: 0.5;
+}
