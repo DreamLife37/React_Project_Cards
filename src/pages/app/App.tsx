@@ -4,7 +4,6 @@ import './App.css';
 import {HashRouter} from "react-router-dom";
 import {Router} from '../Routes';
 import {Header} from "../../common/Header/Header";
-import { Profile } from '../profile/Profile';
 import {AlertErrorWrap} from "../../Errors/AllertErrorWrap";
 import {useSelector} from "react-redux";
 import {AppStoreType} from "./store";
@@ -18,7 +17,6 @@ function App() {
                 <HashRouter>
                     <Header/>
                     <Router/>
-                    <Profile />
                 </HashRouter>
 
             </header>
