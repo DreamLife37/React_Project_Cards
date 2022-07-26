@@ -36,8 +36,8 @@ export const RegistrationPage = () => {
             }
             if (!values.password) {
                 errors.password = 'Required';
-            } else if (values.password.length <= 7) {
-                errors.password = 'Min password 7 symbols';
+            } else if (values.password.length < 8) {
+                errors.password = 'Min password 8 symbols';
             }
             return errors;
         },

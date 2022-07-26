@@ -6,7 +6,7 @@ import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 
 export const Header = () => {
     const isAuthorized = useSelectorApp((state) => state.auth.isAuthorized)
-    const dispatch=useDispatchApp()
+    const dispatch = useDispatchApp()
 
     const logout = () => {
         dispatch(thunkAuth.logout())
@@ -15,18 +15,18 @@ export const Header = () => {
     return (<div>
         <div className={`${s.item} ${s.activeLink}`}>
             {
-                isAuthorized
-                    ?
-                    <div className={s.item} onClick={logout}>logout</div>
-                    :
-                    <NavLink to={Path.login}
-                             className={({isActive}) => isActive ? `${s.activeLink}` : `${s.item}`}>
-                        Login
-                    </NavLink>
+                !isAuthorized &&
+                <NavLink to={Path.login}
+                         className={({isActive}) => isActive ? `${s.activeLink}` : `${s.item}`}>
+                    Login
+                </NavLink>
             }
         </div>
-        <div className={`${s.item} ${s.activeLink}`}><NavLink to={Path.registration}
-                                                              className={({isActive}) => isActive ? `${s.activeLink}` : `${s.item}`}>Registration</NavLink>
+        <div className={`${s.item} ${s.activeLink}`}>
+
+            {!isAuthorized &&
+                <NavLink to={Path.registration}
+                         className={({isActive}) => isActive ? `${s.activeLink}` : `${s.item}`}>Registration</NavLink>}
         </div>
         <div className={`${s.item} ${s.activeLink}`}><NavLink to={Path.profile}
                                                               className={({isActive}) => isActive ? `${s.activeLink}` : `${s.item}`}>Profile</NavLink>
