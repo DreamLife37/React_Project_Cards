@@ -1,15 +1,22 @@
 import {Dispatch} from "redux";
-import {API, LoginPayloadType, RegisterPayloadType} from "../../DAL/API";
+import {
+    API,
+    LoginPayloadType,
+    RegisterPayloadType,
+    setNewPassWordDataType,
+    setNewPassWordPayloadType
+} from "../../DAL/API";
 import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
 import {actionsApp} from "../app/app-reducer";
 import {AppDispatchType, AppThunk, InferActionsType} from "../app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {AxiosPromise, AxiosResponse} from "axios";
 
 type initialStateType = {
     _id: string,
     email: string,
     name: string,
-    avatar: string | undefined,
+    avatar: string,
     publicCardPacksCount: number | null,
     isAdmin: boolean,
     token: string | null,
@@ -36,7 +43,7 @@ const authSlice = createSlice({
     initialState: initialState,
     reducers: {
         setLoginData: (state, action: PayloadAction<initialStateType>) => {
-            const obj = Object.assign(state, action.payload);
+            Object.assign(state, action.payload);
         },
         setRegisteredUser: (state, action: PayloadAction<boolean>) => {
             state.isRegistration = action.payload
@@ -89,17 +96,7 @@ export const thunkAuth = {
         try {
             const response = await API.login(loginPayload)
             if (response.statusText === 'OK') {
-                dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true,isRegistration: false}))
-            }
-        } catch (e) {
-            handlerNetworkError(dispatch, e)
-        }
-    },
-    authMe: () => async (dispatch: AppDispatchType) => {
-        try {
-            const response = await API.authMe();
-            if (response.statusText === 'OK') {
-                dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: false}))
+                dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: true}))
             }
         } catch (e) {
             handlerNetworkError(dispatch, e)
@@ -129,6 +126,26 @@ export const thunkAuth = {
             handlerNetworkError(dispatch, e)
         }
 
+    },
+    fetchRecoveryPassMail: (email: string) => async (dispatch: AppDispatchType) => {
+        const message = "<div style=\"background-color: lime; padding: 15px\"> password recovery link: <a href='https://dreamlife37.github.io/React_Project_for_Friday/set-new-password/$token$'>Жмякни быстро на ссыль!</a></div>"
+        try {
+            await API.forgotPassword({email, message, from: ''})
+        } catch (e) {
+            handlerNetworkError(dispatch, e)
+        }
+    },
+    setPassword: (payload: setNewPassWordPayloadType): AppThunk => async (dispatch: AppDispatchType) => {
+        try {
+            const res = await API.setNewPassWord(payload)
+            if (res.statusText === 'OK') {
+                console.log(res)
+            }
+            return res
+        } catch (e) {
+            handlerNetworkError(dispatch, e)
+            return e
+        }
     }
 }
 
