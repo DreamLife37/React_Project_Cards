@@ -102,6 +102,18 @@ export const thunkAuth = {
             handlerNetworkError(dispatch, e)
         }
     },
+
+    authMe: () => async (dispatch: AppDispatchType) => {
+        try {
+            const response = await API.authMe();
+            if (response.statusText === 'OK') {
+                dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true,isRegistration: false}))
+            }
+        } catch (e) {
+            handlerNetworkError(dispatch, e)
+        }
+    },
+
     logout: (): AppThunk => async (dispatch: AppDispatchType) => {
         try {
             const response = await API.logOut()
