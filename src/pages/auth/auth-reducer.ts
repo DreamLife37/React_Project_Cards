@@ -72,7 +72,16 @@ export const thunkAuth = {
     login: (loginPayload: LoginPayloadType): AppThunk => async (dispatch: AppDispatchType) => {
         try {
             const response = await API.login(loginPayload)
-            console.log(response)
+            if (response.statusText === 'OK') {
+                dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true,isRegistration: false}))
+            }
+        } catch (e) {
+            handlerNetworkError(dispatch, e)
+        }
+    },
+    authMe: () => async (dispatch: AppDispatchType) => {
+        try {
+            const response = await API.authMe();
             if (response.statusText === 'OK') {
                 dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true,isRegistration: false}))
             }

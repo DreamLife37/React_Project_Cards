@@ -83,13 +83,11 @@ export type setNewPassWordDataType = {
 export const API = {
     register: (registerPayload: RegisterPayloadType) => instance.post(`/auth/register`, {...registerPayload})
         .then((response: AxiosResponse<RegisterResponseDataType>) => {
-            console.log(response)
             return response.data.addedUser
         }),
 
     login: (loginPayload: LoginPayloadType) => instance.post(`/auth/login`, {...loginPayload})
         .then((response: AxiosResponse<EntityUser>) => {
-            console.log(response)
             return {
                 data: {
                     _id: response.data._id,
@@ -111,15 +109,13 @@ export const API = {
         }),
 
     authMe: () => instance.post(`/auth/me`, {})
-        .then((response: AxiosResponse<EntityUser>) => {
-            console.log(response)
-            return response.data
+        .then((response: AxiosResponse) => {
+            return {data: response.data, statusText: response.statusText}
         }),
 
     updateNickOrAvatar: (updatePayload: UpdatePayloadType) => instance.put(`/auth/me`, {...updatePayload})
         .then((response: AxiosResponse<{ updatedUser: EntityUser, error?: string }>) => {
             /*изменение имени или аватарки*/
-            console.log(response)
             return response
         }),
 
@@ -128,14 +124,12 @@ export const API = {
             /*пользователь вводит свой емайл на него прийдёт ссылка
              хтмл можно любой в ссылке укажите адрес страницы своего фрона
              на локальном бэке не работает слать запрос на хероку*/
-            console.log(response)
             return response
         }),
 
     setNewPassWord: (setNewPassWordPayload: setNewPassWordPayloadType) => instance.post(`/auth/set-new-password`, {...setNewPassWordPayload})
         .then((response: AxiosResponse<setNewPassWordDataType>) => {
             /*пользователь отправляет новый пароль, заберите токен из url если всё ок - редирект на логин*/
-            console.log(response)
             return response
         })
 }

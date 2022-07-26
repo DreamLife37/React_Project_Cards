@@ -10,7 +10,7 @@ import {configureStore} from "@reduxjs/toolkit";
 const reducers = combineReducers({
     auth: authReducer,
     error: ErrorReducer,
-    app: appReducer
+    app: appReducer,
 })
 
 // export const store = legacy_createStore(reducers, applyMiddleware(thunk))
