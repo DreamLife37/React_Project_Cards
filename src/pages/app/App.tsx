@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import logo from '../../logo.svg';
 import './App.css';
-import {HashRouter} from "react-router-dom";
 import {Router} from '../Routes';
 import {Header} from "../../common/Header/Header";
 import {AlertErrorWrap} from "../../Errors/AllertErrorWrap";
@@ -9,6 +7,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "./store";
 // import { thankProfile } from '../profile/profileReducer';
 import { thunkAuth } from '../auth/auth-reducer';
+import {AppBar} from "@mui/material";
+import {ResponsiveAppBar} from "./AppBar";
 
 function App() {
     const dispatch = useDispatch();
@@ -21,12 +21,11 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-                <HashRouter>
-                    <Header/>
-                    <Router/>
-                </HashRouter>
-
+                <AppBar position="static">
+                    <ResponsiveAppBar/>
+                </AppBar>
+                <Header/>
+                <Router/>
             </header>
 
             <AlertErrorWrap/>

@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import {registration} from "../auth-reducer";
 import {AppStoreType} from "../../app/store";
 import FormGroup from "@mui/material/FormGroup";
+import {Container} from "@mui/material";
 
 
 type FormikErrorType = {
@@ -51,34 +52,36 @@ export const RegistrationPage = () => {
         return <Navigate to={'/login'}/>
     }
     return <div>
-        <div>Страница регистрации</div>
 
-        <Grid container justifyContent='center' bgcolor='white' padding={1} borderRadius={1} m={1}>
-            <Grid item justifyContent={'center'}>
-                <form onSubmit={formik.handleSubmit}>
-                    <FormControl>
-                        <FormGroup>
-                            <TextField label="Email" margin="normal"
-                                       {...formik.getFieldProps('email')}
-                            />
-                            {formik.touched.email && formik.errors.email
-                                ? <div style={{color: 'red'}}>{formik.errors.email}</div>
-                                : null}
-                            <TextField type="password" label="Password"
-                                       margin="normal"
-                                       {...formik.getFieldProps('password')}
-                            />
-                            {formik.touched.password && formik.errors.password
-                                ? <div style={{color: 'red'}}>{formik.errors.password}</div>
-                                : null}
 
-                            <Button type={'submit'} variant={'contained'} color={'primary'}>
-                                Sign Up
-                            </Button>
-                        </FormGroup>
-                    </FormControl>
-                </form>
+        <Container fixed>
+            <Grid container justifyContent='center' bgcolor='white' padding={1} borderRadius={1} m={1}>
+                <Grid item justifyContent={'center'}>
+                    <form onSubmit={formik.handleSubmit}>
+                        <FormControl>
+                            <FormGroup>
+                                <TextField label="Email" margin="normal"
+                                           {...formik.getFieldProps('email')}
+                                />
+                                {formik.touched.email && formik.errors.email
+                                    ? <div style={{color: 'red'}}>{formik.errors.email}</div>
+                                    : null}
+                                <TextField type="password" label="Password"
+                                           margin="normal"
+                                           {...formik.getFieldProps('password')}
+                                />
+                                {formik.touched.password && formik.errors.password
+                                    ? <div style={{color: 'red'}}>{formik.errors.password}</div>
+                                    : null}
+
+                                <Button type={'submit'} variant={'contained'} color={'primary'}>
+                                    Sign Up
+                                </Button>
+                            </FormGroup>
+                        </FormControl>
+                    </form>
+                </Grid>
             </Grid>
-        </Grid>
+        </Container>
     </div>
 }
