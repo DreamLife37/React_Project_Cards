@@ -1,0 +1,60 @@
+.profileWrapper {
+    width: 1008px;
+    height: 636px;
+    border-radius: 8px;
+    background: #FEFEFF;
+    display: flex;
+}
+
+.profile {
+    width: 243px;
+    height: 636px;
+    background: #ECECF9;
+}
+
+.profileInfo {
+    width: 243px;
+    height: 276px;
+    background: #D9D9F1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profileAvatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    margin: 24px 0 4px 0;
+}
+
+.profileName {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    color: #2D2E46;
+    margin-bottom: 4px;
+}
+
+.jobTitle {
+    font-family: 'SF UI Display';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #2D2E46;
+    opacity: 0.5;
+    margin-bottom: 8px;
+}
+
+.editButton {
+    font-weight: 600;
+    line-height: 14px;
+    border-radius: 2px;
+    width: 125px;
+    height: 24px;
+}
+
