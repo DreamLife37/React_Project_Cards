@@ -20,7 +20,7 @@ type UpdatePayloadType = {
 }
 
 type ForgotPasswordPayloadType = {
-    email: "nya@nya.nya"              // кому восстанавливать пароль
+    email: string // "nya@nya.nya"             кому восстанавливать пароль
     from: string                    //"test-front-admin <ai73a@yandex.by>",// можно указать разработчика фронта)
     message: string
     //`<div style="background-color: lime; padding: 15px">
@@ -54,7 +54,7 @@ export type EntityUser = {
     __v: number
     email: string
     name: string
-    avatar?: string
+    avatar: string
     publicCardPacksCount: number// количество колод
     created: Date
     updated: Date
@@ -89,7 +89,6 @@ export const API = {
 
     login: (loginPayload: LoginPayloadType) => instance.post(`/auth/login`, {...loginPayload})
         .then((response: AxiosResponse<EntityUser>) => {
-            console.log(response)
             return {
                 data: {
                     _id: response.data._id,
