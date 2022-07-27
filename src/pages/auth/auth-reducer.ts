@@ -3,14 +3,12 @@ import {
     API,
     LoginPayloadType,
     RegisterPayloadType,
-    setNewPassWordDataType,
     setNewPassWordPayloadType
 } from "../../DAL/API";
 import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
 import {actionsApp} from "../app/app-reducer";
 import {AppDispatchType, AppThunk, InferActionsType} from "../app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AxiosPromise, AxiosResponse} from "axios";
 
 type initialStateType = {
     _id: string,
@@ -53,43 +51,21 @@ const authSlice = createSlice({
 
 export const authReducer = authSlice.reducer
 
-
-// export const authReducer = (state: initialStateType = initialState, action: ActionAuthType): initialStateType => {
-//     switch (action.type) {
-//         case 'SET-LOGIN-DATA':
-//             return {...state, ...action.payload}
-//         // case 'SET-NEW-PASSWORD':
-//         //     return {...state}
-//         // case 'RECOVERY-PASSWORD':
-//         //     return {...state}
-//         case 'SET-REGISTERED-USER':
-//             return {...state, isRegistration: action.value}
-//         default: {
-//             return {...state};
-//         }
-//     }
-// }
-
 export const actionsAuth = authSlice.actions
 
 export const registration = (data: RegisterPayloadType) => (dispatch: Dispatch<ActionAuthType>) => {
     dispatch(actionsApp.setAppStatus('loading'))
     API.register(data)
-        .then((res) => {
+        .then(() => {
             dispatch(actionsAuth.setRegisteredUser(true))
         })
         .catch(err => {
             handlerNetworkError(dispatch, err)
-        })
+        }).finally(()=>{
+        dispatch(actionsApp.setAppStatus('idle'))
+    })
 }
 
-
-// export const actionsAuth = {
-//     setLoginData: (payload: initialStateType) => ({type: 'SET-LOGIN-DATA', payload} as const),
-//     setRegisteredUser: (value: boolean) => {
-//         return {type: 'SET-REGISTERED-USER', value} as const
-//     }
-// }
 
 export const thunkAuth = {
     login: (loginPayload: LoginPayloadType): AppThunk => async (dispatch: AppDispatchType) => {
@@ -103,14 +79,16 @@ export const thunkAuth = {
         }
     },
 
-    authMe: () => async (dispatch: AppDispatchType) => {
+    authMe: ():AppThunk => async (dispatch: AppDispatchType) => {
         try {
             const response = await API.authMe();
             if (response.statusText === 'OK') {
                 dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true,isRegistration: false}))
+            return response
             }
         } catch (e) {
             handlerNetworkError(dispatch, e)
+            return e
         }
     },
 
@@ -151,7 +129,6 @@ export const thunkAuth = {
         try {
             const res = await API.setNewPassWord(payload)
             if (res.statusText === 'OK') {
-                console.log(res)
             }
             return res
         } catch (e) {

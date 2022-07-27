@@ -109,7 +109,7 @@ export const API = {
         }),
 
     authMe: () => instance.post(`/auth/me`, {})
-        .then((response: AxiosResponse) => {
+        .then((response: AxiosResponse<EntityUser>) => {
             return {data: response.data, statusText: response.statusText}
         }),
 
