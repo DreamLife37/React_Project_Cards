@@ -9,6 +9,7 @@ import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
 import {actionsApp} from "../app/app-reducer";
 import {AppDispatchType, AppThunk, InferActionsType} from "../app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {HandleToggleStatusApp} from "../../utils/HandleToggleStatusApp";
 
 type initialStateType = {
     _id: string,
@@ -53,35 +54,44 @@ export const authReducer = authSlice.reducer
 
 export const actionsAuth = authSlice.actions
 
-export const registration = (data: RegisterPayloadType) => (dispatch: Dispatch<ActionAuthType>) => {
+export const registration = (data: RegisterPayloadType): AppThunk => async (dispatch: Dispatch<ActionAuthType>) => {
+
     dispatch(actionsApp.setAppStatus('loading'))
-    API.register(data)
+
+    const response = await API.register(data)
         .then(() => {
             dispatch(actionsAuth.setRegisteredUser(true))
         })
         .catch(err => {
             handlerNetworkError(dispatch, err)
-        }).finally(() => {
-        dispatch(actionsApp.setAppStatus('idle'))
-    })
+        })
+    //утилитка сброса статуса Апп в значение 'idle'
+    //если вызвать в try то сработает только при успешном запросе
+    HandleToggleStatusApp(dispatch, response)
+
 }
 
 
 export const thunkAuth = {
     login: (loginPayload: LoginPayloadType): AppThunk => async (dispatch: AppDispatchType) => {
-        try {
-            dispatch(actionsApp.setAppStatus('loading'))
-            const response = await API.login(loginPayload)
-            if (response.statusText === 'OK') {
-                dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: true}))
-                Promise.allSettled([response]).then(() => {
-                    dispatch(actionsApp.setAppStatus('idle'))
-                })
-            }
-        } catch (e) {
-            handlerNetworkError(dispatch, e)
-        }
 
+        dispatch(actionsApp.setAppStatus('loading'))
+
+        const response = await API.login(loginPayload)
+            .then((response) => {
+                if (response.statusText === 'OK') {
+
+                    dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: true}))
+
+                }
+            })
+            .catch((e) => {
+                handlerNetworkError(dispatch, e)
+            })
+
+        //утилитка сброса статуса Апп в значение 'idle'
+        //если вызвать в try то сработает только при успешном запросе
+        HandleToggleStatusApp(dispatch, response)
     },
 
     authMe: (): AppThunk => async (dispatch: AppDispatchType) => {
@@ -98,28 +108,34 @@ export const thunkAuth = {
     },
 
     logout: (): AppThunk => async (dispatch: AppDispatchType) => {
-        try {
-            const response = await API.logOut()
-            console.log(response)
-            if (response.statusText === 'OK') {
-                dispatch(actionsAuth.setLoginData(
-                        {
-                            _id: '',
-                            email: '',
-                            name: '',
-                            avatar: '',
-                            publicCardPacksCount: null,
-                            isAdmin: false,
-                            token: '',
-                            isAuthorized: false,
-                            isRegistration: false
-                        }
+
+        dispatch(actionsApp.setAppStatus('loading'))
+
+        const response = await API.logOut()
+            .then((response) => {
+                if (response.statusText === 'OK') {
+                    dispatch(actionsAuth.setLoginData(
+                            {
+                                _id: '',
+                                email: '',
+                                name: '',
+                                avatar: '',
+                                publicCardPacksCount: null,
+                                isAdmin: false,
+                                token: '',
+                                isAuthorized: false,
+                                isRegistration: false
+                            }
+                        )
                     )
-                )
-            }
-        } catch (e) {
-            handlerNetworkError(dispatch, e)
-        }
+                }
+            })
+            .catch((e) => {
+                handlerNetworkError(dispatch, e)
+            })
+        //утилитка сброса статуса Апп в значение 'idle'
+        //если вызвать в try то сработает только при успешном запросе
+        HandleToggleStatusApp(dispatch, response)
 
     },
     fetchRecoveryPassMail: (email: string): AppThunk => async (dispatch: AppDispatchType) => {
@@ -135,15 +151,15 @@ export const thunkAuth = {
                 handlerNetworkError(dispatch, e)
             })
 
-        Promise.allSettled([response]).then(() => {
-            dispatch(actionsApp.setAppStatus('idle'))
-        })
-
+        HandleToggleStatusApp(dispatch, response)
         return response
 
     },
     setPassword: (payload: setNewPassWordPayloadType): AppThunk => async (dispatch: AppDispatchType) => {
-
+        //санка отправляет запрос с новым паролем и токеном из URL и  ретернит response,
+        // если в респонсе статус текст ОК то страница изменения пароля
+        // редиректит на страницу логина, если статус текст undefined  то редиректит
+        // обратно на страницу запроса почты для отправки письма воссттановленя пароля
         dispatch(actionsApp.setAppStatus('loading'))
 
         const response = await API.setNewPassWord(payload)
@@ -151,9 +167,8 @@ export const thunkAuth = {
                 handlerNetworkError(dispatch, e)
             })
 
-        Promise.allSettled([response]).then(() => {
-            dispatch(actionsApp.setAppStatus('idle'))
-        })
+        HandleToggleStatusApp(dispatch, response)
+
         return response
     }
 }
