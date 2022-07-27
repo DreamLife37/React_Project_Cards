@@ -61,7 +61,7 @@ export const registration = (data: RegisterPayloadType) => (dispatch: Dispatch<A
         })
         .catch(err => {
             handlerNetworkError(dispatch, err)
-        }).finally(()=>{
+        }).finally(() => {
         dispatch(actionsApp.setAppStatus('idle'))
     })
 }
@@ -70,21 +70,26 @@ export const registration = (data: RegisterPayloadType) => (dispatch: Dispatch<A
 export const thunkAuth = {
     login: (loginPayload: LoginPayloadType): AppThunk => async (dispatch: AppDispatchType) => {
         try {
+            dispatch(actionsApp.setAppStatus('loading'))
             const response = await API.login(loginPayload)
             if (response.statusText === 'OK') {
                 dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: true}))
+                Promise.allSettled([response]).then(() => {
+                    dispatch(actionsApp.setAppStatus('idle'))
+                })
             }
         } catch (e) {
             handlerNetworkError(dispatch, e)
         }
+
     },
 
-    authMe: ():AppThunk => async (dispatch: AppDispatchType) => {
+    authMe: (): AppThunk => async (dispatch: AppDispatchType) => {
         try {
             const response = await API.authMe();
             if (response.statusText === 'OK') {
-                dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true,isRegistration: false}))
-            return response
+                dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: false}))
+                return response
             }
         } catch (e) {
             handlerNetworkError(dispatch, e)
@@ -117,24 +122,39 @@ export const thunkAuth = {
         }
 
     },
-    fetchRecoveryPassMail: (email: string) => async (dispatch: AppDispatchType) => {
+    fetchRecoveryPassMail: (email: string): AppThunk => async (dispatch: AppDispatchType) => {
+        //санка отправляет запрос на восстановление пароля и ретернит любой ответ
+        // если статус текст ОК то страница восстановления пароля редиректит на  страницу информирования
+        // проверки почты, если  статус текст undefined то редиректит обратно на логин
         const message = "<div style=\"background-color: lime; padding: 15px\"> password recovery link: <a href='https://dreamlife37.github.io/React_Project_for_Friday/set-new-password/$token$'>Жмякни быстро на ссыль!</a></div>"
-        try {
-            await API.forgotPassword({email, message, from: ''})
-        } catch (e) {
-            handlerNetworkError(dispatch, e)
-        }
+
+        dispatch(actionsApp.setAppStatus('loading'))
+
+        const response = await API.forgotPassword({email, message, from: ''})
+            .catch((e) => {
+                handlerNetworkError(dispatch, e)
+            })
+
+        Promise.allSettled([response]).then(() => {
+            dispatch(actionsApp.setAppStatus('idle'))
+        })
+
+        return response
+
     },
     setPassword: (payload: setNewPassWordPayloadType): AppThunk => async (dispatch: AppDispatchType) => {
-        try {
-            const res = await API.setNewPassWord(payload)
-            if (res.statusText === 'OK') {
-            }
-            return res
-        } catch (e) {
-            handlerNetworkError(dispatch, e)
-            return e
-        }
+
+        dispatch(actionsApp.setAppStatus('loading'))
+
+        const response = await API.setNewPassWord(payload)
+            .catch((e) => {
+                handlerNetworkError(dispatch, e)
+            })
+
+        Promise.allSettled([response]).then(() => {
+            dispatch(actionsApp.setAppStatus('idle'))
+        })
+        return response
     }
 }
 

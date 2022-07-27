@@ -16,6 +16,7 @@ type FormikErrorType = {
 export const Login = () => {
 
     const isAuthorized=useSelectorApp((state)=>state.auth.isAuthorized)
+    const status = useSelectorApp(state => state.app.status)
     const dispatch=useDispatchApp()
 
     const formik = useFormik({
@@ -83,7 +84,7 @@ export const Login = () => {
                                 </p>
                             </FormLabel>
 
-                            <Button type='submit' variant='contained' color='primary'>
+                            <Button disabled={status==='loading'} type='submit' variant='contained' color='primary'>
                                 Login
                             </Button>
                         </FormGroup>

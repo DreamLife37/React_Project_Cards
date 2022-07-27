@@ -15,7 +15,7 @@ type FormikErrorType = {
 
 export const RestorePassword = () => {
 
-    const isAuthorized = useSelectorApp((state) => state.auth.isAuthorized)
+    const status = useSelectorApp(state => state.app.status)
     const dispatch = useDispatchApp()
     const navigate=useNavigate()
 
@@ -32,9 +32,11 @@ export const RestorePassword = () => {
             }
             return errors
         },
-        onSubmit: values => {
-            dispatch(thunkAuth.fetchRecoveryPassMail(values.email))
-            navigate(Path.redirectAfterSendRecoveryPassEmail)
+        onSubmit: async values => {
+           const statusText= await dispatch(thunkAuth.fetchRecoveryPassMail(values.email))
+            if (statusText==="OK"){
+                navigate(Path.redirectAfterSendRecoveryPassEmail)
+            } else {navigate(Path.login)}
             formik.resetForm()
 
         },
@@ -57,7 +59,7 @@ export const RestorePassword = () => {
                             {formik.errors.email && formik.touched.email ?
                                 <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
 
-                                <Button type='submit' variant='contained' color='primary'>
+                                <Button disabled={status==='loading'} type='submit' variant='contained' color='primary'>
                                         Send email
                                 </Button>
 

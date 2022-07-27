@@ -5,21 +5,13 @@ import React from "react";
 export const BackDropWrap = () => {
     //useSelectorApp кастомный хук, типизировать не надо
     const status = useSelectorApp(state => state.app.status)
-
-    const toggleBackGround = () => {
-       if (status === 'initialize'){
-           return '#282c34'
-       }else {
-           return ''
-       }
-
-
-    }
+    // при инициализации полностью затеняет фон, при загрузке затеняет фон частично
+    const toggleBackGround = () => status === 'initialize'?'#282c34':undefined
 
     return (
         <Backdrop
             sx={{color: '#ffffff', backgroundColor:toggleBackGround, zIndex: (theme) => theme.zIndex.drawer + 1}}
-            open={status === ('initialize'||'loading')}
+            open={status === 'initialize'||status ==='loading'}
         >
             <CircularProgress color="inherit"/>
         </Backdrop>

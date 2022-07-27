@@ -14,9 +14,10 @@ type FormikErrorType = {
 }
 
 export const SetNewPassword = () => {
+
+    const status = useSelectorApp(state => state.app.status)
     const params=useParams()
     const navigate=useNavigate()
-
     const dispatch=useDispatchApp()
 
     const formik = useFormik({
@@ -58,7 +59,7 @@ export const SetNewPassword = () => {
                                        onBlur={formik.handleBlur}
                             />
                             {formik.errors.password && formik.touched.password?<div style={{color:'red'}}>{formik.errors.password}</div>:null}
-                            <Button type='submit' variant='contained' color='primary'>
+                            <Button disabled={status==='loading'} type='submit' variant='contained' color='primary'>
                                 confirm password
                             </Button>
                         </FormGroup>
