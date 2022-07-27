@@ -1,21 +1,20 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {Router} from '../Routes';
 import {Header} from "../../common/Header/Header";
 import {AlertErrorWrap} from "../../Errors/AllertErrorWrap";
-import {useDispatch, useSelector} from "react-redux";
-import {AppStoreType} from "./store";
-// import { thankProfile } from '../profile/profileReducer';
-import { thunkAuth } from '../auth/auth-reducer';
 import {AppBar} from "@mui/material";
 import {ResponsiveAppBar} from "./AppBar";
+import {useDispatchApp} from "../../CustomHooks/CustomHooks";
+import {thunkApp} from "./app-reducer";
+import {BackDropWrap} from "./BackDropWrap";
 
 function App() {
-    const dispatch = useDispatch();
-    const status = useSelector((state: AppStoreType) => state.app.status)
+    //useDispatchApp кастомный хук типизировать не надо
+    const dispatch = useDispatchApp();
 
     useEffect(() => {
-        dispatch<any>(thunkAuth.authMe());
+        dispatch(thunkApp.initializeApp());
     }, []);
 
     return (
@@ -29,6 +28,8 @@ function App() {
             </header>
 
             <AlertErrorWrap/>
+            {/*Инициализационная заставка(Если App.status === 'loading' то вкл.)*/}
+            <BackDropWrap/>
         </div>
     );
 }

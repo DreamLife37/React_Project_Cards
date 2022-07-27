@@ -1,7 +1,7 @@
-import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
+import {Button, FormControl, FormGroup, Grid, TextField} from "@mui/material";
 import {useFormik} from "formik";
 import React from "react";
-import {Navigate, NavLink, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {thunkAuth} from "../auth-reducer";
 import {Path} from "../../Routes";
 import {useDispatchApp, useSelectorApp} from "../../../CustomHooks/CustomHooks";
@@ -14,10 +14,11 @@ type FormikErrorType = {
 }
 
 export const SetNewPassword = () => {
-    const params=useParams()
-    const navigate=useNavigate()
 
-    const dispatch=useDispatchApp()
+    const status = useSelectorApp(state => state.app.status)
+    const params = useParams()
+    const navigate = useNavigate()
+    const dispatch = useDispatchApp()
 
     const formik = useFormik({
         initialValues: {
@@ -27,18 +28,23 @@ export const SetNewPassword = () => {
         validate: (values) => {
             const errors: FormikErrorType = {}
 
-            if(!values.password){
-                errors.password='Required'
-            } else if (values.password.length<8){
-                errors.password='min length 8 symbols'
+            if (!values.password) {
+                errors.password = 'Required'
+            } else if (values.password.length < 8) {
+                errors.password = 'min length 8 symbols'
             }
             return errors
         },
         onSubmit: async values => {
-            if(params.token){
-              const res= await  dispatch(thunkAuth.setPassword({password:values.password,resetPasswordToken:params.token}))
-                if(res.statusText==="OK"){
+            if (params.token) {
+                const res = await dispatch(thunkAuth.setPassword({
+                    password: values.password,
+                    resetPasswordToken: params.token
+                }))
+                if (res.statusText === "OK") {
                     navigate(Path.login)
+                } else {
+                    navigate(Path.restorePassword)
                 }
             }
             formik.resetForm()
@@ -57,8 +63,9 @@ export const SetNewPassword = () => {
                                        {...formik.getFieldProps('password')}
                                        onBlur={formik.handleBlur}
                             />
-                            {formik.errors.password && formik.touched.password?<div style={{color:'red'}}>{formik.errors.password}</div>:null}
-                            <Button type='submit' variant='contained' color='primary'>
+                            {formik.errors.password && formik.touched.password ?
+                                <div style={{color: 'red'}}>{formik.errors.password}</div> : null}
+                            <Button disabled={status === 'loading'} type='submit' variant='contained' color='primary'>
                                 confirm password
                             </Button>
                         </FormGroup>

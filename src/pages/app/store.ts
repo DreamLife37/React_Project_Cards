@@ -13,7 +13,7 @@ const reducers = combineReducers({
     app: appReducer,
 })
 
-// export const store = legacy_createStore(reducers, applyMiddleware(thunk))
+
 export let store = configureStore({
         reducer:reducers,
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunk),

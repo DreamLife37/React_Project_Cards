@@ -171,16 +171,16 @@ export const ResponsiveAppBar = () => {
                                     <Link style={{textDecoration: 'none', color: 'black'}}
                                           to={'/profile'}><Typography textAlign="center">Profile</Typography></Link>
                                 </MenuItem>
-                                <MenuItem onClick={handleCloseUserMenu}>
-                                    <Link style={{textDecoration: 'none', color: 'black'}}
-                                          to={'/enter-new-password'}><Typography textAlign="center">Enter new
-                                        password</Typography></Link>
-                                </MenuItem>
-                                <MenuItem onClick={handleCloseUserMenu}>
-                                    <Link style={{textDecoration: 'none', color: 'black'}}
-                                          to={'/restore-password'}><Typography textAlign="center">Restore
-                                        password</Typography></Link>
-                                </MenuItem>
+                                {/*<MenuItem onClick={handleCloseUserMenu}>*/}
+                                {/*    <Link style={{textDecoration: 'none', color: 'black'}}*/}
+                                {/*          to={'/enter-new-password'}><Typography textAlign="center">Enter new*/}
+                                {/*        password</Typography></Link>*/}
+                                {/*</MenuItem>*/}
+                                {/*<MenuItem onClick={handleCloseUserMenu}>*/}
+                                {/*    <Link style={{textDecoration: 'none', color: 'black'}}*/}
+                                {/*          to={'/restore-password'}><Typography textAlign="center">Restore*/}
+                                {/*        password</Typography></Link>*/}
+                                {/*</MenuItem>*/}
 
                             </Menu>
                             <Button
