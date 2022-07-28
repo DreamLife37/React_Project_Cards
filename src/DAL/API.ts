@@ -15,8 +15,8 @@ export type LoginPayloadType = {
     rememberMe: boolean
 }
 type UpdatePayloadType = {
-    name: string,
-    avatar: string  // "https//avatar-url.img"  url or base64
+    name?: string,
+    avatar?: string  // "https//avatar-url.img"  url or base64
 }
 
 type ForgotPasswordPayloadType = {

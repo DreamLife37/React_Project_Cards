@@ -73,6 +73,20 @@ export const registration = (data: RegisterPayloadType): AppThunk => async (disp
 
 
 export const thunkAuth = {
+
+    setNameOrAvatar:(payload:{name?: string,avatar?:string}):AppThunk=>async (dispatch:AppDispatchType)=>{
+        dispatch(actionsApp.setAppStatus('loading'))
+        const response= await API.updateNickOrAvatar(payload)
+            .then((res)=>{
+                dispatch(actionsAuth.setLoginData({...res.data.updatedUser, isAuthorized: true, isRegistration: true}))
+            }).catch((e)=>{
+                handlerNetworkError(dispatch, e)
+            })
+        //утилитка сброса статуса Апп в значение 'idle'
+        //если вызвать в try то сработает только при успешном запросе
+        HandleToggleStatusApp(dispatch, response)
+    },
+
     login: (loginPayload: LoginPayloadType): AppThunk => async (dispatch: AppDispatchType) => {
 
         dispatch(actionsApp.setAppStatus('loading'))
