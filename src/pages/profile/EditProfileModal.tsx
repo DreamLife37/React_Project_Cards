@@ -30,7 +30,9 @@ export const EditProfileModal: FC<PropsType> = ({email, name, onClickShowModalBu
     return (
         <div className={style.profileModal}>
             <h1 className={style.modalTitle}>Personal information</h1>
+            
             <img className={style.profileAvatar} src={image}></img>
+
             <Box
                 component="form"
                 sx={{
@@ -38,6 +40,7 @@ export const EditProfileModal: FC<PropsType> = ({email, name, onClickShowModalBu
                 }}
                 noValidate
                 autoComplete="off">
+
                 <div className={style.formWrapper}>
                     <TextField
                         id="standard-multiline-flexible"
@@ -60,6 +63,7 @@ export const EditProfileModal: FC<PropsType> = ({email, name, onClickShowModalBu
                     />
                 </div>
             </Box>
+
             <Stack justifyContent='space-between' direction="row" width='316px' margin='0 auto'>
                 <Button 
                     variant="contained" 

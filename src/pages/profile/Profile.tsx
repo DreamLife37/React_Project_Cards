@@ -2,7 +2,7 @@ import Button from '@mui/material/Button';
 import LogoutIcon from '@mui/icons-material/Logout';
 import image from './profileAvatar.png';
 import style from './Profile.module.css';
-import { memo, useEffect, useState } from 'react';
+import { memo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppStoreType } from '../app/store';
 import { thunkAuth } from '../auth/auth-reducer';
@@ -10,7 +10,6 @@ import { Navigate } from "react-router-dom";
 import { Path } from '../Routes';
 import { useDispatchApp } from '../../CustomHooks/CustomHooks';
 import { EditProfileModal } from './EditProfileModal';
-import { thunkApp } from '../app/app-reducer';
 
 export const Profile = memo(() => {
     const dispatch = useDispatchApp();
@@ -37,13 +36,18 @@ export const Profile = memo(() => {
     return (
         <div className={style.profileWrapper}>
             <aside className={style.profile}>
+
                 <div className={style.profileInfo}>
                     <Button onClick={onClickLogout}>
                         <LogoutIcon />
                     </Button>
+                    
                     <img className={style.profileAvatar} src={!avatar ? avatar : image} alt={'avatar'}/>
+
                     <span className={style.profileName}>{profileName}</span>
+
                     <span className={style.jobTitle}>Front-end developer</span>
+
                     <Button 
                         sx={{border: '1px solid rgba(45, 46, 70, 0.4)', color: '#21268F', fontSize: '12px'}}
                         className={style.editButton}
@@ -52,8 +56,13 @@ export const Profile = memo(() => {
                         Edit profile
                     </Button>
                 </div>
+
             </aside>
-            {isShowModal ? <EditProfileModal email={profileEmail} name={profileName} onClickShowModalButton={onClickShowModalButton} /> : null}
+
+            {isShowModal
+                ? <EditProfileModal email={profileEmail} name={profileName} onClickShowModalButton={onClickShowModalButton} />
+                : null
+            }
         </div>
     );
 });
