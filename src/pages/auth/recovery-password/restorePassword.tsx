@@ -1,7 +1,7 @@
-import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
+import {Button,FormControl,FormGroup,Grid, TextField} from "@mui/material";
 import {useFormik} from "formik";
 import React from "react";
-import {Navigate, NavLink, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {thunkAuth} from "../auth-reducer";
 import {Path} from "../../Routes";
 import {useDispatchApp, useSelectorApp} from "../../../CustomHooks/CustomHooks";
