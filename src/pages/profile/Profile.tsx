@@ -12,12 +12,15 @@ import { useDispatchApp } from '../../CustomHooks/CustomHooks';
 import { EditProfileModal } from './EditProfileModal';
 
 export const Profile = memo(() => {
-    const [isShowModal, setIsShowModal] = useState(false);
     const dispatch = useDispatchApp();
+    
+    const [isShowModal, setIsShowModal] = useState(false);
 
-    const isAuhtorized= useSelector<AppStoreType, boolean>(state => state.auth.isAuthorized);
+    const isAuthorized= useSelector<AppStoreType, boolean>(state => state.auth.isAuthorized);
     const profileName = useSelector<AppStoreType, string>(state => state.auth.name);
+
     const profileEmail = useSelector<AppStoreType, string>(state => state.auth.email);
+    const avatar = useSelector<AppStoreType, string>(state => state.auth.avatar);
 
     const onClickLogout = () => {
         dispatch(thunkAuth.logout())
@@ -27,7 +30,7 @@ export const Profile = memo(() => {
         setIsShowModal(!isShowModal);
     }
 
-    if (!isAuhtorized) {
+    if (!isAuthorized) {
         return <Navigate to={Path.login} />
     }
 
@@ -38,7 +41,7 @@ export const Profile = memo(() => {
                     <Button onClick={onClickLogout}>
                         <LogoutIcon />
                     </Button>
-                    <img className={style.profileAvatar} src={image}></img>
+                    <img className={style.profileAvatar} src={!avatar ? avatar : image} alt={'avatar'}/>
                     <span className={style.profileName}>{profileName}</span>
                     <span className={style.jobTitle}>Front-end developer</span>
                     <Button 

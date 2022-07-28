@@ -16,8 +16,10 @@ import {useSelector} from "react-redux";
 import {AppStoreType} from "./store";
 import {Link} from "react-router-dom";
 import {thunkAuth} from "../auth/auth-reducer";
-import {useDispatchApp} from "../../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
+import {Path} from "../Routes";
+import {Settings} from "../Settings";
 
 
 const pages = ['Example'];
@@ -25,10 +27,20 @@ const pages = ['Example'];
 export const ResponsiveAppBar = () => {
 
     const isAuthorized = useSelector((state: AppStoreType) => state.auth.isAuthorized)
+    const avatar = useSelectorApp(state => state.auth.avatar)
     const dispatch = useDispatchApp()
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const [anchorElsetName, setAnchorElsetName] = React.useState<null | HTMLElement>(null);
+
+    const handleOpenSetNameMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElsetName(event.currentTarget)
+    }
+
+    const handleCloseSetMenu = () => {
+        setAnchorElsetName(null)
+    }
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -48,6 +60,29 @@ export const ResponsiveAppBar = () => {
     const handleLogoutButton = () => {
         dispatch(thunkAuth.logout())
     }
+    const isSetNameMenuOpen = Boolean(anchorElsetName)
+    const setNameMenuId = 'setNameMenuId'
+
+    const renderSetName = (
+        <Menu open={isSetNameMenuOpen}
+              anchorEl={anchorElsetName}
+              anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+              }}
+              id={setNameMenuId}
+              transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+              }}
+              onClose={handleCloseSetMenu}
+        >
+            <MenuItem>
+                <Settings/>
+            </MenuItem>
+
+        </Menu>
+    )
 
     return (
         <AppBar position="static">
@@ -148,7 +183,7 @@ export const ResponsiveAppBar = () => {
                         ? <Box sx={{flexGrow: 0}}>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
+                                    <Avatar alt="Remy Sharp" src={!!avatar ? avatar : "/static/images/avatar/2.jpg"}/>
                                 </IconButton>
                             </Tooltip>
                             <Menu
@@ -169,18 +204,21 @@ export const ResponsiveAppBar = () => {
                             >
                                 <MenuItem onClick={handleCloseUserMenu}>
                                     <Link style={{textDecoration: 'none', color: 'black'}}
-                                          to={'/profile'}><Typography textAlign="center">Profile</Typography></Link>
+                                          to={Path.profile}><Typography paddingLeft={3} textAlign="center">Profile</Typography></Link>
                                 </MenuItem>
-                                {/*<MenuItem onClick={handleCloseUserMenu}>*/}
-                                {/*    <Link style={{textDecoration: 'none', color: 'black'}}*/}
-                                {/*          to={'/enter-new-password'}><Typography textAlign="center">Enter new*/}
-                                {/*        password</Typography></Link>*/}
-                                {/*</MenuItem>*/}
-                                {/*<MenuItem onClick={handleCloseUserMenu}>*/}
-                                {/*    <Link style={{textDecoration: 'none', color: 'black'}}*/}
-                                {/*          to={'/restore-password'}><Typography textAlign="center">Restore*/}
-                                {/*        password</Typography></Link>*/}
-                                {/*</MenuItem>*/}
+                                <MenuItem >
+                                        <IconButton
+                                            size="large"
+                                            aria-controls={setNameMenuId}
+                                            aria-haspopup="true"
+                                            onClick={handleOpenSetNameMenu}
+                                            color="inherit"
+                                        >
+                                            <Typography textAlign="center">
+                                            Set profile
+                                            </Typography>
+                                        </IconButton>
+                                </MenuItem>
 
                             </Menu>
                             <Button
@@ -195,7 +233,9 @@ export const ResponsiveAppBar = () => {
                         </Typography>
                     }
                 </Toolbar>
+                {renderSetName}
             </Container>
+
         </AppBar>
     );
 };

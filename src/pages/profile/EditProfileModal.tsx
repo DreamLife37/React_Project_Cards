@@ -5,6 +5,8 @@ import Button from '@mui/material/Button';
 import image from './profileAvatar.png';
 import style from './Profile.module.css';
 import { FC, useState } from 'react';
+import { thunkAuth } from '../auth/auth-reducer';
+import { useDispatchApp } from '../../CustomHooks/CustomHooks';
 
 type PropsType = {
     email: string
@@ -13,15 +15,16 @@ type PropsType = {
 }
 
 export const EditProfileModal: FC<PropsType> = ({email, name, onClickShowModalButton}) => {
-    const [emailValue, setEmailValue] = useState(email);
-    const [nameValue, setNameValue] = useState(name);
+    const dispatch = useDispatchApp();
 
-    const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEmailValue(event.target.value);
-    }
+    const [nameValue, setNameValue] = useState(name);
 
     const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNameValue(event.target.value);
+    }
+
+    const updatePersonalInfo = () => {
+        dispatch(thunkAuth.setNameOrAvatar({name: nameValue}))
     }
 
     return (
@@ -45,20 +48,31 @@ export const EditProfileModal: FC<PropsType> = ({email, name, onClickShowModalBu
                         onChange={handleChangeName}
                         variant="standard"
                     />
+
                     <TextField
                         id="standard-multiline-flexible"
                         label="Email"
                         multiline
                         maxRows={4}
-                        value={emailValue}
-                        onChange={handleChangeEmail}
+                        value={email}
                         variant="standard"
+                        disabled
                     />
                 </div>
             </Box>
             <Stack justifyContent='space-between' direction="row" width='316px' margin='0 auto'>
-                <Button variant="contained" onClick={onClickShowModalButton}>Cancel</Button>
-                <Button variant="contained">Save</Button>
+                <Button 
+                    variant="contained" 
+                    onClick={onClickShowModalButton}>
+                    Cancel
+                </Button>
+
+                <Button 
+                    variant="contained"
+                    onClick={updatePersonalInfo}
+                    disabled={!nameValue}>
+                    Save
+                </Button>
             </Stack>
         </div>
     )
