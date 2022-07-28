@@ -2,7 +2,7 @@ import Button from '@mui/material/Button';
 import LogoutIcon from '@mui/icons-material/Logout';
 import image from './profileAvatar.png';
 import style from './Profile.module.css';
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppStoreType } from '../app/store';
 import { thunkAuth } from '../auth/auth-reducer';
@@ -10,15 +10,15 @@ import { Navigate } from "react-router-dom";
 import { Path } from '../Routes';
 import { useDispatchApp } from '../../CustomHooks/CustomHooks';
 import { EditProfileModal } from './EditProfileModal';
+import { thunkApp } from '../app/app-reducer';
 
 export const Profile = memo(() => {
     const dispatch = useDispatchApp();
-    
+
     const [isShowModal, setIsShowModal] = useState(false);
 
     const isAuthorized= useSelector<AppStoreType, boolean>(state => state.auth.isAuthorized);
     const profileName = useSelector<AppStoreType, string>(state => state.auth.name);
-
     const profileEmail = useSelector<AppStoreType, string>(state => state.auth.email);
     const avatar = useSelector<AppStoreType, string>(state => state.auth.avatar);
 
