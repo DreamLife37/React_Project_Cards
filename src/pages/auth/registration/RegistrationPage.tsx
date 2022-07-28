@@ -9,23 +9,28 @@ import {registration} from "../auth-reducer";
 import {AppStoreType} from "../../app/store";
 import FormGroup from "@mui/material/FormGroup";
 import {Container} from "@mui/material";
-
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import {useState} from "react";
 
 type FormikErrorType = {
     email?: string
     password?: string
+    confirmPassword?: string
 }
 
 export const RegistrationPage = () => {
 
     const dispatch = useDispatch()
     const isRegistration = useSelector((state: AppStoreType) => state.auth.isRegistration)
-
+    const [passwordHide, togglePasswordHide] = useState(true)
 
     const formik = useFormik({
         initialValues: {
             email: '',
             password: '',
+            confirmPassword: ''
         },
         validate: (values) => {
             const errors: FormikErrorType = {};
@@ -38,6 +43,13 @@ export const RegistrationPage = () => {
                 errors.password = 'Required';
             } else if (values.password.length < 8) {
                 errors.password = 'Min password 8 symbols';
+            }
+            if (!values.confirmPassword) {
+                errors.confirmPassword = 'Required';
+            } else if (values.confirmPassword.length < 8) {
+                errors.confirmPassword = 'Min password 8 symbols';
+            } else if (values.password !== values.confirmPassword) {
+                errors.confirmPassword = 'Passwords does not match'
             }
             return errors;
         },
@@ -64,14 +76,72 @@ export const RegistrationPage = () => {
                                            {...formik.getFieldProps('email')}
                                 />
                                 {formik.touched.email && formik.errors.email
-                                    ? <div style={{color: 'red'}}>{formik.errors.email}</div>
+                                    ? <div style={{color: '#9d1717', fontSize: '14px'}}>{formik.errors.email}</div>
                                     : null}
-                                <TextField type="password" label="Password"
+                                <TextField label="Password"
                                            margin="normal"
+                                           type={passwordHide ? "password" : "text"}
                                            {...formik.getFieldProps('password')}
+                                           InputProps={
+                                               {
+                                                   endAdornment: (
+                                                       <InputAdornment position="end"> {
+                                                           passwordHide ? (
+                                                               <Visibility className="cursor_pointer"
+                                                                           onClick={() =>
+                                                                               togglePasswordHide(false)
+                                                                           }
+                                                               />
+                                                           ) : (
+                                                               <VisibilityOff onClick={
+                                                                   () =>
+                                                                       togglePasswordHide(true)
+                                                               }
+                                                               />
+                                                           )
+                                                       }
+                                                       </InputAdornment>
+                                                   ),
+                                               }
+                                           }
                                 />
                                 {formik.touched.password && formik.errors.password
-                                    ? <div style={{color: 'red'}}>{formik.errors.password}</div>
+                                    ? <div style={{color: '#9d1717', fontSize: '14px'}}>{formik.errors.password}</div>
+                                    : null}
+
+                                <TextField label="Confirm Password"
+                                           margin="normal"
+                                           type={passwordHide ? "password" : "text"}
+                                           {...formik.getFieldProps('confirmPassword')}
+                                           InputProps={
+                                               {
+                                                   endAdornment: (
+                                                       <InputAdornment position="end"> {
+                                                           passwordHide ? (
+                                                               <Visibility className="cursor_pointer"
+                                                                           onClick={() =>
+                                                                               togglePasswordHide(false)
+                                                                           }
+                                                               />
+                                                           ) : (
+                                                               <VisibilityOff onClick={
+                                                                   () =>
+                                                                       togglePasswordHide(true)
+                                                               }
+                                                               />
+                                                           )
+                                                       }
+                                                       </InputAdornment>
+                                                   ),
+                                               }
+                                           }
+                                />
+                                {formik.touched.confirmPassword && formik.errors.confirmPassword
+                                    ? <div style={{
+                                        color: '#9d1717',
+                                        fontSize: '14px',
+                                        paddingBottom: '5px'
+                                    }}>{formik.errors.confirmPassword}</div>
                                     : null}
 
                                 <Button type={'submit'} variant={'contained'} color={'primary'}>
