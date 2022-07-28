@@ -4,6 +4,7 @@
     border-radius: 8px;
     background: #FEFEFF;
     display: flex;
+    position: relative;
 }
 
 .profile {
@@ -58,3 +59,26 @@
     height: 24px;
 }
 
+.profileModal {
+    width: 413px;
+    height: 540px;
+    background: #F9F9FE;
+    border-radius: 8px;
+    border: 1px solid #D9D9F1;
+    position: absolute;
+    top: 4%;
+    left: 39%;
+}
+
+.modalTitle {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 33px;
+    text-align: center;
+    color: #2D2E46;
+}
+
+.formWrapper {
+    margin-bottom: 106px;
+}
