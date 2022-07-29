@@ -42,7 +42,7 @@ export const Profile = memo(() => {
                         <LogoutIcon />
                     </Button>
                     
-                    <img className={style.profileAvatar} src={!avatar ? avatar : image} alt={'avatar'}/>
+                    <img className={style.profileAvatar} src={!!avatar ? avatar : image} alt={'avatar'}/>
 
                     <span className={style.profileName}>{profileName}</span>
 
