@@ -27,7 +27,8 @@ export const Router = () => {
         <div>
             <Routes>
                 <Route path={'/'} element={<Profile/>}/>
-                    <Route path={'/React_Project_for_Friday'} element={<Profile/>}/>
+                    <Route path={'/React_Project_Cards'} element={<Profile/>}/>
+                    <Route path={'/React_Project_Cards/set-new-password'} element={<SetNewPassword/>}/>
                         <Route path={Path.login} element={<Login/>}/>
                         <Route path={Path.registration} element={<RegistrationPage/>}/>
                         <Route path={Path.profile} element={<Profile/>}/>
