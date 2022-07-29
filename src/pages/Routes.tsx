@@ -26,8 +26,8 @@ export const Router = () => {
     return (
         <div>
             <Routes>
-                <Route path={'/'} element={<Profile/>}>
-                    <Route path={'/React_Project_for_Friday'} element={<Profile/>}>
+                <Route path={'/'} element={<Profile/>}/>
+                    <Route path={'/React_Project_for_Friday'} element={<Profile/>}/>
                         <Route path={Path.login} element={<Login/>}/>
                         <Route path={Path.registration} element={<RegistrationPage/>}/>
                         <Route path={Path.profile} element={<Profile/>}/>
@@ -39,8 +39,7 @@ export const Router = () => {
                         <Route path={Path.example} element={<Example/>}/>
                         <Route path={Path.redirectAfterSendRecoveryPassEmail} element={<RedirectPage/>}/>
                         <Route path={Path.settings} element={<Settings/>}/>
-                    </Route>
-                </Route>
+
             </Routes>
         </div>
     )
