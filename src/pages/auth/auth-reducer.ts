@@ -156,7 +156,7 @@ export const thunkAuth = {
         //санка отправляет запрос на восстановление пароля и ретернит любой ответ
         // если статус текст ОК то страница восстановления пароля редиректит на  страницу информирования
         // проверки почты, если  статус текст undefined то редиректит обратно на логин
-        const message = "<div style=\"background-color: lime; padding: 15px\"> password recovery link: <a href='https://dreamlife37.github.io/React_Project_for_Friday/set-new-password/$token$'>Жмякни быстро на ссыль!</a></div>"
+        const message = "<div style=\"background-color: lime; padding: 15px\"> password recovery link: <a href='https://dreamlife37.github.io/React_Project_Cards/set-new-password/$token$'>Жмякни быстро на ссыль!</a></div>"
 
         dispatch(actionsApp.setAppStatus('loading'))
 
