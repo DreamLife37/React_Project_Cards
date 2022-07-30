@@ -22,7 +22,7 @@ import {Path} from "../Routes";
 import {Settings} from "../Settings";
 
 
-const pages = ['Example'];
+const pages = ['packsList'];
 
 export const ResponsiveAppBar = () => {
 

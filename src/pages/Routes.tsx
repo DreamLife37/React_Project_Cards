@@ -8,6 +8,7 @@ import {Example} from "./example/Example";
 import {Profile} from "./profile/Profile";
 import {RedirectPage} from "./auth/recovery-password/RedirectPage";
 import {Settings} from "./Settings";
+import {PacksListPage} from "./packsList/PacksListPage";
 
 
 export enum Path {
@@ -19,7 +20,8 @@ export enum Path {
     setNewPassword = '/set-new-password',
     example = '/example',
     redirectAfterSendRecoveryPassEmail = '/redirect-page',
-    settings = '/settings'
+    settings = '/settings',
+    packsList = '/packsList'
 }
 
 export const Router = () => {
@@ -39,6 +41,7 @@ export const Router = () => {
                 <Route path={Path.example} element={<Example/>}/>
                 <Route path={Path.redirectAfterSendRecoveryPassEmail} element={<RedirectPage/>}/>
                 <Route path={Path.settings} element={<Settings/>}/>
+                <Route path={Path.packsList} element={<PacksListPage/>}/>
 
             </Routes>
         </div>
