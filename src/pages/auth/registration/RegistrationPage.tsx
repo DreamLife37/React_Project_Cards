@@ -1,11 +1,11 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {Navigate, NavLink} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
 import {useFormik} from "formik";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {registration} from "../auth-reducer";
+import {registration, thunkAuth} from "../auth-reducer";
 import {AppStoreType} from "../../app/store";
 import FormGroup from "@mui/material/FormGroup";
 import {Container, FormLabel} from "@mui/material";
@@ -14,6 +14,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import React, {useState} from "react";
 import {Path} from "../../Routes";
+import {useDispatchApp, useSelectorApp} from "../../../CustomHooks/CustomHooks";
 
 type FormikErrorType = {
     email?: string
@@ -23,8 +24,8 @@ type FormikErrorType = {
 
 export const RegistrationPage = () => {
 
-    const dispatch = useDispatch()
-    const isRegistration = useSelector((state: AppStoreType) => state.auth.isRegistration)
+    const dispatch = useDispatchApp()
+    const isRegistration = useSelectorApp(state => state.auth.isRegistration)
     const [passwordHide, togglePasswordHide] = useState(true)
 
     const formik = useFormik({
@@ -55,8 +56,7 @@ export const RegistrationPage = () => {
             return errors;
         },
         onSubmit: values => {
-            // @ts-ignore
-            dispatch(registration(values))
+            dispatch(thunkAuth.registration(values))
             isRegistration && formik.resetForm()
         },
     })

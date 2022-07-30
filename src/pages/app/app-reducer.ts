@@ -1,6 +1,7 @@
 import {createSlice, Draft, PayloadAction} from "@reduxjs/toolkit";
 import {AppThunk} from "./store";
 import {thunkAuth} from "../auth/auth-reducer";
+import {HandleToggleStatusApp} from "../../utils/HandleToggleStatusApp";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'|'initialize'
 
@@ -27,16 +28,10 @@ export const actionsApp = appSlice.actions
 
 
 export const thunkApp={
-    initializeApp:():AppThunk=>async (dispatch)=>{
+    initializeApp:():AppThunk=>  (dispatch)=>{
         //санка включает статус, диспатчит санку authMe и ждет от нее любого ответа чтобы переключить статус
-        dispatch(actionsApp.setAppStatus('initialize'))
-        const response= await dispatch(thunkAuth.authMe())
-        Promise.allSettled([response]).then(()=>{
-            dispatch(actionsApp.setAppStatus('idle'))
-        })
-
-
-
+        const response= dispatch(thunkAuth.authMe())
+        HandleToggleStatusApp(dispatch, response,"initialize")
 
     }
 }
