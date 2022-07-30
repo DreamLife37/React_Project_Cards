@@ -80,7 +80,7 @@ export type setNewPassWordDataType = {
 }
 
 
-export const API = {
+export const APIAuth = {
     register: (registerPayload: RegisterPayloadType) => instance.post(`/auth/register`, {...registerPayload})
         .then((response: AxiosResponse<RegisterResponseDataType>) => {
             return response.data.addedUser

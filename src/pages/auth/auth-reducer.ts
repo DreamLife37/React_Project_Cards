@@ -1,10 +1,10 @@
 import {Dispatch} from "redux";
 import {
-    API,
+    APIAuth,
     LoginPayloadType,
     RegisterPayloadType,
     setNewPassWordPayloadType
-} from "../../DAL/API";
+} from "../../DAL/APIAuth";
 import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
 import {actionsApp} from "../app/app-reducer";
 import {AppDispatchType, AppThunk, InferActionsType} from "../app/store";
@@ -56,7 +56,7 @@ export const actionsAuth = authSlice.actions
 
 export const registration = (data: RegisterPayloadType): AppThunk =>  (dispatch: Dispatch<ActionAuthType>) => {
 
-    const response =  API.register(data)
+    const response =  APIAuth.register(data)
         .then(() => {
             dispatch(actionsAuth.setRegisteredUser(true))
         })
@@ -73,7 +73,7 @@ export const thunkAuth = {
 
     registration : (data: RegisterPayloadType): AppThunk =>  (dispatch: Dispatch<ActionAuthType>) => {
 
-        const response =  API.register(data)
+        const response =  APIAuth.register(data)
             .then(() => {
                 dispatch(actionsAuth.setRegisteredUser(true))
             })
@@ -86,7 +86,7 @@ export const thunkAuth = {
     },
     setNameOrAvatar:(payload:{name?: string,avatar?:string}):AppThunk=> (dispatch:AppDispatchType)=>{
         dispatch(actionsApp.setAppStatus('loading'))
-        const response=  API.updateNickOrAvatar(payload)
+        const response=  APIAuth.updateNickOrAvatar(payload)
             .then((res)=>{
                 dispatch(actionsAuth.setLoginData({...res.data.updatedUser, isAuthorized: true, isRegistration: true}))
             }).catch((e)=>{
@@ -100,7 +100,7 @@ export const thunkAuth = {
     login: (loginPayload: LoginPayloadType): AppThunk =>  (dispatch: AppDispatchType) => {
 
 
-        const response =  API.login(loginPayload)
+        const response =  APIAuth.login(loginPayload)
             .then((response) => {
                 if (response.statusText === 'OK') {
                     dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: true}))
@@ -116,7 +116,7 @@ export const thunkAuth = {
 
     authMe: (): AppThunk => async (dispatch: AppDispatchType) => {
         try {
-            const response = await API.authMe();
+            const response = await APIAuth.authMe();
             if (response.statusText === 'OK') {
                 dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: false}))
                 return response
@@ -128,7 +128,7 @@ export const thunkAuth = {
 
     logout: (): AppThunk =>  (dispatch: AppDispatchType) => {
 
-        const response =  API.logOut()
+        const response =  APIAuth.logOut()
             .then((response) => {
                 if (response.statusText === 'OK') {
                     dispatch(actionsAuth.setLoginData(
@@ -160,7 +160,7 @@ export const thunkAuth = {
         // проверки почты, если  статус текст undefined то редиректит обратно на логин
         const message = "<div style=\"background-color: lime; padding: 15px\"> password recovery link: <a href='https://dreamlife37.github.io/React_Project_Cards/#/set-new-password/$token$'>Жмякни быстро на ссыль!</a></div>"
 
-        const response =  API.forgotPassword({email, message, from: ''})
+        const response =  APIAuth.forgotPassword({email, message, from: ''})
             .catch((e) => {
                 handlerNetworkError(dispatch, e)
             })
@@ -173,7 +173,7 @@ export const thunkAuth = {
         // если в респонсе статус текст ОК то страница изменения пароля
         // редиректит на страницу логина, если статус текст undefined  то редиректит
         // обратно на страницу запроса почты для отправки письма воссттановленя пароля
-        const response =  API.setNewPassWord(payload)
+        const response =  APIAuth.setNewPassWord(payload)
             .catch((e) => {
                 handlerNetworkError(dispatch, e)
             })
