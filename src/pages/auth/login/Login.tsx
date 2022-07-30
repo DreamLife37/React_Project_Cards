@@ -15,9 +15,9 @@ type FormikErrorType = {
 
 export const Login = () => {
 
-    const isAuthorized=useSelectorApp((state)=>state.auth.isAuthorized)
+    const isAuthorized = useSelectorApp((state) => state.auth.isAuthorized)
     const status = useSelectorApp(state => state.app.status)
-    const dispatch=useDispatchApp()
+    const dispatch = useDispatchApp()
 
     const formik = useFormik({
         initialValues: {
@@ -32,10 +32,10 @@ export const Login = () => {
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
                 errors.email = 'Invalid email address'
             }
-            if(!values.password){
-                errors.password='Required'
-            } else if (values.password.length<8){
-                errors.password='min length 8 symbols'
+            if (!values.password) {
+                errors.password = 'Required'
+            } else if (values.password.length < 8) {
+                errors.password = 'min length 8 symbols'
             }
             return errors
         },
@@ -46,8 +46,12 @@ export const Login = () => {
         },
     })
 
+    const disabledButton = (formik.values.email && formik.values.password.length > 7 && formik.values.password.length > 7 && !formik.errors.password && !formik.errors.email) ? false : true
 
-    if(isAuthorized){return <Navigate to={Path.profile}/>}
+
+    if (isAuthorized) {
+        return <Navigate to={Path.profile}/>
+    }
     return (
         <Grid container justifyContent='center' bgcolor='white' padding={1} borderRadius={1} m={1}>
             <Grid item justifyContent='center'>
@@ -61,15 +65,19 @@ export const Login = () => {
                                        onBlur={formik.handleBlur}
 
                             />
-                            {formik.errors.email && formik.touched.email?<div style={{color:'red'}}>{formik.errors.email}</div>:null}
+                            {formik.errors.email && formik.touched.email
+                                ? <div style={{color: '#9d1717', fontSize: '14px'}}>{formik.errors.email}</div>
+                                : null}
                             <TextField type='password'
                                        label='Password'
                                        margin='normal'
                                        {...formik.getFieldProps('password')}
                                        onBlur={formik.handleBlur}
                             />
-                            {formik.errors.password && formik.touched.password?<div style={{color:'red'}}>{formik.errors.password}</div>:null}
-                            <FormControlLabel label='Remember me'
+                            {formik.errors.password && formik.touched.password
+                                ? <div style={{color: '#9d1717', fontSize: '14px'}}>{formik.errors.password}</div>
+                                : null}
+                            <FormControlLabel label='Remember me' style={{color: '#2c2929', fontSize: '14px'}}
 
                                               control={
                                                   <Checkbox onChange={formik.handleChange}
@@ -79,12 +87,13 @@ export const Login = () => {
                                               }
                             />
                             <FormLabel>
-                                <p>
-                                    <NavLink  to={Path.restorePassword}>restore password </NavLink>
+                                <p style={{fontSize: '14px'}}>
+                                    <NavLink to={Path.restorePassword}>Restore password </NavLink>
                                 </p>
                             </FormLabel>
 
-                            <Button disabled={status==='loading'} type='submit' variant='contained' color='primary'>
+                            <Button disabled={status === 'loading' || disabledButton} type='submit' variant='contained'
+                                    color='primary'>
                                 Login
                             </Button>
                         </FormGroup>

@@ -1,4 +1,4 @@
-import {Button,FormControl,FormGroup,Grid, TextField} from "@mui/material";
+import {Button, FormControl, FormGroup, Grid, TextField} from "@mui/material";
 import {useFormik} from "formik";
 import React from "react";
 import {useNavigate} from "react-router-dom";
@@ -17,7 +17,7 @@ export const RestorePassword = () => {
 
     const status = useSelectorApp(state => state.app.status)
     const dispatch = useDispatchApp()
-    const navigate=useNavigate()
+    const navigate = useNavigate()
 
     const formik = useFormik({
         initialValues: {
@@ -33,14 +33,18 @@ export const RestorePassword = () => {
             return errors
         },
         onSubmit: async values => {
-           const statusText= await dispatch(thunkAuth.fetchRecoveryPassMail(values.email))
-            if (statusText==="OK"){
+            const statusText = await dispatch(thunkAuth.fetchRecoveryPassMail(values.email))
+            if (statusText === "OK") {
                 navigate(Path.redirectAfterSendRecoveryPassEmail)
-            } else {navigate(Path.login)}
+            } else {
+                navigate(Path.login)
+            }
             formik.resetForm()
 
         },
     })
+
+    const disabledButton = (formik.values.email && !formik.errors.email) ? false : true
 
 
     return (
@@ -57,11 +61,16 @@ export const RestorePassword = () => {
 
                             />
                             {formik.errors.email && formik.touched.email ?
-                                <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
+                                <div style={{
+                                    color: '#9d1717',
+                                    fontSize: '14px',
+                                    paddingBottom: '5px'
+                                }}>{formik.errors.email}</div> : null}
 
-                                <Button disabled={status==='loading'} type='submit' variant='contained' color='primary'>
-                                        Send email
-                                </Button>
+                            <Button disabled={status === 'loading' || disabledButton} type='submit' variant='contained'
+                                    color='primary'>
+                                Send email
+                            </Button>
 
                         </FormGroup>
                     </FormControl>

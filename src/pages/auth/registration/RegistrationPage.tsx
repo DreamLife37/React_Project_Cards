@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {Navigate} from "react-router-dom";
+import {Navigate, NavLink} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
 import {useFormik} from "formik";
@@ -8,11 +8,12 @@ import Button from '@mui/material/Button';
 import {registration} from "../auth-reducer";
 import {AppStoreType} from "../../app/store";
 import FormGroup from "@mui/material/FormGroup";
-import {Container} from "@mui/material";
+import {Container, FormLabel} from "@mui/material";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import {useState} from "react";
+import React, {useState} from "react";
+import {Path} from "../../Routes";
 
 type FormikErrorType = {
     email?: string
@@ -56,13 +57,16 @@ export const RegistrationPage = () => {
         onSubmit: values => {
             // @ts-ignore
             dispatch(registration(values))
-            formik.resetForm()
+            isRegistration && formik.resetForm()
         },
     })
+
+    const disabledButton = (formik.values.email && formik.values.password.length > 7 && formik.values.confirmPassword.length > 7 && !formik.errors.confirmPassword && !formik.errors.email) ? false : true
 
     if (isRegistration) {
         return <Navigate to={'/login'}/>
     }
+
     return <div>
 
 
@@ -144,9 +148,20 @@ export const RegistrationPage = () => {
                                     }}>{formik.errors.confirmPassword}</div>
                                     : null}
 
-                                <Button type={'submit'} variant={'contained'} color={'primary'}>
+                                <Button type={'submit'} variant={'contained'} color={'primary'}
+                                        disabled={disabledButton}>
                                     Sign Up
                                 </Button>
+
+                                <div style={{color: '#2c2929', fontSize: '14px', paddingTop: '15px'}}>Already have an
+                                    account?
+                                </div>
+
+
+                                    <p style={{fontSize: '14px'}}>
+                                        <NavLink to={Path.login}>Sign In</NavLink>
+                                    </p>
+
                             </FormGroup>
                         </FormControl>
                     </form>
