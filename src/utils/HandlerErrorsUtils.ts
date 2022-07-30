@@ -1,8 +1,6 @@
-// import {appSlice} from "../Redux/AppReducer";
-// import {AppDispatchType} from "../Redux/ReduxStore";
 import {AxiosError} from "axios";
 import {actionsErrors} from "../Errors/ErrorsReducer";
-import {Dispatch} from "redux";
+import {AppDispatchType} from "../pages/app/store";
 
 type ErrorResponse={
     emailRegExp: any
@@ -13,9 +11,8 @@ type ErrorResponse={
     passwordRegExp: string
 }
 //эта штука перехватывает ошибки которые приходят с бека с херовыми статус кодами и отправляет их редюсер
-export const handlerNetworkError = (dispatch: Dispatch, error: unknown) => {
+export const handlerNetworkError = (dispatch: AppDispatchType, error: unknown) => {
     if (error instanceof AxiosError<ErrorResponse>) {
-        console.log(error.response?.data)
         dispatch(actionsErrors.changeError(error.response?.data.error))
     } else {
         throw error

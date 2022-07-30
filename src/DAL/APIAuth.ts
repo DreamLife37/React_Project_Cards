@@ -1,7 +1,8 @@
 import axios, {AxiosResponse} from "axios";
 
 export const instance = axios.create({
-    baseURL:'https://neko-back.herokuapp.com/2.0',
+    // baseURL:'https://neko-back.herokuapp.com/2.0',
+    baseURL:'http://localhost:7542/2.0/',
     withCredentials: true,
 })
 
@@ -80,7 +81,7 @@ export type setNewPassWordDataType = {
 }
 
 
-export const API = {
+export const APIAuth = {
     register: (registerPayload: RegisterPayloadType) => instance.post(`/auth/register`, {...registerPayload})
         .then((response: AxiosResponse<RegisterResponseDataType>) => {
             return response.data.addedUser

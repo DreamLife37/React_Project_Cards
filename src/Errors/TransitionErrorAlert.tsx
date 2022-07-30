@@ -15,9 +15,9 @@ export const TransitionAlerts: React.FC<TransitionAlertsType> = React.memo(({cle
                 setTimeout(() => {
                     setOpen(false)
                     clearErrorCallback()
-                }, 10000)
+                }, 6000)
             }
-        }, [error])
+        }, [error,clearErrorCallback])
 
 
         const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
