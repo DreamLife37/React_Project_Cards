@@ -7,15 +7,31 @@ import Button from "@mui/material/Button";
 import InputLabel from '@mui/material/InputLabel';
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import {useDispatchApp} from "../../CustomHooks/CustomHooks";
+import {useEffect} from "react";
+import {thunksPack} from "./PackReducer";
 
 export const PacksListPage = () => {
+
+   const dispatch =useDispatchApp()
+    useEffect(()=>{
+        dispatch(thunksPack.getPack())
+    },[])
+
+    const Addnewpack = () => {
+      dispatch(thunksPack.createPack({name:'azaza!!!'}))
+    }
+
     return (
         <Grid container spacing={2} justifyContent='center' columnSpacing={{xs: 1, sm: 2, md: 3}}>
             <Grid container alignItems="center" direction="row"
                   justifyContent="center"><Grid item xs={6}>PacksList</Grid>
-                <Grid item xs={6}><Button variant={'contained'} color={'primary'}>
+                <Grid item xs={6}>
+                    <Button  onClick={Addnewpack}  variant={'contained'} color={'primary'}>
                     Add new pack
-                </Button></Grid></Grid>
+                </Button>
+                </Grid>
+            </Grid>
             <Grid container alignItems="flex-start" direction="row"
                   justifyContent="center">
                 <Grid item xs={4}>
@@ -26,7 +42,8 @@ export const PacksListPage = () => {
                             variant="h6"
                             id="tableTitle"
                             component="div"
-                        > Search
+                        >
+                            Search
                         </Typography>
                         <Search/></Grid></Grid>
                 <Grid item xs={2}>
@@ -37,7 +54,8 @@ export const PacksListPage = () => {
                             variant="h6"
                             id="tableTitle"
                             component="div"
-                        > Show packs cards
+                        >
+                            Show packs cards
                         </Typography>
                         <FilterMyPacks/>
                     </Grid>
@@ -50,7 +68,8 @@ export const PacksListPage = () => {
                             variant="h6"
                             id="tableTitle"
                             component="div"
-                        > Number of cards
+                        >
+                            Number of cards
                         </Typography>
                         <NumberOfCards/></Grid>
                 </Grid>
