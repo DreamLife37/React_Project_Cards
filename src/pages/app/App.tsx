@@ -35,7 +35,7 @@ function App() {
             <AlertErrorWrap/>
             {/*Инициализационная заставка(Если App.status === 'loading' то вкл.)*/}
             <BackDropWrap/>
-            <TestAPIPage/>
+            {/*<TestAPIPage/>*/}
         </div>
     );
 }
@@ -70,7 +70,7 @@ export const TestAPIPage=()=>{
                 console.log(res)})
     }
     const updateCard = () => {
-        APICards.updateCard({_id:"62e576e01c90be4f10b25554",answer:"test azaza",type:"card hyiard"})
+        APICards.updateCard({_id:"62e576e01c90be4f10b25554",answer:"test azaza"})
             .then((res)=>{
                 console.log(res)})
     }
