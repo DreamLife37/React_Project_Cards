@@ -324,6 +324,7 @@ export function TablePacks(props: TablePacksPropsType) {
                                     const isItemSelected = isSelected(row.name);
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
+
                                     return (
                                         <TableRow
                                             hover
