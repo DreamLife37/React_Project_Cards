@@ -8,7 +8,7 @@ import {
 } from "../../DAL/API-CardsPack";
 import {AppDispatchType, AppThunk} from "../app/store";
 import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
-import {HandleToggleStatusApp} from "../../utils/HandleToggleStatusApp";
+import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 
 const initialState={
     packsData:{} as GetCardsPackResponse,
@@ -39,22 +39,27 @@ export const actionsPacks=packsSlice.actions
 
 export const thunksPack={
     getPack:(responseMore?:any):AppThunk=>(dispatch:AppDispatchType,getState)=>{
-        const response= APIPacks.getCardPacks(getState().packs.queryParams)
-            .then((response:GetCardsPackResponse)=>{
-                dispatch(actionsPacks.getPack(response))
-            }
-        )
-        HandleToggleStatusApp(dispatch, [response,responseMore])
+        Promise.allSettled([responseMore])
+            .then(()=>{
+                const response= APIPacks.getCardPacks(getState().packs.queryParams)
+                    .then((response:GetCardsPackResponse)=>{
+                            dispatch(actionsPacks.getPack(response))
+                        }
+                    )
+                HandleToggleStatusAppAndInterceptorErrors(dispatch, [response,responseMore])
+            })
     },
 
     createPack:(payload:CreateNewCardPackPayload):AppThunk=>(dispatch:AppDispatchType)=>{
      const response= APIPacks.createNewCardPack(payload)
         dispatch(thunksPack.getPack(response))
     },
+
     updatePack:(payload:UpdateCardPackPayload):AppThunk=> (dispatch:AppDispatchType)=>{
         const response= APIPacks.updateCardPack(payload)
         dispatch(thunksPack.getPack(response))
     },
+
     deletePack:(packId:string):AppThunk=>(dispatch:AppDispatchType)=>{
         const response=APIPacks.deleteCardPack(packId)
         dispatch(thunksPack.getPack(response))
