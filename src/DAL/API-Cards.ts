@@ -101,7 +101,7 @@ export const APICards = {
                    max = 0,
                    sortCards = "0grade",
                    page = 1,
-                   pageCount = 4
+                   pageCount = 10
                }: getCardsPayload) => instance
         .get(`/cards/card?cardAnswer=${cardAnswer}&cardQuestion=${cardQuestion}&cardsPack_id=${cardsPack_id}&min=${min}&max=${max}&sortCards=${sortCards}&page=${page}&pageCount=${pageCount}`)
         .then((response: AxiosResponse<GetCardsResponse>) => response.data),

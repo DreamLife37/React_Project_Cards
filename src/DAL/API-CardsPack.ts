@@ -74,7 +74,7 @@ export interface deleteCardPackResponse extends CardPackResponse{
 }
 
 export const APIPacks = {
-    getCardPacks: ({packName='' , min=0, max=0, sortPacks='0updated', page=1, pageCount=4, user_id}: getCardPacksPayload) =>
+    getCardPacks: ({packName='' , min=1, max=4, sortPacks='0updated', page=1, pageCount=20, user_id}: getCardPacksPayload) =>
         instance.get(`/cards/pack?user_id=${user_id}&packName=${packName&&packName}&min=${min}&max=${max}&sortPacks=${sortPacks}&page=${page}&pageCount=${pageCount}`)
             .then((response: AxiosResponse<GetCardsPackResponse>) => response.data),
 
