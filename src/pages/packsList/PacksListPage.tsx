@@ -4,9 +4,9 @@ import {NumberOfCards} from "./NumberOfCards";
 import {TablePacks} from "./TablePacks";
 import {Grid} from "@mui/material";
 import Button from "@mui/material/Button";
-import InputLabel from '@mui/material/InputLabel';
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+
 import {useDispatchApp} from "../../CustomHooks/CustomHooks";
 import {useEffect} from "react";
 import {thunksPack} from "./PackReducer";
@@ -74,7 +74,9 @@ export const PacksListPage = () => {
                         <NumberOfCards/></Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={10}><TablePacks/></Grid>
+            <Grid item xs={10}>
+                <TablePacks rows={rows}/>
+            </Grid>
         </Grid>
     )
 }
