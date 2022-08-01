@@ -31,6 +31,7 @@ export const getPacks = (dataPacks?: CardPacksEntity) => (dispatch: Dispatch) =>
     //если вызвать в try то сработает только при успешном запросе
 
     HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
+}
 
 export const createPack = (dataPacks?: CardPacksEntity) => (dispatch: Dispatch) => {
     const response = APIPacks.createNewCardPack({name: "Test pack 31.07.2022"})

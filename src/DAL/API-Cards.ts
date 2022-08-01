@@ -1,7 +1,7 @@
 import {AxiosResponse} from "axios";
 import {instance} from "./Global";
 
-type getCardsPayload = {
+export type getCardsPayload = {
     cardAnswer?: string //поиск по вопросу
     cardQuestion?: string //поиск по ответу
     cardsPack_id: string
