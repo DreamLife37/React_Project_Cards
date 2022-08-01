@@ -5,14 +5,16 @@ import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {actionsErrors, ErrorReducer} from "../../Errors/ErrorsReducer";
 import {appReducer} from "./app-reducer";
 import {configureStore} from "@reduxjs/toolkit";
-import {packsReducer} from "../packsList/packs-reducer";
+import {packs} from "../packsList/PackReducer";
+
 
 
 const reducers = combineReducers({
     auth: authReducer,
     error: ErrorReducer,
     app: appReducer,
-    packs: packsReducer
+    packs
+
 })
 
 

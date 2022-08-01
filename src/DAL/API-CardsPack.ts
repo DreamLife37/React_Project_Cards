@@ -20,10 +20,10 @@ export type UpdateCardPackPayload = {
     "_id": string, // id колоды
     "private"?: boolean //(если отпраить null то и вернет null будте бдительны))
     "name"?: string
-    // "path"?: string
-    // "grade"?: number //рейтинг колоды
+    "path"?: string
+    "grade"?: number //рейтинг колоды
     "shots"?: number //скорее всего  рейтинг который выставляет сам пользователь, завязана с grade,
-    // "type"?: string
+    "type"?: string
     "deckCover"?: string
 }
 
@@ -33,16 +33,16 @@ export type CardPacksEntity = {
     "user_name": string,
     "private": boolean,
     "name": string,
-    // "path": string,
+    "path": string,
     "grade": number, // глобальный рейтинг колоды
     "shots": number, // скорее всего рейтинг который выставляет сам пользователь
     "cardsCount": number, //кол-во карт в колоде
-    // "type": string,
-    // "rating": number,
-    "created": string, //когда была создана
-    "updated": string, // когда была обновлена
-    // "more_id": string,
-    // "__v": number
+    "type": string,
+    "rating": number,
+    "created": Date, //когда была создана
+    "updated": Date, // когда была обновлена
+    "more_id": string,
+    "__v": number
 }
 
 export interface CardPacksEntityWithDeckCover extends CardPacksEntity {
@@ -50,8 +50,8 @@ export interface CardPacksEntityWithDeckCover extends CardPacksEntity {
 }
 
 export interface CardPackResponse {
-    // token: string,
-    // tokenDeathTime: number
+    token: string,
+    tokenDeathTime: number
 }
 
 export interface GetCardsPackResponse extends CardPackResponse {

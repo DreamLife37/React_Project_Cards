@@ -9,7 +9,7 @@ import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
 import {actionsApp} from "../app/app-reducer";
 import {AppDispatchType, AppThunk, InferActionsType} from "../app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {HandleToggleStatusApp} from "../../utils/HandleToggleStatusApp";
+import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 
 type initialStateType = {
     _id: string,
@@ -65,7 +65,7 @@ export const registration = (data: RegisterPayloadType): AppThunk =>  (dispatch:
         })
     //утилитка переключения  статуса Апп
     //если вызвать в try то сработает только при успешном запросе
-    HandleToggleStatusApp(dispatch, response)
+    HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
 }
 
 
@@ -82,7 +82,7 @@ export const thunkAuth = {
             })
         //утилитка переключения  статуса Апп
         //если вызвать в try то сработает только при успешном запросе
-        HandleToggleStatusApp(dispatch, response)
+        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
     },
     setNameOrAvatar:(payload:{name?: string,avatar?:string}):AppThunk=> (dispatch:AppDispatchType)=>{
         dispatch(actionsApp.setAppStatus('loading'))
@@ -94,7 +94,7 @@ export const thunkAuth = {
             })
         //утилитка переключения  статуса Апп
         //если вызвать в try то сработает только при успешном запросе
-        HandleToggleStatusApp(dispatch, response)
+        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
     },
 
     login: (loginPayload: LoginPayloadType): AppThunk =>  (dispatch: AppDispatchType) => {
@@ -106,12 +106,9 @@ export const thunkAuth = {
                     dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: true}))
                 }
             })
-            .catch((e) => {
-                handlerNetworkError(dispatch, e)
-            })
         //утилитка переключения  статуса Апп
         //если вызвать в try то сработает только при успешном запросе
-        HandleToggleStatusApp(dispatch, response)
+        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
     },
 
     authMe: (): AppThunk => async (dispatch: AppDispatchType) => {
@@ -152,7 +149,7 @@ export const thunkAuth = {
             })
         //утилитка переключения  статуса Апп
         //если вызвать в try то сработает только при успешном запросе
-        HandleToggleStatusApp(dispatch, response)
+        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
     },
     fetchRecoveryPassMail: (email: string): AppThunk =>  (dispatch: AppDispatchType) => {
         //санка отправляет запрос на восстановление пароля и ретернит любой ответ
@@ -164,7 +161,7 @@ export const thunkAuth = {
             .catch((e) => {
                 handlerNetworkError(dispatch, e)
             })
-        HandleToggleStatusApp(dispatch, response)
+        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
         return response
 
     },
@@ -177,7 +174,7 @@ export const thunkAuth = {
             .catch((e) => {
                 handlerNetworkError(dispatch, e)
             })
-        HandleToggleStatusApp(dispatch, response)
+        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
         return response
     }
 }
