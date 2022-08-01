@@ -12,20 +12,30 @@ import {useEffect} from "react";
 import {thunksPack} from "./PackReducer";
 
 export const PacksListPage = () => {
+
     const cardPackEntity= useSelectorApp(state => state.packs.packsData.cardPacks)
    const dispatch =useDispatchApp()
     useEffect(()=>{
+
         dispatch(thunksPack.getPack())
-    },[])
+    }, [])
+
+
+    const Addnewpack = () => {
+        dispatch(thunksPack.createPack({name: 'azaza!!!'}))
+    }
 
     return (
         <Grid container spacing={2} justifyContent='center' columnSpacing={{xs: 1, sm: 2, md: 3}}>
             <Grid container alignItems="center" direction="row"
                   justifyContent="center"><Grid item xs={6}>PacksList</Grid>
                 <Grid item xs={6}>
-                    <Button   variant={'contained'} color={'primary'}>
-                    Add new pack
-                </Button>
+
+
+                    <Button onClick={Addnewpack} variant={'contained'} color={'primary'}>
+                        Add new pack
+                    </Button>
+
                 </Grid>
             </Grid>
             <Grid container alignItems="flex-start" direction="row"

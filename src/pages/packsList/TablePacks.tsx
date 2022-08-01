@@ -20,7 +20,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {visuallyHidden} from '@mui/utils';
-import {CardPacksEntity} from "../../DAL/API-CardsPack";
+import {CardPacksEntity, CardPacksEntityWithDeckCover, GetCardsPackResponse} from "../../DAL/API-CardsPack";
 
 interface Data {
     "_id": string,
@@ -230,7 +230,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 };
 
 type TablePacksPropsType = {
-    rows: Array<CardPacksEntity>
+    rows:  CardPacksEntityWithDeckCover[]
 }
 
 export function TablePacks(props: TablePacksPropsType) {
@@ -252,6 +252,7 @@ export function TablePacks(props: TablePacksPropsType) {
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
+
             const newSelecteds = props.rows.map((n) => n.name);
             setSelected(newSelecteds);
             return;

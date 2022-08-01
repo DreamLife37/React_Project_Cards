@@ -4,7 +4,6 @@ import {Dispatch} from "redux";
 import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
 import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 
-
 const packsSlice = createSlice({
     name: 'PACKS',
     initialState: [{}] as CardPacksEntity[],
@@ -30,8 +29,8 @@ export const getPacks = (dataPacks?: CardPacksEntity) => (dispatch: Dispatch) =>
         })
     //утилитка переключения  статуса Апп
     //если вызвать в try то сработает только при успешном запросе
+
     HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
-}
 
 export const createPack = (dataPacks?: CardPacksEntity) => (dispatch: Dispatch) => {
     const response = APIPacks.createNewCardPack({name: "Test pack 31.07.2022"})
@@ -45,5 +44,6 @@ export const createPack = (dataPacks?: CardPacksEntity) => (dispatch: Dispatch) 
         })
     //утилитка переключения  статуса Апп
     //если вызвать в try то сработает только при успешном запросе
+
     HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
 }
