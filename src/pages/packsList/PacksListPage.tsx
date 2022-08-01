@@ -14,9 +14,9 @@ import {thunksPack} from "./PackReducer";
 export const PacksListPage = () => {
 
     const cardPackEntity= useSelectorApp(state => state.packs.packsData.cardPacks)
+
    const dispatch =useDispatchApp()
     useEffect(()=>{
-
         dispatch(thunksPack.getPack())
     }, [])
 
@@ -81,7 +81,7 @@ export const PacksListPage = () => {
                 </Grid>
             </Grid>
             <Grid item xs={10}>
-                <TablePacks rows={cardPackEntity}/>
+                <TablePacks rows={!!cardPackEntity?cardPackEntity:[]}/>
             </Grid>
         </Grid>
     )
