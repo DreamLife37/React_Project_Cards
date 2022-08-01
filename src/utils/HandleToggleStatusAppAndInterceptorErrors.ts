@@ -1,6 +1,5 @@
 import {AppDispatchType} from "../pages/app/store";
 import {actionsApp, RequestStatusType} from "../pages/app/app-reducer";
-import {AxiosError, AxiosResponse} from "axios";
 import {handlerNetworkError} from "./HandlerErrorsUtils";
 
 //утилитка устанавливает AppStatus в значение 'loading' и обратно  при любом ответе
@@ -20,8 +19,6 @@ export const HandleToggleStatusAppAndInterceptorErrors = (dispatch:AppDispatchTy
     })
 
     Promise.allSettled(response).then((res) => {
-
-
         dispatch(actionsApp.setAppStatus('idle'))
     })
 

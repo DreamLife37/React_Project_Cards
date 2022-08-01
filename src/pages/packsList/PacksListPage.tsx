@@ -6,19 +6,20 @@ import {Grid} from "@mui/material";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {useEffect} from "react";
 import {thunksPack} from "./PackReducer";
 
 export const PacksListPage = () => {
 
-    const rows = useSelectorApp(state => state.packs.packsData.cardPacks)
+    const cardPackEntity= useSelectorApp(state => state.packs.packsData.cardPacks)
+   const dispatch =useDispatchApp()
+    useEffect(()=>{
 
-    const dispatch = useDispatchApp()
-
-    useEffect(() => {
         dispatch(thunksPack.getPack())
     }, [])
+
 
     const Addnewpack = () => {
         dispatch(thunksPack.createPack({name: 'azaza!!!'}))
@@ -29,9 +30,12 @@ export const PacksListPage = () => {
             <Grid container alignItems="center" direction="row"
                   justifyContent="center"><Grid item xs={6}>PacksList</Grid>
                 <Grid item xs={6}>
+
+
                     <Button onClick={Addnewpack} variant={'contained'} color={'primary'}>
                         Add new pack
                     </Button>
+
                 </Grid>
             </Grid>
             <Grid container alignItems="flex-start" direction="row"
@@ -77,7 +81,7 @@ export const PacksListPage = () => {
                 </Grid>
             </Grid>
             <Grid item xs={10}>
-                <TablePacks rows={rows}/>
+                <TablePacks rows={cardPackEntity}/>
             </Grid>
         </Grid>
     )

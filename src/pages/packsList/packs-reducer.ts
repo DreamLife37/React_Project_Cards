@@ -2,8 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {APIPacks, CardPacksEntity} from "../../DAL/API-CardsPack";
 import {Dispatch} from "redux";
 import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
-
-
+import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 
 const packsSlice = createSlice({
     name: 'PACKS',
@@ -30,8 +29,8 @@ export const getPacks = (dataPacks?: CardPacksEntity) => (dispatch: Dispatch) =>
         })
     //утилитка переключения  статуса Апп
     //если вызвать в try то сработает только при успешном запросе
-    //HandleToggleStatusApp(dispatch, response)
-}
+
+    HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
 
 export const createPack = (dataPacks?: CardPacksEntity) => (dispatch: Dispatch) => {
     const response = APIPacks.createNewCardPack({name: "Test pack 31.07.2022"})
@@ -45,5 +44,6 @@ export const createPack = (dataPacks?: CardPacksEntity) => (dispatch: Dispatch) 
         })
     //утилитка переключения  статуса Апп
     //если вызвать в try то сработает только при успешном запросе
-    //HandleToggleStatusApp(dispatch, response)
+
+    HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
 }
