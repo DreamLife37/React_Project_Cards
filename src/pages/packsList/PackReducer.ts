@@ -7,7 +7,6 @@ import {
     UpdateCardPackPayload
 } from "../../DAL/API-CardsPack";
 import {AppDispatchType, AppThunk} from "../app/store";
-import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
 import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 
 const initialState={
