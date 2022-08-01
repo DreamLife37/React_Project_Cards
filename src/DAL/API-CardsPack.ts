@@ -39,8 +39,8 @@ export type CardPacksEntity = {
     "cardsCount": number, //кол-во карт в колоде
     "type": string,
     "rating": number,
-    "created": Date, //когда была создана
-    "updated": Date, // когда была обновлена
+    "created": string, //когда была создана
+    "updated": string, // когда была обновлена
     "more_id": string,
     "__v": number
 }
