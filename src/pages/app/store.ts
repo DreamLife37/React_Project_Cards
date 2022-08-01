@@ -6,6 +6,7 @@ import {actionsErrors, ErrorReducer} from "../../Errors/ErrorsReducer";
 import {appReducer} from "./app-reducer";
 import {configureStore} from "@reduxjs/toolkit";
 import {packs} from "../packsList/PackReducer";
+import {cards} from "../cardsList/CardsReducer";
 
 
 
@@ -13,7 +14,8 @@ const reducers = combineReducers({
     auth: authReducer,
     error: ErrorReducer,
     app: appReducer,
-    packs
+    packs,
+    cards
 
 })
 
