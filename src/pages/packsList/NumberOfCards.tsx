@@ -4,8 +4,6 @@ import Slider from '@mui/material/Slider';
 import {thunksPack} from "./PackReducer";
 import {useDebouncedEffect, useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 
-
-
 function valuetext(value: number) {
     return `${value}°C`;
 }
@@ -15,22 +13,16 @@ export function NumberOfCards() {
     const sortPackMinValue = useSelectorApp(state => state.packs.queryParams.min)
     const sortPackMaxValue = useSelectorApp(state => state.packs.queryParams.max)
 
-    const [value, setValue] = React.useState<number[] >([sortPackMinValue? sortPackMinValue: 0, sortPackMaxValue? sortPackMaxValue: 100]);
-
+    const [value, setValue] = React.useState<number[]>([sortPackMinValue ? sortPackMinValue : 0, sortPackMaxValue ? sortPackMaxValue : 100]);
 
     const handleChange = (event: Event, newValue: number | number[]) => {
         setValue(newValue as number[]);
 
     };
 
-
     useDebouncedEffect(() => {
-        // if (!valueSearch.trim()) {
-        //     return
-        // }
-        dispatch(thunksPack.sortPackMin(value[0],value[1]))
+        dispatch(thunksPack.sortPackMinMax(value[0], value[1]))
     }, [value], 1000);
-
 
     return (
         <Box sx={{width: 300}}>

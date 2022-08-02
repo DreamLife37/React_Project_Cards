@@ -6,27 +6,21 @@ import {Grid} from "@mui/material";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {useEffect} from "react";
 import {thunksPack} from "./PackReducer";
 
 export const PacksListPage = () => {
 
-    const cardPackEntity= useSelectorApp(state => state.packs.packsData.cardPacks)
+    const cardPackEntity = useSelectorApp(state => state.packs.packsData.cardPacks)
 
-   const dispatch =useDispatchApp()
-    useEffect(()=>{
+    const dispatch = useDispatchApp()
+    useEffect(() => {
         dispatch(thunksPack.getPack())
     }, [])
 
-
     const AddNewPack = () => {
         dispatch(thunksPack.createPack({name: 'програмист! иди спать, ты пьян!'}))
-    }
-
-    const sort =()=>{
-        dispatch(thunksPack.sortPack('1updated'))
     }
 
     return (
@@ -85,7 +79,7 @@ export const PacksListPage = () => {
                 </Grid>
             </Grid>
             <Grid item xs={10}>
-                <TablePacks rows={!!cardPackEntity?cardPackEntity:[]}/>
+                <TablePacks rows={!!cardPackEntity ? cardPackEntity : []}/>
             </Grid>
         </Grid>
     )
