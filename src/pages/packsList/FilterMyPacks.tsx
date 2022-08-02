@@ -1,13 +1,15 @@
 import * as React from 'react';
 import {styled} from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
+import {ChangeEvent, useState} from "react";
+import {thunksPack} from "./PackReducer";
 
 
-const AntSwitch = styled(Switch)(({ theme }) => ({
+const AntSwitch = styled(Switch)(({theme}) => ({
     width: 28,
     height: 16,
     padding: 0,
@@ -50,18 +52,24 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 
-
 export function FilterMyPacks() {
-    return (
+    const dispatch = useDispatchApp()
+    const myId = useSelectorApp(state => state.auth._id)
+    const [isMyPacks, setIsMyPacks] = useState(true)
 
+    const showMyPacks = (e: ChangeEvent<HTMLInputElement>) => {
+        setIsMyPacks(e.currentTarget.checked)
+        isMyPacks ? dispatch(thunksPack.filterMyPacks(myId)) : dispatch(thunksPack.filterMyPacks(''))
+    }
+
+    return (
         <FormGroup>
-            
             <Stack direction="row" spacing={1} alignItems="center">
                 <Typography>My</Typography>
-                <AntSwitch defaultChecked inputProps={{ 'aria-label': 'ant design' }} />
+                <AntSwitch onChange={(e) => showMyPacks(e)} defaultChecked
+                           inputProps={{'aria-label': 'ant design'}}/>
                 <Typography>All</Typography>
             </Stack>
-
         </FormGroup>
 
     );

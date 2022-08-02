@@ -25,6 +25,10 @@ export const PacksListPage = () => {
         dispatch(thunksPack.createPack({name: 'azaza!!!'}))
     }
 
+    const sort =()=>{
+        dispatch(thunksPack.sortPack('1updated'))
+    }
+
     return (
         <Grid container spacing={2} justifyContent='center' columnSpacing={{xs: 1, sm: 2, md: 3}}>
             <Grid container alignItems="center" direction="row"
@@ -32,7 +36,7 @@ export const PacksListPage = () => {
                 <Grid item xs={6}>
 
 
-                    <Button onClick={Addnewpack} variant={'contained'} color={'primary'}>
+                    <Button onClick={sort} variant={'contained'} color={'primary'}>
                         Add new pack
                     </Button>
 
