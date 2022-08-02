@@ -9,6 +9,7 @@ import {Profile} from "./profile/Profile";
 import {RedirectPage} from "./auth/recovery-password/RedirectPage";
 import {Settings} from "./Settings";
 import {PacksListPage} from "./packsList/PacksListPage";
+import {CardPage} from "./cardsList/CardPage";
 
 
 export enum Path {
@@ -21,12 +22,13 @@ export enum Path {
     example = '/example',
     redirectAfterSendRecoveryPassEmail = '/redirect-page',
     settings = '/settings',
-    packsList = '/packsList'
+    packsList = '/packsList',
+    cardList='/cardList'
 }
 
 export const Router = () => {
     return (
-        <div>
+        <div style={{marginTop:20}}>
             <Routes>
                 <Route path={'/'} element={<Profile/>}/>
                 <Route path={'/React_Project_Cards/set-new-password'} element={<SetNewPassword/>}/>
@@ -42,6 +44,7 @@ export const Router = () => {
                 <Route path={Path.redirectAfterSendRecoveryPassEmail} element={<RedirectPage/>}/>
                 <Route path={Path.settings} element={<Settings/>}/>
                 <Route path={Path.packsList} element={<PacksListPage/>}/>
+                <Route path={Path.cardList} element={<CardPage/>}/>
 
             </Routes>
         </div>
