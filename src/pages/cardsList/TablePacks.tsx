@@ -20,29 +20,11 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {visuallyHidden} from '@mui/utils';
-import {CardPacksEntity, CardPacksEntityWithDeckCover, GetCardsPackResponse} from "../../DAL/API-CardsPack";
-import {useDispatchApp} from "../../CustomHooks/CustomHooks";
-import {actionsPacks, thunksPack} from "./PackReducer";
-import {actionsCards} from "../cardsList/CardsReducer";
-import {useNavigate} from "react-router-dom";
-import {Path} from "../Routes";
+import {ExtendedCardEntity} from "../../DAL/API-Cards";
 
-interface Data {
-    "_id": string,
-    "user_id": string,
-    "user_name": string,
-    "private": boolean,
-    "name": string,
-    "path": string,
-    "grade": number,
-    "shots": number,
-    "cardsCount": number,
-    "type": string,
-    "rating": number,
-    "created": string,
-    "updated": string,
-    "more_id": string,
-    "__v": number
+
+interface Data extends ExtendedCardEntity{
+
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -92,13 +74,13 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
     {
-        id: 'name',
+        id: 'question',
         numeric: false,
         disablePadding: true,
         label: 'Name',
     },
     {
-        id: 'cardsCount',
+        id: 'shots',
         numeric: true,
         disablePadding: false,
         label: 'Cards',
@@ -235,7 +217,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 };
 
 type TablePacksPropsType = {
-    rows: CardPacksEntityWithDeckCover[]
+    rows:  ExtendedCardEntity[]
 }
 
 export function TablePacks(props: TablePacksPropsType) {
@@ -245,9 +227,6 @@ export function TablePacks(props: TablePacksPropsType) {
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-    const dispatch = useDispatchApp()
-    const navigate = useNavigate()
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
@@ -261,7 +240,7 @@ export function TablePacks(props: TablePacksPropsType) {
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
 
-            const newSelecteds = props.rows.map((n) => n.name);
+            const newSelecteds = props.rows.map((n) => n.question);
             setSelected(newSelecteds);
             return;
         }
@@ -330,17 +309,14 @@ export function TablePacks(props: TablePacksPropsType) {
               rows.slice().sort(getComparator(order, orderBy)) */}
                             {props.rows
                                 .map((row, index) => {
-                                    const isItemSelected = isSelected(row.name);
+                                    const isItemSelected = isSelected(row.question);
                                     const labelId = `enhanced-table-checkbox-${index}`;
-                                    const moveOnCardList = () => {
-                                        dispatch(actionsCards.setQueryParams({cardsPack_id: row._id}))
-                                        navigate(Path.cardList)
-                                    }
+
 
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={(event) => handleClick(event, row.name)}
+                                            onClick={(event) => handleClick(event, row.question)}
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
@@ -357,18 +333,16 @@ export function TablePacks(props: TablePacksPropsType) {
                                                 />
                                             </TableCell>
                                             <TableCell
-                                                onClick={moveOnCardList}
                                                 component="th"
                                                 id={labelId}
                                                 scope="row"
                                                 padding="none"
                                             >
-                                                {row.name}
+                                                {row.question}
                                             </TableCell>
-                                            <TableCell align="right">{row.cardsCount}</TableCell>
+                                            <TableCell align="right">{row.shots}</TableCell>
                                             <TableCell align="right">{row.updated}</TableCell>
                                             <TableCell align="right">{row.created}</TableCell>
-                                            {/*<TableCell align="right">{row.protein}</TableCell>*/}
                                         </TableRow>
                                     );
                                 })}

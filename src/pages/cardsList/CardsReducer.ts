@@ -1,21 +1,25 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {APICards, getCardsPayload, GetCardsResponse} from "../../DAL/API-Cards";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {APICards, CreateCardPayload, getCardsPayload, GetCardsResponse, UpdateCardPayload} from "../../DAL/API-Cards";
 import {AppThunk} from "../app/store";
+import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 
-const initialState={
-    cards:{} as GetCardsResponse,
+const initialState:InitialState={
+    cards:{} as  GetCardsResponse,
     queryParams:{
         cardAnswer: undefined,
         cardQuestion: undefined,
-        cardsPack_id: "undefined",
+        cardsPack_id: "",
         sortCards: undefined,
         page: undefined,
         pageCount: undefined,
         min: undefined,
         max: undefined
-    } as getCardsPayload
+    }
 }
-
+type InitialState= {
+    cards:GetCardsResponse
+    queryParams:getCardsPayload
+}
 
 const cardsSlice=createSlice({
     name:"Cards",
@@ -23,6 +27,9 @@ const cardsSlice=createSlice({
     reducers:{
         getCards:(state,action)=>{
             state.cards=action.payload
+        },
+        setQueryParams:(state,action)=>{
+            state.queryParams={...state.queryParams, ...action.payload}
         }
     }
 })
@@ -33,13 +40,26 @@ export  const cards=cardsSlice.reducer
 export const actionsCards=cardsSlice.actions
 
 export const thunksCards={
-    getCards:(cardsPack_id:string,response?:any):AppThunk=>(dispatch,getState)=>{
-        Promise.allSettled([response])
+    getCards:(responseMore?:any):AppThunk=>(dispatch,getState)=>{
+        Promise.allSettled([responseMore])
             .then(()=>{
-                const response=APICards.getCards({...getState().cards.queryParams,cardsPack_id})
+                const response=APICards.getCards(getState().cards.queryParams)
                     .then((response)=>{
                         dispatch(actionsCards.getCards(response))
                     })
+                HandleToggleStatusAppAndInterceptorErrors(dispatch,[responseMore,response])
             })
+    },
+    createCard:(createCardPayload: CreateCardPayload):AppThunk=>(dispatch)=>{
+        const response=APICards.createCard(createCardPayload)
+        dispatch(thunksCards.getCards(response))
+    },
+    updateCard:(updateCardPayload: UpdateCardPayload):AppThunk=>(dispatch)=>{
+        const response=APICards.updateCard(updateCardPayload)
+        dispatch(thunksCards.getCards(response))
+    },
+    deleteCard:(id:string):AppThunk=>(dispatch)=>{
+        const response = APICards.deleteCard(id)
+        dispatch(thunksCards.getCards(response))
     }
 }
