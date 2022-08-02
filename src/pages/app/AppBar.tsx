@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import {useSelector} from "react-redux";
 import {AppStoreType} from "./store";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import {thunkAuth} from "../auth/auth-reducer";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
@@ -87,6 +87,7 @@ export const ResponsiveAppBar = () => {
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
+
                 <Toolbar disableGutters>
                     <AllInclusiveIcon sx={{display: {xs: 'none', md: 'flex'}, mr: 1}}/>
                     <Typography

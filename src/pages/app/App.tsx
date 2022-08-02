@@ -22,6 +22,7 @@ function App() {
             dispatch(thunkApp.initializeApp());
         }
     }, [isAuthorized,dispatch]);
+    console.log(isAuthorized)
 
     return (
         <div className="App">

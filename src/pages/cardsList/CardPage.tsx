@@ -21,15 +21,10 @@ export const CardPage = () => {
     const cards=useSelectorApp(state => state.cards.cards.cards)
 
     const dispatch =useDispatchApp()
-    const navigate= useNavigate()
 
     useEffect(()=>{
-        if (!cardsPack_id){
-            navigate(Path.packsList)
-        }else {
             dispatch(thunksCards.getCards())
-        }
-    }, [cardsPack_id])
+    }, [])
 
     const createNewCard = () => {
       dispatch(thunksCards.createCard({cardsPack_id,question:'azaza??'}))
