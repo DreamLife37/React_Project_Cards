@@ -5,6 +5,7 @@ import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggl
 import {restoreFromStorage} from "../../utils/LocalStorageUtils";
 
 const initialState:InitialState={
+    packTitle:'',
     cards:{} as  GetCardsResponse,
     queryParams:{
         cardAnswer: undefined,
@@ -18,6 +19,7 @@ const initialState:InitialState={
     }
 }
 type InitialState= {
+    packTitle:string
     cards:GetCardsResponse
     queryParams:getCardsPayload
 }
@@ -31,6 +33,9 @@ const cardsSlice=createSlice({
         },
         setQueryParams:(state,action)=>{
             state.queryParams={...state.queryParams, ...action.payload}
+        },
+        getTitle:(state,action)=>{
+            state.packTitle=action.payload
         }
     }
 })
@@ -47,12 +52,17 @@ export const thunksCards={
             const cardsPack_id= restoreFromStorage("cardsPack_id")
             dispatch(actionsCards.setQueryParams({cardsPack_id}))
         }
+        if (!getState().packs.packsData.cardPacks){
+            const packName=restoreFromStorage("packName")
+            dispatch(actionsCards.getTitle(packName))
+        }
 
         Promise.allSettled([responseMore])
             .then(()=>{
                 const response=APICards.getCards(getState().cards.queryParams)
                     .then((response)=>{
                         dispatch(actionsCards.getCards(response))
+
                     })
                 HandleToggleStatusAppAndInterceptorErrors(dispatch,[responseMore,response])
             })

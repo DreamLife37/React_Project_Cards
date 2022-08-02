@@ -38,6 +38,8 @@ export type AppThunk<ReturnType = any> = ThunkAction<ReturnType, AppStoreType, u
 store.subscribe(()=>{
     if (!store.getState().cards.queryParams.cardsPack_id){return}
     saveInStorage("cardsPack_id",store.getState().cards.queryParams.cardsPack_id)
+    if (!store.getState().cards.packTitle){return}
+    saveInStorage("packName", store.getState().cards.packTitle)
 })
 
 // @ts-ignore

@@ -334,6 +334,7 @@ export function TablePacks(props: TablePacksPropsType) {
                                     const labelId = `enhanced-table-checkbox-${index}`;
                                     const moveOnCardList = () => {
                                         dispatch(actionsCards.setQueryParams({cardsPack_id: row._id}))
+                                        dispatch(actionsCards.getTitle(row.name))
                                         navigate(Path.cardList)
                                     }
 

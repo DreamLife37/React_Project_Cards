@@ -30,6 +30,7 @@ export const CommonTable: FC<CommonTable> = memo(({rows, headCells, title}) => {
                             <EnhancedTableBody rows={rows}/>
                         </Table>
                     </TableContainer>
+                    {rows.length===0&&<> o curva! no cards?</>}
 
                     <TablePagination
                         rowsPerPageOptions={[-1]}

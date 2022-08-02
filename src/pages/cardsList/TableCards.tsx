@@ -2,14 +2,12 @@ import * as React from 'react';
 import {memo, useMemo} from 'react';
 import {ExtendedCardEntity} from "../../DAL/API-Cards";
 import {CommonTable} from "./CommonTable";
+import {useSelectorApp} from "../../CustomHooks/CustomHooks";
+import {getTime} from "../../utils/getTime";
 
 
-interface Data extends ExtendedCardEntity{
-
-}
-
- export interface HeadCell {
-    id: keyof Data;
+export interface HeadCell {
+    id: keyof ExtendedCardEntity;
     label: string;
     numeric: boolean;
 }
@@ -39,18 +37,20 @@ const headCells: HeadCell[] = [
 
 
 type TableCardsType = {
-    cards:  ExtendedCardEntity[]
+    cards: ExtendedCardEntity[]
 }
 
-export const TableCards:React.FC<TableCardsType>= memo(({cards})=> {
+export const TableCards: React.FC<TableCardsType> = memo(({cards}) => {
 
-    const rows= useMemo(()=> cards?.map(card=>[card.question,card.answer,card.updated,card.created]),[cards])
+        const packName = useSelectorApp(state => state.cards.packTitle)
+
+        const rows = useMemo(() => cards?.map(card => [card.question, card.answer, getTime(card.updated), getTime(card.created)]), [cards])
 
 
-    return (
-       <CommonTable rows={rows}  headCells={headCells} title={"title"}/>
-    );
-}
+        return (
+            <CommonTable rows={rows} headCells={headCells} title={packName}/>
+        );
+    }
 )
 
 
