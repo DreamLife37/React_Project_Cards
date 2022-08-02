@@ -47,11 +47,12 @@ export const actionsCards=cardsSlice.actions
 
 export const thunksCards={
     getCards:(responseMore?:any):AppThunk=>(dispatch,getState)=>{
-
+        //если cardsPack_id затерся после перезагрузки, берет его из хранилища
         if(!getState().cards.queryParams.cardsPack_id){
             const cardsPack_id= restoreFromStorage("cardsPack_id")
             dispatch(actionsCards.setQueryParams({cardsPack_id}))
         }
+        //то же самое с названием колоды
         if (!getState().packs.packsData.cardPacks){
             const packName=restoreFromStorage("packName")
             dispatch(actionsCards.getTitle(packName))

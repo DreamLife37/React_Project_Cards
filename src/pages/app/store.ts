@@ -36,8 +36,10 @@ export type AppDispatchType = ThunkDispatch<AppStoreType, unknown, UnionActionsT
 export type AppThunk<ReturnType = any> = ThunkAction<ReturnType, AppStoreType, unknown, UnionActionsType>
 
 store.subscribe(()=>{
+    //пилит в лок.хранилище id колоды чтобы после перезагрузки не терялась
     if (!store.getState().cards.queryParams.cardsPack_id){return}
     saveInStorage("cardsPack_id",store.getState().cards.queryParams.cardsPack_id)
+    //то же самое но названием пакета
     if (!store.getState().cards.packTitle){return}
     saveInStorage("packName", store.getState().cards.packTitle)
 })

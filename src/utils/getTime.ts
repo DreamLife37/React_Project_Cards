@@ -1,3 +1,5 @@
+
+//утилита переводит время с бекенда в читабельный вид:
 export const getTime = (date: string) => {
 
     const dateParsNumber = Date.parse(date)

@@ -15,6 +15,9 @@ type CommonTable = {
     rows: Array<Array<string | number>>
     title: string
 }
+
+//универсальная таблица ждет название, массив из масивов в которых строки или
+// числа и массив обьектов для шапки таблицы:
 export const CommonTable: FC<CommonTable> = memo(({rows, headCells, title}) => {
 
 
@@ -30,7 +33,7 @@ export const CommonTable: FC<CommonTable> = memo(({rows, headCells, title}) => {
                             <EnhancedTableBody rows={rows}/>
                         </Table>
                     </TableContainer>
-                    {rows.length===0&&<> o curva! no cards?</>}
+                    {rows.length===0&&<> o сurva! no cards?</>}
 
                     <TablePagination
                         rowsPerPageOptions={[-1]}

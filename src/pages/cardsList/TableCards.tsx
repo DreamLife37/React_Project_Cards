@@ -43,9 +43,7 @@ type TableCardsType = {
 export const TableCards: React.FC<TableCardsType> = memo(({cards}) => {
 
         const packName = useSelectorApp(state => state.cards.packTitle)
-
         const rows = useMemo(() => cards?.map(card => [card.question, card.answer, getTime(card.updated), getTime(card.created)]), [cards])
-
 
         return (
             <CommonTable rows={rows} headCells={headCells} title={packName}/>
