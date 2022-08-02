@@ -12,8 +12,10 @@ function valuetext(value: number) {
 
 export function NumberOfCards() {
     const dispatch = useDispatchApp()
+    const sortPackMinValue = useSelectorApp(state => state.packs.queryParams.min)
+    const sortPackMaxValue = useSelectorApp(state => state.packs.queryParams.max)
 
-    const [value, setValue] = React.useState<number[]>([1, 37]);
+    const [value, setValue] = React.useState<number[] >([sortPackMinValue? sortPackMinValue: 0, sortPackMaxValue? sortPackMaxValue: 100]);
 
 
     const handleChange = (event: Event, newValue: number | number[]) => {
@@ -26,7 +28,7 @@ export function NumberOfCards() {
         // if (!valueSearch.trim()) {
         //     return
         // }
-        dispatch(thunksPack.sortPackMin(value[0]))
+        dispatch(thunksPack.sortPackMin(value[0],value[1]))
     }, [value], 1000);
 
 

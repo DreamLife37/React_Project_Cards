@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {AppDispatchType, AppStoreType} from "../pages/app/store";
-import { useEffect } from "react";
+
 
 export const useDispatchApp: () => AppDispatchType = useDispatch
 
