@@ -32,10 +32,8 @@ export const PacksListPage = () => {
     return (
         <Grid container spacing={2} justifyContent='center' columnSpacing={{xs: 1, sm: 2, md: 3}}>
             <Grid container alignItems="center" direction="row"
-                  justifyContent="center"><Grid item xs={6}>PacksList</Grid>
+                  justifyContent="center" paddingTop={'40px'}><Grid item xs={6}>PacksList</Grid>
                 <Grid item xs={6}>
-
-
 
                     <Button onClick={AddNewPack} variant={'contained'} color={'primary'}>
 
@@ -45,7 +43,7 @@ export const PacksListPage = () => {
                 </Grid>
             </Grid>
             <Grid container alignItems="flex-start" direction="row"
-                  justifyContent="center">
+                  justifyContent="center" paddingTop={'40px'}>
                 <Grid item xs={4}>
                     <Grid container alignItems="center" direction="row"
                           justifyContent="center">
