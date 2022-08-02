@@ -10,9 +10,7 @@ import {thunksCards} from "./CardsReducer";
 import {Search} from "./Search";
 import {FilterMyPacks} from "./FilterMyPacks";
 import {NumberOfCards} from "./NumberOfCards";
-import {TablePacks} from "./TablePacks";
-import {useNavigate} from "react-router-dom";
-import {Path} from "../Routes";
+import {TableCards} from "./TableCards";
 
 
 export const CardPage = () => {
@@ -84,7 +82,7 @@ export const CardPage = () => {
                 </Grid>
             </Grid>
             <Grid item xs={10}>
-                <TablePacks rows={!!cards?cards:[]}/>
+                <TableCards cards={!!cards?cards:[]}/>
             </Grid>
         </Grid>
     )
