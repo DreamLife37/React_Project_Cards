@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {AppDispatchType, AppStoreType} from "../pages/app/store";
 import { useEffect } from "react";
@@ -5,8 +6,6 @@ import { useEffect } from "react";
 export const useDispatchApp: () => AppDispatchType = useDispatch
 
 export const useSelectorApp: TypedUseSelectorHook<AppStoreType> = useSelector
-
-
 
 export const useDebouncedEffect = (effect:Function, deps:any, delay:number) => {
     useEffect(() => {

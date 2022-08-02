@@ -71,5 +71,23 @@ export const thunksPack = {
         //нужно только поменять в стейте квери параметр и вызвать санку getPack
         dispatch(actionsPacks.setQuery({packName}))
         dispatch(thunksPack.getPack())
+    },
+    filterMyPacks: (user_id: string): AppThunk => (dispatch: AppDispatchType) => {
+        //ни чего больше писать не надо все случится автоматически
+        //нужно только поменять в стейте квери параметр и вызвать санку getPack
+        dispatch(actionsPacks.setQuery({user_id}))
+        dispatch(thunksPack.getPack())
+    },
+    sortPack: (sortPacks: string): AppThunk => (dispatch: AppDispatchType) => {
+        //ни чего больше писать не надо все случится автоматически
+        //нужно только поменять в стейте квери параметр и вызвать санку getPack
+        dispatch(actionsPacks.setQuery({sortPacks}))
+        dispatch(thunksPack.getPack())
+    },
+    sortPackMin: (min: number): AppThunk => (dispatch: AppDispatchType) => {
+        //ни чего больше писать не надо все случится автоматически
+        //нужно только поменять в стейте квери параметр и вызвать санку getPack
+        dispatch(actionsPacks.setQuery({min}))
+        dispatch(thunksPack.getPack())
     }
 }
