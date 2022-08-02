@@ -1,32 +1,38 @@
-import Button from '@mui/material/Button';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { Button, TextField } from "@mui/material";
 import image from './profileAvatar.png';
-import style from './Profile.module.css';
-import { memo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { FC, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, Navigate } from "react-router-dom";
 import { AppStoreType } from '../app/store';
 import { thunkAuth } from '../auth/auth-reducer';
-import { Navigate } from "react-router-dom";
-import { Path } from '../Routes';
-import { useDispatchApp } from '../../CustomHooks/CustomHooks';
-import { EditProfileModal } from './EditProfileModal';
+import style from './Profile.module.css';
+import { useDispatchApp } from "../../CustomHooks/CustomHooks";
+import { Path } from "../Routes";
 
-export const Profile = memo(() => {
+export const Profile: FC = () => {
     const dispatch = useDispatchApp();
-
-    const [isShowModal, setIsShowModal] = useState(false);
 
     const isAuthorized= useSelector<AppStoreType, boolean>(state => state.auth.isAuthorized);
     const profileName = useSelector<AppStoreType, string>(state => state.auth.name);
     const profileEmail = useSelector<AppStoreType, string>(state => state.auth.email);
     const avatar = useSelector<AppStoreType, string>(state => state.auth.avatar);
+    const isLoading = useSelector<AppStoreType, string>(state => state.app.status);
 
-    const onClickLogout = () => {
+    const [changeNameStatus, setChangeNameStatus] = useState(false);
+    const [inputValue, setInputValue] = useState(profileName);
+    
+
+    const logout = () => {
         dispatch(thunkAuth.logout())
     }
 
-    const onClickShowModalButton = () => {
-        setIsShowModal(!isShowModal);
+    const onChangeNameStatus = () => {
+        dispatch(thunkAuth.setNameOrAvatar({name: inputValue}))
+        setChangeNameStatus(!changeNameStatus)
+    }
+
+    const onChangeInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(event.target.value);
     }
 
     if (!isAuthorized) {
@@ -34,35 +40,58 @@ export const Profile = memo(() => {
     }
 
     return (
-        <div className={style.profileWrapper}>
-            <aside className={style.profile}>
-
-                <div className={style.profileInfo}>
-                    <Button onClick={onClickLogout}>
-                        <LogoutIcon />
-                    </Button>
-                    
-                    <img className={style.profileAvatar} src={!!avatar ? avatar : image} alt={'avatar'}/>
-
-                    <span className={style.profileName}>{profileName}</span>
-
-                    <span className={style.jobTitle}>Front-end developer</span>
-
-                    <Button 
-                        sx={{border: '1px solid rgba(45, 46, 70, 0.4)', color: '#21268F', fontSize: '12px'}}
-                        className={style.editButton}
-                        variant='outlined'
-                        onClick={onClickShowModalButton}>
-                        Edit profile
-                    </Button>
+            <div className={style.wrapper}>
+                <div className={style.backLinkWrapper}>
+                    <Link className={style.backArrow} to={Path.packsList}>&#8592;</Link>
+                    <span className={style.backLinkTitle}>Back to Packs List</span>    
                 </div>
+                
 
-            </aside>
+                <div className={style.personalInfo}>
+                    <h1 className={style.title}>Personal Information</h1>
 
-            {isShowModal
-                ? <EditProfileModal email={profileEmail} name={profileName} onClickShowModalButton={onClickShowModalButton} />
-                : null
-            }
-        </div>
-    );
-});
+                    <img src={!!avatar ? avatar : image} className={style.avatar}></img>
+
+                    <input type='file' className={style.setAvatarInput} id='fileInput'></input>
+                    <label className={style.setAvatarInputLabel} htmlFor='fileInput'></label>
+                    
+                    <div className={style.changeNameWrapper}>
+                        {changeNameStatus ?
+                        <>
+                            <TextField
+                            sx={{width: '347px', position: 'relative', marginLeft: '55px'}}
+                            id="standard-multiline-flexible"
+                            label="Nickname"
+                            multiline
+                            maxRows={4}
+                            value={inputValue}
+                            onChange={onChangeInputValue}
+                            variant="standard"
+                            />
+                            <Button className={style.saveBtn}
+                                sx={{width: '52px', height: '24px', fontSize: '12px', lineHeight: '24px'}}
+                                variant="contained"
+                                onClick={onChangeNameStatus}>
+                                save
+                            </Button>
+                        </>
+                        :
+                        <>
+                            <p className={style.name}>{profileName}</p>
+                            <button type='button' className={style.changeNameBtn} onClick={onChangeNameStatus}></button>
+                        </>
+                      }
+                    </div>  
+
+                    <p className={style.email}>{profileEmail}</p>
+
+                    <button 
+                        type="button" 
+                        className={style.logoutBtn}
+                        onClick={logout}>
+                        Log out
+                    </button>
+                </div>
+            </div>
+    )
+}
