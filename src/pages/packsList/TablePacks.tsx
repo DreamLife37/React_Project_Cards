@@ -21,7 +21,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {visuallyHidden} from '@mui/utils';
 import {CardPacksEntity, CardPacksEntityWithDeckCover, GetCardsPackResponse} from "../../DAL/API-CardsPack";
-import {useDispatchApp} from "../../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {actionsPacks, thunksPack} from "./PackReducer";
 import {actionsCards} from "../cardsList/CardsReducer";
 import {useNavigate} from "react-router-dom";
@@ -88,6 +88,7 @@ interface HeadCell {
     id: keyof Data;
     label: string;
     numeric: boolean;
+    onClick?: () => void
 }
 
 const headCells: readonly HeadCell[] = [
@@ -96,6 +97,7 @@ const headCells: readonly HeadCell[] = [
         numeric: false,
         disablePadding: true,
         label: 'Name',
+        onClick: () => console.log('name')
     },
     {
         id: 'cardsCount',
@@ -114,6 +116,7 @@ const headCells: readonly HeadCell[] = [
         numeric: true,
         disablePadding: false,
         label: 'Created by',
+
     },
     // {
     //     id: 'protein',
@@ -140,6 +143,23 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             onRequestSort(event, property);
         };
 
+    const dispatch = useDispatchApp()
+
+    const sortHandler = (nameColumn: any) => {
+        if (nameColumn == 'updated') {
+            return '1updated'
+        }
+        if (nameColumn == 'name') {
+            return '1name'
+        }
+        if (nameColumn == 'cardsCount') {
+            return '0cardsCount'
+        } if (nameColumn == 'created') {
+            return '1created'
+        }
+        else return ''
+
+    }
     return (
         <TableHead>
             <TableRow>
@@ -160,6 +180,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         align={headCell.numeric ? 'right' : 'left'}
                         padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
+                        onClick={() => dispatch(thunksPack.sortPack(sortHandler(headCell.id)))}
                     >
                         <TableSortLabel
                             active={orderBy === headCell.id}
@@ -330,7 +351,10 @@ export function TablePacks(props: TablePacksPropsType) {
               rows.slice().sort(getComparator(order, orderBy)) */}
                             {props.rows
                                 .map((row, index) => {
+
                                     const isItemSelected = isSelected(row.name);
+                                    console.log(row._id)
+                                    console.log(isItemSelected)
                                     const labelId = `enhanced-table-checkbox-${index}`;
                                     const moveOnCardList = () => {
                                         dispatch(actionsCards.setQueryParams({cardsPack_id: row._id}))

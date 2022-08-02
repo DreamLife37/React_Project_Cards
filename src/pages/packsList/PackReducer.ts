@@ -84,7 +84,7 @@ export const thunksPack = {
         dispatch(actionsPacks.setQuery({sortPacks}))
         dispatch(thunksPack.getPack())
     },
-    sortPackMin: (min: number, max:number): AppThunk => (dispatch: AppDispatchType) => {
+    sortPackMinMax: (min: number, max:number): AppThunk => (dispatch: AppDispatchType) => {
         //ни чего больше писать не надо все случится автоматически
         //нужно только поменять в стейте квери параметр и вызвать санку getPack
         dispatch(actionsPacks.setQuery({min,max}))
