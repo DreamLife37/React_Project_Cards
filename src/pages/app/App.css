@@ -17,6 +17,7 @@
     background-color: #282c34;
     min-height: 100vh;
     flex-direction: column;
+    display: flex;
     align-items: center;
     font-size: calc(10px + 2vmin);
     color: white;

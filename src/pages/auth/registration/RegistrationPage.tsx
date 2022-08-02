@@ -1,14 +1,12 @@
-import {useSelector} from "react-redux";
 import {Navigate, NavLink} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
 import {useFormik} from "formik";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {registration, thunkAuth} from "../auth-reducer";
-import {AppStoreType} from "../../app/store";
+import {thunkAuth} from "../auth-reducer";
 import FormGroup from "@mui/material/FormGroup";
-import {Container, FormLabel} from "@mui/material";
+import {Container} from "@mui/material";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
