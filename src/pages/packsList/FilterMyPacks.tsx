@@ -55,7 +55,7 @@ const AntSwitch = styled(Switch)(({theme}) => ({
 export function FilterMyPacks() {
     const dispatch = useDispatchApp()
     const myId = useSelectorApp(state => state.auth._id)
-    const [isMyPacks, setIsMyPacks] = useState(true)
+    const [isMyPacks, setIsMyPacks] = useState(false)
 
     const showMyPacks = (e: ChangeEvent<HTMLInputElement>) => {
         setIsMyPacks(e.currentTarget.checked)

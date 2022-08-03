@@ -17,6 +17,7 @@ import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {visuallyHidden} from '@mui/utils';
 import {CardPacksEntityWithDeckCover} from "../../DAL/API-CardsPack";
@@ -57,8 +58,8 @@ interface HeadCell {
 const headCells: readonly HeadCell[] = [
     {
         id: 'name',
-        numeric: false,
-        disablePadding: true,
+        numeric: true,
+        disablePadding: false,
         label: 'Name',
     },
     {
@@ -82,7 +83,6 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface EnhancedTableProps {
-    numSelected: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
     order: Order;
     orderBy: string;
@@ -117,14 +117,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     return (
         <TableHead>
             <TableRow>
-                <TableCell padding="normal">
-                    Action
-                </TableCell>
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
                         align={headCell.numeric ? 'right' : 'left'}
-                        padding={headCell.disablePadding ? 'none' : 'normal'}
+                        padding={'none'}
                         sortDirection={orderBy === headCell.id ? order : false}
                         onClick={() => dispatch(thunksPack.sortPack(sortHandler(headCell.id, order)))}
                     >
@@ -142,30 +139,20 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         </TableSortLabel>
                     </TableCell>
                 ))}
+                <TableCell padding="normal">
+                    Action
+                </TableCell>
             </TableRow>
         </TableHead>
     );
 }
 
-interface EnhancedTableToolbarProps {
-    numSelected: number;
-}
 
-const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-    const {numSelected} = props;
+const EnhancedTableToolbar = () => {
+
 
     return (
-        <Toolbar
-            sx={{
-                pl: {sm: 2},
-                pr: {xs: 1, sm: 1},
-                ...(numSelected > 0 && {
-                    bgcolor: (theme) =>
-                        alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-                }),
-            }}
-        >
-
+        <Toolbar>
             <Typography
                 sx={{flex: '1 1 100%'}}
                 variant="h6"
@@ -174,7 +161,6 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
             >
                 PacksList
             </Typography>
-
 
             <Tooltip title="Filter list">
                 <IconButton>
@@ -212,16 +198,13 @@ export function TablePacks(props: TablePacksPropsType) {
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
+        dispatch(thunksPack.getPackWithSetQuery({page: newPage}));
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
+        setRowsPerPage(+event.target.value);
+        dispatch(thunksPack.getPackWithSetQuery({pageCount: +event.target.value}))
         setPage(0);
-    };
-
-    const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDense(event.target.checked);
     };
 
     // Avoid a layout jump when reaching the last page with empty rows.
@@ -232,25 +215,28 @@ export function TablePacks(props: TablePacksPropsType) {
         dispatch(thunksPack.deletePack(packId))
     }
 
+    const editPackHandler = (packId: string, namePack: string) => {
+        dispatch(thunksPack.updatePack({_id: packId, name: namePack}))
+    }
+
+
     return (
         <Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
-                <EnhancedTableToolbar numSelected={selected.length}/>
+                <EnhancedTableToolbar/>
                 <TableContainer>
                     <Table
                         sx={{minWidth: 750}}
                         aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
+                        size={'small'}
                     >
                         <EnhancedTableHead
-                            numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
                             onRequestSort={handleRequestSort}
                             rowCount={props.rows.length}
                         />
                         <TableBody>
-
                             {props.rows
                                 .map((row, index) => {
                                     const labelId = `enhanced-table-checkbox-${index}`;
@@ -261,31 +247,32 @@ export function TablePacks(props: TablePacksPropsType) {
                                     }
 
                                     return (
-                                        <TableRow
-                                            hover
-                                            role="checkbox"
-                                            tabIndex={-1}
-                                            key={row._id}
-                                        >
-                                            <TableCell align="left">
-                                                {myUserId === row.user_id && <Tooltip title="Delete pack">
-                                                    <IconButton onClick={() => deletePackHandler(row._id)}>
-                                                        <DeleteIcon/>
-                                                    </IconButton>
-                                                </Tooltip>}
-                                            </TableCell>
+                                        <TableRow>
                                             <TableCell
                                                 onClick={moveOnCardList}
                                                 component="th"
                                                 id={labelId}
                                                 scope="row"
-                                                padding="none"
+                                                padding="normal"
                                             >
                                                 {row.name}
                                             </TableCell>
                                             <TableCell align="right">{row.cardsCount}</TableCell>
                                             <TableCell align="right">{row.updated}</TableCell>
                                             <TableCell align="right">{row.created}</TableCell>
+                                            <TableCell align="left">
+                                                {myUserId === row.user_id && <div>
+                                                    <Tooltip title="Delete pack">
+                                                        <IconButton onClick={() => deletePackHandler(row._id)}>
+                                                            <DeleteIcon fontSize={"small"}/>
+                                                        </IconButton></Tooltip>
+                                                    <Tooltip title="Edit pack">
+                                                        <IconButton
+                                                            onClick={() => editPackHandler(row._id, 'IT-INCUBATOR лучшие!')}>
+                                                            <EditIcon fontSize={"small"}/>
+                                                        </IconButton></Tooltip>
+                                                </div>}
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}
@@ -311,10 +298,7 @@ export function TablePacks(props: TablePacksPropsType) {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-            <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense}/>}
-                label="Dense padding"
-            />
         </Box>
-    );
+    )
+        ;
 }
