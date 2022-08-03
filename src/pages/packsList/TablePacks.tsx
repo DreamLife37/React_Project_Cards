@@ -12,7 +12,6 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -20,12 +19,13 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {visuallyHidden} from '@mui/utils';
-import {CardPacksEntity, CardPacksEntityWithDeckCover, GetCardsPackResponse} from "../../DAL/API-CardsPack";
+import {CardPacksEntityWithDeckCover} from "../../DAL/API-CardsPack";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
-import {actionsPacks, thunksPack} from "./PackReducer";
+import {thunksPack} from "./PackReducer";
 import {actionsCards} from "../cardsList/CardsReducer";
 import {useNavigate} from "react-router-dom";
 import {Path} from "../Routes";
+
 
 interface Data {
     "_id": string,
@@ -45,43 +45,7 @@ interface Data {
     "__v": number
 }
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
 type Order = 'asc' | 'desc';
-
-function getComparator<Key extends keyof any>(
-    order: Order,
-    orderBy: Key,
-): (
-    a: { [key in Key]: number | string },
-    b: { [key in Key]: number | string },
-) => number {
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
-function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
-    const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) {
-            return order;
-        }
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-}
 
 interface HeadCell {
     disablePadding: boolean;
@@ -114,27 +78,19 @@ const headCells: readonly HeadCell[] = [
         numeric: true,
         disablePadding: false,
         label: 'Created by',
-
     },
-    // {
-    //     id: 'protein',
-    //     numeric: true,
-    //     disablePadding: false,
-    //     label: 'Actions',
-    // },
 ];
 
 interface EnhancedTableProps {
     numSelected: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
-    onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
     order: Order;
     orderBy: string;
     rowCount: number;
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-    const {onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} =
+    const {order, orderBy, rowCount, onRequestSort} =
         props;
     const createSortHandler =
         (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
@@ -161,16 +117,8 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     return (
         <TableHead>
             <TableRow>
-                <TableCell padding="checkbox">
-                    <Checkbox
-                        color="primary"
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
-                        inputProps={{
-                            'aria-label': 'select all desserts',
-                        }}
-                    />
+                <TableCell padding="normal">
+                    Action
                 </TableCell>
                 {headCells.map((headCell) => (
                     <TableCell
@@ -217,38 +165,23 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                 }),
             }}
         >
-            {numSelected > 0 ? (
-                <Typography
-                    sx={{flex: '1 1 100%'}}
-                    color="inherit"
-                    variant="subtitle1"
-                    component="div"
-                >
-                    {numSelected} selected
-                </Typography>
-            ) : (
-                <Typography
-                    sx={{flex: '1 1 100%'}}
-                    variant="h6"
-                    id="tableTitle"
-                    component="div"
-                >
-                    PacksList
-                </Typography>
-            )}
-            {numSelected > 0 ? (
-                <Tooltip title="Delete">
-                    <IconButton>
-                        <DeleteIcon/>
-                    </IconButton>
-                </Tooltip>
-            ) : (
-                <Tooltip title="Filter list">
-                    <IconButton>
-                        <FilterListIcon/>
-                    </IconButton>
-                </Tooltip>
-            )}
+
+            <Typography
+                sx={{flex: '1 1 100%'}}
+                variant="h6"
+                id="tableTitle"
+                component="div"
+            >
+                PacksList
+            </Typography>
+
+
+            <Tooltip title="Filter list">
+                <IconButton>
+                    <FilterListIcon/>
+                </IconButton>
+            </Tooltip>
+
         </Toolbar>
     );
 };
@@ -266,6 +199,7 @@ export function TablePacks(props: TablePacksPropsType) {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const dispatch = useDispatchApp()
+    const myUserId = useSelectorApp(state => state.auth._id)
     const navigate = useNavigate()
 
     const handleRequestSort = (
@@ -275,36 +209,6 @@ export function TablePacks(props: TablePacksPropsType) {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
-    };
-
-    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-
-            const newSelecteds = props.rows.map((n) => n.name);
-            setSelected(newSelecteds);
-            return;
-        }
-        setSelected([]);
-    };
-
-    const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-        const selectedIndex = selected.indexOf(name);
-        let newSelected: readonly string[] = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        setSelected(newSelected);
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -320,11 +224,13 @@ export function TablePacks(props: TablePacksPropsType) {
         setDense(event.target.checked);
     };
 
-    const isSelected = (name: string) => selected.indexOf(name) !== -1;
-
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.rows.length) : 0;
+
+    const deletePackHandler = (packId: string) => {
+        dispatch(thunksPack.deletePack(packId))
+    }
 
     return (
         <Box sx={{width: '100%'}}>
@@ -340,17 +246,13 @@ export function TablePacks(props: TablePacksPropsType) {
                             numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
                             rowCount={props.rows.length}
                         />
                         <TableBody>
-                            {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-              rows.slice().sort(getComparator(order, orderBy)) */}
+
                             {props.rows
                                 .map((row, index) => {
-
-                                    const isItemSelected = isSelected(row.name);
                                     const labelId = `enhanced-table-checkbox-${index}`;
                                     const moveOnCardList = () => {
                                         dispatch(actionsCards.setQueryParams({cardsPack_id: row._id}))
@@ -361,21 +263,16 @@ export function TablePacks(props: TablePacksPropsType) {
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={(event) => handleClick(event, row.name)}
                                             role="checkbox"
-                                            aria-checked={isItemSelected}
                                             tabIndex={-1}
                                             key={row._id}
-                                            selected={isItemSelected}
                                         >
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isItemSelected}
-                                                    inputProps={{
-                                                        'aria-labelledby': labelId,
-                                                    }}
-                                                />
+                                            <TableCell align="left">
+                                                {myUserId === row.user_id && <Tooltip title="Delete pack">
+                                                    <IconButton onClick={() => deletePackHandler(row._id)}>
+                                                        <DeleteIcon/>
+                                                    </IconButton>
+                                                </Tooltip>}
                                             </TableCell>
                                             <TableCell
                                                 onClick={moveOnCardList}
@@ -389,7 +286,6 @@ export function TablePacks(props: TablePacksPropsType) {
                                             <TableCell align="right">{row.cardsCount}</TableCell>
                                             <TableCell align="right">{row.updated}</TableCell>
                                             <TableCell align="right">{row.created}</TableCell>
-                                            {/*<TableCell align="right">{row.protein}</TableCell>*/}
                                         </TableRow>
                                     );
                                 })}
