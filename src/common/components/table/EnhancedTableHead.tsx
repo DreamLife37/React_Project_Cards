@@ -3,7 +3,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import { HeadCell } from "./TableCards";
+import { HeadCell } from "../../../pages/cardsList/TableCards";
 
 interface EnhancedTableProps {
     headCells: HeadCell[]

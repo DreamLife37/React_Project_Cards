@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {memo, useMemo} from 'react';
 import {ExtendedCardEntity} from "../../DAL/API-Cards";
-import {CommonTable} from "./CommonTable";
+import {CommonTable} from "../../common/components/table/CommonTable";
 import {useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
 
