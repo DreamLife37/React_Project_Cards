@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TablePagination from "@mui/material/TablePagination";
-import {HeadCell} from "../../../pages/cardsList/TableCards";
+import {HeadCell, Row} from "../../../pages/cardsList/TableCards";
 import {EnhancedTableToolbar} from "./EnhancedTableToolbar";
 import {EnhancedTableHead} from "./EnhancedTableHead";
 import {EnhancedTableBody} from "./EnhancedTableBody";
@@ -13,7 +13,7 @@ import {EnhancedTableBody} from "./EnhancedTableBody";
 
 type CommonTable = {
     headCells: Array<HeadCell>
-    rows: Array<Array<string | number|ReactNode>>
+    rows: Row[][]
     title: string
 }
 

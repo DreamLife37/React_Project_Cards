@@ -1,11 +1,11 @@
 import React, {
     ChangeEvent,
     DetailedHTMLProps,
-    HTMLAttributes,
+    HTMLAttributes, ReactNode,
     useState
 } from "react";
 
-import {Box, TextField} from "@mui/material";
+import {Box, TextField, Typography} from "@mui/material";
 import {TextFieldProps} from "@mui/material/TextField/TextField";
 
 
@@ -18,30 +18,22 @@ type CustomEditSpanPropsType = TextFieldProps & {
     onBlurInput?: (value: string) => void
     onClick?: () => void
     value: string
+    jsxElement?:ReactNode
     editModeControlled?: boolean
     setEditModeControlled?: React.Dispatch<React.SetStateAction<boolean>>
 }
 export const CustomEditSpan: React.FC<CustomEditSpanPropsType> = React.memo((props) => {
 
         const {
-            onChange, value, error, onEnter, spanProps, onChangeText,
+            onChange, jsxElement, value, error, onEnter, spanProps, onChangeText,
             editModeControlled, setEditModeControlled, onBlurInput, ...restProps
         } = props
 
-        const [editMode, setEditMode] = useState<boolean>(false)
-        const [valueTextField, setValueTextField] = useState<string>(value)
         const {children, onDoubleClick, className, ...restSpanProps} = spanProps || {}
 
-        const onEnterCallBack = (key: string) => {
-            if (key !== 'Enter') {
-                return
-            }
+        const [editMode, setEditMode] = useState<boolean>(false)
+        const [valueTextField, setValueTextField] = useState<string>(value)
 
-            setEditModeControlled ?
-                setEditModeControlled(false) :
-                setEditMode(false)
-            onEnter && onEnter()
-        }
 
         const onDoubleClickCallBack = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
             setEditModeControlled ?
@@ -54,28 +46,21 @@ export const CustomEditSpan: React.FC<CustomEditSpanPropsType> = React.memo((pro
             setEditModeControlled ?
                 setEditModeControlled(false) :
                 setEditMode(false)
-            onBlurInput && onBlurInput(valueTextField)
+            onBlurInput && valueTextField!==value && onBlurInput(valueTextField)
         }
 
         const onChangeCallBack = (e: ChangeEvent<HTMLInputElement>) => {
             setValueTextField(e.currentTarget.value)
-            // onChange && onChange(e)
-            // onChangeText && onChangeText(e.currentTarget.value)
         }
-
-        const finalClassName = `${className}`
 
         return (
 
-            <Box component={"span"} data-testid='Box'>
+            <Typography component={"span"} sx={{display:'flex',wrap:"noWrap", alignItems:"center",justifyContent:"center"}}>
                 {
                     editMode || editModeControlled ?
                         <span>
                             <TextField
                                 error={!!error}
-                                onKeyPress={(e) => {
-                                    onEnterCallBack(e.key)
-                                }}
                                 onChange={onChangeCallBack}
                                 helperText={!!error ? error : false}
                                 onBlur={onBlurCallBack}
@@ -84,15 +69,16 @@ export const CustomEditSpan: React.FC<CustomEditSpanPropsType> = React.memo((pro
                                 value={valueTextField}/>
                         </span>
                         :
-                        <span onDoubleClick={onDoubleClickCallBack}
-                              data-testid='span'
-                              className={finalClassName}
+
+                        <span  onDoubleClick={onDoubleClickCallBack}
+                              className={className}
                               {...restSpanProps}>
                                          {children || value}
                         </span>
-                }
 
-            </Box>
+                }
+                {jsxElement && jsxElement}
+            </Typography>
         )
     }
 )

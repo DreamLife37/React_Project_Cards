@@ -3,18 +3,22 @@ import {FC, memo, ReactNode} from "react";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
+import {Row} from "../../../pages/cardsList/TableCards";
 
 type EnhancedTableBody = {
-    rows: Array<Array<string | number|ReactNode>>
+    rows: Row[][]
 }
 export const EnhancedTableBody: FC<EnhancedTableBody> = memo(({rows}) => {
 
         return (
             <TableBody>
-                {rows.map((cells, i) =>
-                    <TableRow key={String(cells) + i}>
-                        {cells.map((cell, i) => <TableCell key={String(cell) + i}
-                                                           align={"right"}>{cell}</TableCell>)}
+                {rows.map((row, i) =>
+                    <TableRow key={String(row) + i}>
+                        {
+                            row.map((item:Row, i) => <TableCell key={String(item) + i}
+                                                              align={item.optionsCell}>{item.cell}</TableCell>
+                            )
+                        }
                     </TableRow>
                 )
                 }

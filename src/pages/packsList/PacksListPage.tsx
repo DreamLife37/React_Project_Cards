@@ -13,7 +13,7 @@ import {thunksPack} from "./PackReducer";
 export const PacksListPage = () => {
 
     const cardPackEntity = useSelectorApp(state => state.packs.packsData.cardPacks)
-
+  //если этот юзеффект убрать то двойная перерисовка пропадет
     const dispatch = useDispatchApp()
     useEffect(() => {
         dispatch(thunksPack.getPack())

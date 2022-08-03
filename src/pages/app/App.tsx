@@ -8,9 +8,6 @@ import {ResponsiveAppBar} from "./AppBar";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {thunkApp} from "./app-reducer";
 import {BackDropWrap} from "./BackDropWrap";
-import {APICards} from "../../DAL/API-Cards";
-import {APIPacks} from "../../DAL/API-CardsPack";
-import {thunksCards} from "../cardsList/CardsReducer";
 
 function App() {
     //useDispatchApp кастомный хук типизировать не надо
@@ -22,7 +19,6 @@ function App() {
             dispatch(thunkApp.initializeApp());
         }
     }, [isAuthorized,dispatch]);
-    console.log(isAuthorized)
 
     return (
         <div className="App">
