@@ -4,9 +4,6 @@ import Slider from '@mui/material/Slider';
 import {thunksPack} from "./PackReducer";
 import {useDebouncedEffect, useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 
-function valuetext(value: number) {
-    return `${value}°C`;
-}
 
 export function NumberOfCards() {
     const dispatch = useDispatchApp()
@@ -31,7 +28,6 @@ export function NumberOfCards() {
                 value={value}
                 onChange={handleChange}
                 valueLabelDisplay="auto"
-                getAriaValueText={valuetext}
             />
         </Box>
     );
