@@ -17,6 +17,7 @@ import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {visuallyHidden} from '@mui/utils';
 import {CardPacksEntityWithDeckCover} from "../../DAL/API-CardsPack";
@@ -232,6 +233,10 @@ export function TablePacks(props: TablePacksPropsType) {
         dispatch(thunksPack.deletePack(packId))
     }
 
+    const editPackHandler = (packId: string, namePack: string) => {
+        dispatch(thunksPack.updatePack({_id: packId, name: namePack}))
+    }
+
     return (
         <Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
@@ -268,11 +273,17 @@ export function TablePacks(props: TablePacksPropsType) {
                                             key={row._id}
                                         >
                                             <TableCell align="left">
-                                                {myUserId === row.user_id && <Tooltip title="Delete pack">
-                                                    <IconButton onClick={() => deletePackHandler(row._id)}>
-                                                        <DeleteIcon/>
-                                                    </IconButton>
-                                                </Tooltip>}
+                                                {myUserId === row.user_id && <div>
+                                                    <Tooltip title="Delete pack">
+                                                        <IconButton onClick={() => deletePackHandler(row._id)}>
+                                                            <DeleteIcon/>
+                                                        </IconButton></Tooltip>
+                                                    <Tooltip title="Edit pack">
+                                                        <IconButton
+                                                            onClick={() => editPackHandler(row._id, 'IT-INCUBATOR лучшие!')}>
+                                                            <EditIcon/>
+                                                        </IconButton></Tooltip>
+                                                </div>}
                                             </TableCell>
                                             <TableCell
                                                 onClick={moveOnCardList}
@@ -316,5 +327,6 @@ export function TablePacks(props: TablePacksPropsType) {
                 label="Dense padding"
             />
         </Box>
-    );
+    )
+        ;
 }
