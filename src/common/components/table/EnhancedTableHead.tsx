@@ -18,7 +18,7 @@ export const EnhancedTableHead: React.FC<EnhancedTableProps> = ({headCells}) => 
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
-                        align={headCell.numeric ? 'right' : 'left'}
+                        align={headCell.numeric ? headCell.numeric : "center"}
                     >
                         <TableSortLabel
                             // active={orderBy === headCell.id}

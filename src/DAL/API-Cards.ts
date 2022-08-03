@@ -81,10 +81,10 @@ export type UpdateCardPayload = {
     "_id": string,
     "answer"?: string | null,
     "question"?: string | null,
-    //"grade"?: number | null, //на сколько я понял глобальный рейтинг нельзя выставлять
+    "grade"?: number | null, //на сколько я понял глобальный рейтинг нельзя выставлять
     "shots"?: number | null,
-    //"comments"?: string | null,
-    //"type"?: string | null,
+    "comments"?: string | null,
+    "type"?: string | null,
     "answerImg"?: string | null,
     "answerVideo"?: string | null,
     "questionImg"?: string | null,

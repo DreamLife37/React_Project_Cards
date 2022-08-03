@@ -2,6 +2,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import {FC, memo} from "react";
+import {Box} from "@mui/material";
 
 type EnhancedTableToolbar={
     title:string
@@ -9,7 +10,7 @@ type EnhancedTableToolbar={
 export const EnhancedTableToolbar:FC<EnhancedTableToolbar> = memo( ({title}) => {
 
     return (
-        <Toolbar
+        <Box
             sx={{
                 pl: {sm: 2},
                 pr: {xs: 1, sm: 1},
@@ -24,7 +25,7 @@ export const EnhancedTableToolbar:FC<EnhancedTableToolbar> = memo( ({title}) => 
                 {title}
             </Typography>
 
-        </Toolbar>
+        </Box>
     );
 }
 )

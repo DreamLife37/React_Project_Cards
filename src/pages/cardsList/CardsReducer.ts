@@ -73,6 +73,7 @@ export const thunksCards={
         dispatch(thunksCards.getCards(response))
     },
     updateCard:(updateCardPayload: UpdateCardPayload):AppThunk=>(dispatch)=>{
+
         const response=APICards.updateCard(updateCardPayload)
         dispatch(thunksCards.getCards(response))
     },

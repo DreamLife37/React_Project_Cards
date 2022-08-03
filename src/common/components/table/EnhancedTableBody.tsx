@@ -1,11 +1,11 @@
 import * as React from "react";
-import {FC, memo} from "react";
+import {FC, memo, ReactNode} from "react";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 
 type EnhancedTableBody = {
-    rows: Array<Array<string | number>>
+    rows: Array<Array<string | number|ReactNode>>
 }
 export const EnhancedTableBody: FC<EnhancedTableBody> = memo(({rows}) => {
 
