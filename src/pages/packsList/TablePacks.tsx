@@ -88,7 +88,6 @@ interface HeadCell {
     id: keyof Data;
     label: string;
     numeric: boolean;
-    onClick?: () => void
 }
 
 const headCells: readonly HeadCell[] = [
@@ -97,7 +96,6 @@ const headCells: readonly HeadCell[] = [
         numeric: false,
         disablePadding: true,
         label: 'Name',
-        onClick: () => console.log('name')
     },
     {
         id: 'cardsCount',
@@ -145,21 +143,21 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
     const dispatch = useDispatchApp()
 
-    const sortHandler = (nameColumn: any) => {
-        if (nameColumn == 'updated') {
-            return '1updated'
+    const sortHandler = (nameColumn: any, order: string) => {
+        if (nameColumn === 'updated') {
+            return order === 'desc' ? '1updated' : '0updated'
         }
-        if (nameColumn == 'name') {
-            return '1name'
+        if (nameColumn === 'name') {
+            return order === 'desc' ? '1name' : '0name'
         }
-        if (nameColumn == 'cardsCount') {
-            return '0cardsCount'
-        } if (nameColumn == 'created') {
-            return '1created'
+        if (nameColumn === 'cardsCount') {
+            return order === 'desc' ? '1cardsCount' : '0cardsCount'
         }
-        else return ''
-
+        if (nameColumn === 'created') {
+            return order === 'desc' ? '1created' : '0created'
+        } else return ''
     }
+
     return (
         <TableHead>
             <TableRow>
@@ -180,7 +178,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         align={headCell.numeric ? 'right' : 'left'}
                         padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
-                        onClick={() => dispatch(thunksPack.sortPack(sortHandler(headCell.id)))}
+                        onClick={() => dispatch(thunksPack.sortPack(sortHandler(headCell.id, order)))}
                     >
                         <TableSortLabel
                             active={orderBy === headCell.id}
@@ -353,8 +351,6 @@ export function TablePacks(props: TablePacksPropsType) {
                                 .map((row, index) => {
 
                                     const isItemSelected = isSelected(row.name);
-                                    console.log(row._id)
-                                    console.log(isItemSelected)
                                     const labelId = `enhanced-table-checkbox-${index}`;
                                     const moveOnCardList = () => {
                                         dispatch(actionsCards.setQueryParams({cardsPack_id: row._id}))

@@ -2,13 +2,14 @@ import * as React from "react";
 import {FC, memo} from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import {EnhancedTableToolbar} from "./EnhancedTableToolbar";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
-import {EnhancedTableHead} from "./EnhancedTableHead";
 import TablePagination from "@mui/material/TablePagination";
-import {HeadCell} from "./TableCards";
+import {HeadCell} from "../../../pages/cardsList/TableCards";
+import {EnhancedTableToolbar} from "./EnhancedTableToolbar";
+import {EnhancedTableHead} from "./EnhancedTableHead";
 import {EnhancedTableBody} from "./EnhancedTableBody";
+
 
 type CommonTable = {
     headCells: Array<HeadCell>
@@ -19,7 +20,6 @@ type CommonTable = {
 //универсальная таблица ждет название, массив из масивов в которых строки или
 // числа и массив обьектов для шапки таблицы:
 export const CommonTable: FC<CommonTable> = memo(({rows, headCells, title}) => {
-
 
         return (
             <Box sx={{width: '100%'}}>
@@ -33,7 +33,7 @@ export const CommonTable: FC<CommonTable> = memo(({rows, headCells, title}) => {
                             <EnhancedTableBody rows={rows}/>
                         </Table>
                     </TableContainer>
-                    {rows.length===0&&<> o сurva! no cards?</>}
+                    {rows.length === 0 && <> o сurva! no cards?</>}
 
                     <TablePagination
                         rowsPerPageOptions={[-1]}
