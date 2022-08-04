@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import {useSelector} from "react-redux";
 import {AppStoreType} from "./store";
-import {Link, NavLink} from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
 import {thunkAuth} from "../auth/auth-reducer";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
@@ -29,6 +29,7 @@ export const ResponsiveAppBar = () => {
     const isAuthorized = useSelector((state: AppStoreType) => state.auth.isAuthorized)
     const avatar = useSelectorApp(state => state.auth.avatar)
     const dispatch = useDispatchApp()
+    const navigate = useNavigate()
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -139,10 +140,11 @@ export const ResponsiveAppBar = () => {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">
-                                        <Link style={{textDecoration: 'none', color: 'white'}} to={`/${page}`}>
-                                            {page}
-                                        </Link>
+                                    <Typography onClick={() => {
+                                        navigate(Path.packsList)
+                                    }} textAlign="center"
+                                    >
+                                        {page}
                                     </Typography>
                                 </MenuItem>
                             ))}
@@ -205,20 +207,21 @@ export const ResponsiveAppBar = () => {
                             >
                                 <MenuItem onClick={handleCloseUserMenu}>
                                     <Link style={{textDecoration: 'none', color: 'black'}}
-                                          to={Path.profile}><Typography paddingLeft={3} textAlign="center">Profile</Typography></Link>
+                                          to={Path.profile}><Typography paddingLeft={3}
+                                                                        textAlign="center">Profile</Typography></Link>
                                 </MenuItem>
-                                <MenuItem >
-                                        <IconButton
-                                            size="large"
-                                            aria-controls={setNameMenuId}
-                                            aria-haspopup="true"
-                                            onClick={handleOpenSetNameMenu}
-                                            color="inherit"
-                                        >
-                                            <Typography textAlign="center">
+                                <MenuItem>
+                                    <IconButton
+                                        size="large"
+                                        aria-controls={setNameMenuId}
+                                        aria-haspopup="true"
+                                        onClick={handleOpenSetNameMenu}
+                                        color="inherit"
+                                    >
+                                        <Typography textAlign="center">
                                             Set profile
-                                            </Typography>
-                                        </IconButton>
+                                        </Typography>
+                                    </IconButton>
                                 </MenuItem>
 
                             </Menu>
