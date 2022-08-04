@@ -71,6 +71,7 @@
 .avatar {
     width: 96px;
     height: 96px;
+    object-fit: cover;
     margin-bottom: 17px;
     border-radius: 50%;
 }
@@ -110,8 +111,8 @@
 
 .saveBtn {
     position: absolute;
-    right: 40px;
-    top: 185px;
+    right: 65px;
+    top: 20px;
 }
 
 .changeNameBtn {
