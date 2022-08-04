@@ -17,6 +17,7 @@ export const CardPage = () => {
 
     const cardsPack_id=useSelectorApp(state => state.cards.queryParams.cardsPack_id)
     const cards=useSelectorApp(state => state.cards.cards.cards)
+    const headCells=useSelectorApp(state => state.cards.initHeadCells)
 
     const dispatch =useDispatchApp()
 
@@ -82,7 +83,7 @@ export const CardPage = () => {
                 </Grid>
             </Grid>
             <Grid item xs={10}>
-                <TableCards cards={!!cards?cards:[]}/>
+                <TableCards cards={!!cards?cards:[]} headCells={headCells}/>
             </Grid>
         </Grid>
     )

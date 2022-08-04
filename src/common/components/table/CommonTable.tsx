@@ -15,18 +15,19 @@ type CommonTable = {
     headCells: Array<HeadCell>
     rows: Row[][]
     title: string
+    sortHandler:(headCell:HeadCell)=>void
 }
 
 //универсальная таблица ждет название, массив из масивов в которых строки или
 // числа и массив обьектов для шапки таблицы:
-export const CommonTable: FC<CommonTable> = memo(({rows, headCells, title}) => {
+export const CommonTable: FC<CommonTable> = memo(({sortHandler,rows, headCells, title}) => {
 
         return (
             <Box sx={{width: '100%'}}>
                 <Paper sx={{width: '100%', mb: 2}}>
                     <TableContainer>
                         <Table sx={{minWidth: 750}} aria-labelledby="tableTitle">
-                            <EnhancedTableHead headCells={headCells}/>
+                            <EnhancedTableHead sortHandler={sortHandler} headCells={headCells}/>
                             <EnhancedTableBody rows={rows}/>
                         </Table>
                     </TableContainer>
