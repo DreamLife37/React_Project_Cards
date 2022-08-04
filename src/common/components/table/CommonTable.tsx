@@ -6,27 +6,25 @@ import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TablePagination from "@mui/material/TablePagination";
 import {HeadCell, Row} from "../../../pages/cardsList/TableCards";
-import {EnhancedTableToolbar} from "./EnhancedTableToolbar";
 import {EnhancedTableHead} from "./EnhancedTableHead";
 import {EnhancedTableBody} from "./EnhancedTableBody";
+import {styled} from "@mui/material/styles";
 
 
 type CommonTable = {
     headCells: Array<HeadCell>
     rows: Row[][]
-    title: string
     sortHandler:(headCell:HeadCell)=>void
 }
 
-//универсальная таблица ждет название, массив из масивов в которых строки или
-// числа и массив обьектов для шапки таблицы:
-export const CommonTable: FC<CommonTable> = memo(({sortHandler,rows, headCells, title}) => {
+//универсальная таблица ждет название, массив из масивов  и массив обьектов для шапки таблицы:
+export const CommonTable: FC<CommonTable> = memo(({sortHandler,rows, headCells}) => {
 
         return (
-            <Box sx={{width: '100%'}}>
-                <Paper sx={{width: '100%', mb: 2}}>
+            <Box>
+                <Paper>
                     <TableContainer>
-                        <Table sx={{minWidth: 750}} aria-labelledby="tableTitle">
+                        <Table  aria-labelledby="tableTitle">
                             <EnhancedTableHead sortHandler={sortHandler} headCells={headCells}/>
                             <EnhancedTableBody rows={rows}/>
                         </Table>
@@ -49,4 +47,5 @@ export const CommonTable: FC<CommonTable> = memo(({sortHandler,rows, headCells, 
         )
     }
 )
+
 

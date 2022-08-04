@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import {Router} from '../Routes';
-import {Header} from "../../common/Header/Header";
 import {AlertErrorWrap} from "../../Errors/AllertErrorWrap";
 import {AppBar} from "@mui/material";
 import {ResponsiveAppBar} from "./AppBar";
@@ -27,13 +26,15 @@ function App() {
                     <ResponsiveAppBar/>
                 </AppBar>
                 {/*<Header/>*/}
-                <Router/>
             </header>
+            <body className={'App-body'}>
+            <Router/>
             {/*Пока что alert для ошибок в будущем хочу заюзать библиотеку https://github.com/iamhosseindhv/notistack*/}
             <AlertErrorWrap/>
             {/*Инициализационная заставка(Если App.status === 'loading' то вкл.)*/}
             <BackDropWrap/>
             {/*<TestAPIPage/>*/}
+            </body>
         </div>
     );
 }

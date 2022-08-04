@@ -26,7 +26,7 @@ export enum Path {
 
 export const Router = () => {
     return (
-        <div style={{marginTop:20}}>
+        <div>
             <Routes>
                 <Route path={'/'} element={<Profile/>}/>
                 <Route path={'/React_Project_Cards/set-new-password'} element={<SetNewPassword/>}/>
@@ -42,7 +42,6 @@ export const Router = () => {
                 <Route path={Path.settings} element={<Settings/>}/>
                 <Route path={Path.packsList} element={<PacksListPage/>}/>
                 <Route path={Path.cardList} element={<CardPage/>}/>
-
             </Routes>
         </div>
     )

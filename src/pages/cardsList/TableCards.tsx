@@ -4,9 +4,11 @@ import {ExtendedCardEntity} from "../../DAL/API-Cards";
 import {CommonTable} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
-import {Rating} from "@mui/material";
+import {Box, Container, Rating} from "@mui/material";
 import {thunksCards} from "./CardsReducer";
 import {CustomEditSpan} from "../../common/components/table/CustomEditbleSpan";
+import {EnhancedTableToolbar} from "../../common/components/table/EnhancedTableToolbar";
+import {styled} from "@mui/material/styles";
 
 
 type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
@@ -26,16 +28,16 @@ export type Row = {
 
 type TableCardsType = {
     cards: ExtendedCardEntity[]
-    headCells:HeadCell[]
+    headCells: HeadCell[]
 }
 
-export const TableCards: React.FC<TableCardsType> = memo(({headCells,cards}) => {
+export const TableCards: React.FC<TableCardsType> = memo(({headCells, cards}) => {
 
         const dispatch = useDispatchApp()
 
-        const sortHandler = (headCell:HeadCell) => {
+        const sortHandler = (headCell: HeadCell) => {
             console.log(headCell)
-         dispatch(thunksCards.sortCards({...headCell,order:headCell.order==="0"?"1":"0"}))
+            dispatch(thunksCards.sortCards({...headCell, order: headCell.order === "0" ? "1" : "0"}))
         }
 
         const changeGrade = useCallback((_id: string, grade: number | null) => {
@@ -85,9 +87,21 @@ export const TableCards: React.FC<TableCardsType> = memo(({headCells,cards}) => 
             ), [cards])
 
         return (
-            <CommonTable sortHandler={sortHandler} rows={rows} headCells={headCells} title={packName}/>
+            <BoxCardPages>
+                <EnhancedTableToolbar title={packName}/>
+                <CommonTable sortHandler={sortHandler} rows={rows} headCells={headCells}/>
+            </BoxCardPages>
         );
     }
 )
+
+const BoxCardPages = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  background-color: #FCFCFC;
+  
+`
 
 

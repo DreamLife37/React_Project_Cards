@@ -24,7 +24,9 @@ export const Search = () => {
             component="form"
             sx={{p: '2px 4px', display: 'flex', alignItems: 'center', width: 350}}
         >
-
+            <IconButton onClick={search} type="submit" sx={{p: '10px'}} aria-label="search">
+                <SearchIcon/>
+            </IconButton>
             <InputBase
                 sx={{ml: 1, flex: 1}}
                 placeholder="Search Pack"
@@ -32,9 +34,7 @@ export const Search = () => {
                 value={valueSearch}
                 inputProps={{'aria-label': 'search google maps'}}
             />
-            <IconButton onClick={search} type="submit" sx={{p: '10px'}} aria-label="search">
-                <SearchIcon/>
-            </IconButton>
+
 
 
         </Paper>)
