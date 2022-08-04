@@ -10,7 +10,6 @@ import {
 import {AppThunk} from "../app/store";
 import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 import {restoreFromStorage} from "../../utils/LocalStorageUtils";
-import {ReactNode} from "react";
 
 type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
 
@@ -136,6 +135,11 @@ export const thunksCards = {
         dispatch(actionsCards.updateHeadCell(headCell))
         dispatch(actionsCards.setQueryParams({sortCards:headCell.order+headCell.id}))
         dispatch(thunksCards.getCards())
+    },
+    searchCard:(cardQuestion:string):AppThunk=>(dispatch)=>{
+        dispatch(actionsCards.setQueryParams({cardQuestion}))
+        dispatch(thunksCards.getCards())
     }
+
 
 }

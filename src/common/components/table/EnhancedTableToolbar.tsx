@@ -7,18 +7,30 @@ import {styled} from "@mui/material/styles";
 import {useNavigate} from "react-router-dom";
 import {Path} from "../../../pages/Routes";
 import {Search} from "../../../pages/cardsList/Search";
+import {useDispatchApp} from "../../../CustomHooks/CustomHooks";
+import {thunksCards} from "../../../pages/cardsList/CardsReducer";
 
 type EnhancedTableToolbar = {
     title: string
+    cardsPack_id:string
 }
 
 
-export const EnhancedTableToolbar: FC<EnhancedTableToolbar> = memo(({title}) => {
+export const EnhancedTableToolbar: FC<EnhancedTableToolbar> = memo(({title,cardsPack_id}) => {
+
         const navigate = useNavigate()
+        const dispatch = useDispatchApp()
+
+        const addNewCard = () => {
+            dispatch(thunksCards.createCard({cardsPack_id}))
+        }
+        const searchCard = (cardQuestion:string) => {
+          dispatch(thunksCards.searchCard(cardQuestion))
+        }
 
         return (
             <BoxToolBar>
-                <BoxRight>
+                <BoxLeft>
                     <GoBack onClick={() => {
                         navigate(Path.packsList)
                     }}>
@@ -30,27 +42,40 @@ export const EnhancedTableToolbar: FC<EnhancedTableToolbar> = memo(({title}) => 
                     </Title>
                     <SearchCard>
                         <div>Search</div>
-                        <Search/>
+                        <Search searchCallback={searchCard}/>
                     </SearchCard>
+                </BoxLeft>
+                <BoxRight>
+                    <StyledButton onClick={addNewCard} color="inherit" variant='contained'> Add new card</StyledButton>
                 </BoxRight>
-                <Button> Add new card</Button>
             </BoxToolBar>
         );
     }
 )
+
+const StyledButton = styled(Button)`
+  color: #050505;
+  border-radius: 30px;
+`
+
+
 const BoxToolBar = styled(Box)`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: start;
-  padding: 2% 2% 2% 4%;
-  background-color: #282c34;
+  align-items: stretch;
+  min-height: 30vh;
 `
 const BoxRight = styled(Box)`
   display: flex;
+  align-items: center;
+  justify-content: center;
+`
+const BoxLeft = styled(Box)`
+  display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: stretch;
+  justify-content: space-around;
 `
 
 const GoBack = styled(Typography)`
@@ -70,15 +95,13 @@ const Title = styled(Typography)`
 const SearchCard = styled(Typography)`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: flex-start;
+  row-gap: 5px;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
-
-
-
 `
 
 

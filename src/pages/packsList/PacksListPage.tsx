@@ -37,7 +37,9 @@ export const PacksListPage = () => {
                 </Grid>
             </Grid>
             <Grid container alignItems="flex-start" direction="row"
-                  justifyContent="center" paddingTop={'40px'}>
+                  justifyContent="center"
+                  paddingTop={'40px'}
+            >
                 <Grid item xs={4}>
                     <Grid container alignItems="center" direction="row"
                           justifyContent="center">

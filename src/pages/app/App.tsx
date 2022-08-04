@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import './App.css';
 import {Router} from '../Routes';
 import {AlertErrorWrap} from "../../Errors/AllertErrorWrap";
-import {AppBar} from "@mui/material";
+import {AppBar, Container} from "@mui/material";
 import {ResponsiveAppBar} from "./AppBar";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {thunkApp} from "./app-reducer";
@@ -33,7 +33,6 @@ function App() {
             <AlertErrorWrap/>
             {/*Инициализационная заставка(Если App.status === 'loading' то вкл.)*/}
             <BackDropWrap/>
-            {/*<TestAPIPage/>*/}
             </body>
         </div>
     );

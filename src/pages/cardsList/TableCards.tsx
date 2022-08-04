@@ -4,7 +4,7 @@ import {ExtendedCardEntity} from "../../DAL/API-Cards";
 import {CommonTable} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
-import {Box, Container, Rating} from "@mui/material";
+import {Box, Container, Grid, Rating} from "@mui/material";
 import {thunksCards} from "./CardsReducer";
 import {CustomEditSpan} from "../../common/components/table/CustomEditbleSpan";
 import {EnhancedTableToolbar} from "../../common/components/table/EnhancedTableToolbar";
@@ -32,6 +32,8 @@ type TableCardsType = {
 }
 
 export const TableCards: React.FC<TableCardsType> = memo(({headCells, cards}) => {
+
+        const cardsPack_id=useSelectorApp(state => state.cards.queryParams.cardsPack_id)
 
         const dispatch = useDispatchApp()
 
@@ -87,21 +89,23 @@ export const TableCards: React.FC<TableCardsType> = memo(({headCells, cards}) =>
             ), [cards])
 
         return (
-            <BoxCardPages>
-                <EnhancedTableToolbar title={packName}/>
+
+            <BoxCardPages container>
+                <EnhancedTableToolbar title={packName} cardsPack_id={cardsPack_id}/>
                 <CommonTable sortHandler={sortHandler} rows={rows} headCells={headCells}/>
             </BoxCardPages>
+
         );
     }
 )
 
-const BoxCardPages = styled(Box)`
+const BoxCardPages = styled(Grid)`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: stretch;
-  background-color: #FCFCFC;
-  
+  padding:  2% 7% 2% 7% ;
+;
+
 `
 
 
