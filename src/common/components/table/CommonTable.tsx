@@ -16,7 +16,8 @@ export type Numeric = "inherit" | "right" | "left" | "center" | "justify" | unde
 
 export interface HeadCell {
     numeric: Numeric
-    id: keyof ExtendedCardEntity|"action";
+    //id: keyof ExtendedCardEntity|"action";
+    id: string,
     label: string;
     order: "0" | "1"|undefined
 }

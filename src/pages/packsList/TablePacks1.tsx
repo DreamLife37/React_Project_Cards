@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {memo, ReactNode, useCallback, useEffect, useMemo, useState} from 'react';
 import {ExtendedCardEntity} from "../../DAL/API-Cards";
-import {CommonTable, Numeric} from "../../common/components/table/CommonTable";
+import {CommonTable} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
 import {Box, Container, Grid, Rating} from "@mui/material";
@@ -27,16 +27,16 @@ import {HeadCell} from "./PackReducer";
 // }
 
 export type Row = {
-    optionsCell: Numeric,
+    optionsCell: "inherit" | "right" | "left" | "center" | "justify" | undefined,
     cell: string | number | ReactNode
 }
 
-type TableCardsType = {
+type TablePacksType = {
     packs: CardPacksEntityWithDeckCover[]
     headCells: HeadCell[]
 }
 
-export const TablePacks1: React.FC<TableCardsType> = memo(({headCells, packs}) => {
+export const TablePacks1: React.FC<TablePacksType> = memo(({headCells, packs}) => {
 
         const cardsPack_id = useSelectorApp(state => state.cards.queryParams.cardsPack_id)
         const userId = useSelectorApp(state => state.auth._id)

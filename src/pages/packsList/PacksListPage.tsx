@@ -10,10 +10,12 @@ import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {useEffect} from "react";
 import {thunksPack} from "./PackReducer";
 import {styled} from "@mui/material/styles";
+import {TablePacks1} from "./TablePacks1";
 
 export const PacksListPage = () => {
 
     const cardPackEntity = useSelectorApp(state => state.packs.packsData.cardPacks)
+    const headCells = useSelectorApp(state => state.packs.initHeadCells)
     //если этот юзеффект убрать то двойная перерисовка пропадет
     const dispatch = useDispatchApp()
     useEffect(() => {
@@ -86,7 +88,7 @@ export const PacksListPage = () => {
                 </Grid>
             </Grid>
             <Grid item xs={10}>
-                <TablePacks rows={!!cardPackEntity ? cardPackEntity : []}/>
+                <TablePacks1 packs={!!cardPackEntity ? cardPackEntity : []} headCells={headCells}/>
             </Grid>
         </Grid>
     )

@@ -21,7 +21,7 @@ export const PacksPage = () => {
         dispatch(thunksPack.createPack({name: 'програмист! иди спать, ты пьян!'}))
     }
     return (
-        <TablePacks1 cards={!!packs ? packs : []} headCells={headCells}/>
+        <TablePacks1 packs={!!packs ? packs : []} headCells={headCells}/>
     )
 }
 

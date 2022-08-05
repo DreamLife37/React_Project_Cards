@@ -18,11 +18,12 @@ type InitialState = {
 }
 
 
-type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
+//type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
 
 export interface HeadCell {
-    numeric: Numeric
-    id: keyof CardPacksEntityWithDeckCover|"action";
+    numeric: "inherit" | "right" | "left" | "center" | "justify" | undefined;
+    //id: keyof CardPacksEntityWithDeckCover|"action";
+    id: string,
     label: string;
     order: "0" | "1"|undefined
 }
@@ -61,13 +62,13 @@ const initialState: InitialState = {
         {
             id: 'created',
             numeric: "center",
-            label: 'grade',
+            label: 'Created by',
             order: "1"
         },
         {
             id: 'action',
             numeric: "center",
-            label: 'action',
+            label: 'Action',
             order: undefined
         },
     ]
