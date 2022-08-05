@@ -9,11 +9,12 @@ import * as React from "react";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {useEffect} from "react";
 import {thunksPack} from "./PackReducer";
+import {styled} from "@mui/material/styles";
 
 export const PacksListPage = () => {
 
     const cardPackEntity = useSelectorApp(state => state.packs.packsData.cardPacks)
-  //если этот юзеффект убрать то двойная перерисовка пропадет
+    //если этот юзеффект убрать то двойная перерисовка пропадет
     const dispatch = useDispatchApp()
     useEffect(() => {
         dispatch(thunksPack.getPack())
@@ -23,16 +24,20 @@ export const PacksListPage = () => {
         dispatch(thunksPack.createPack({name: 'програмист! иди спать, ты пьян!'}))
     }
 
+    const StyledButton = styled(Button)`
+      color: #050505;
+      border-radius: 30px;
+    `
+
     return (
         <Grid container spacing={2} justifyContent='center' columnSpacing={{xs: 1, sm: 2, md: 3}}>
             <Grid container alignItems="center" direction="row"
                   justifyContent="center" paddingTop={'40px'}><Grid item xs={6}>PacksList</Grid>
                 <Grid item xs={6}>
 
-                    <Button onClick={AddNewPack} variant={'contained'} color={'primary'}>
-
+                    <StyledButton onClick={AddNewPack} color="inherit" variant='contained'>
                         Add new pack
-                    </Button>
+                    </StyledButton>
 
                 </Grid>
             </Grid>
