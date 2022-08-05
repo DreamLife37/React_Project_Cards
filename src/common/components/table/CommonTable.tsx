@@ -15,11 +15,24 @@ type CommonTable = {
     headCells: Array<HeadCell>
     rows: Row[][]
     sortHandler:(headCell:HeadCell)=>void
+    cardsTotalCount:number
+    onPageChangeHandler:(newPage:number)=>void
+    onRowsPerPageChangeHandler:(newTotalCount:number)=>void
+    pageCount:number
+    page:number
 }
 
 //универсальная таблица ждет название, массив из масивов  и массив обьектов для шапки таблицы:
-export const CommonTable: FC<CommonTable> = memo(({sortHandler,rows, headCells}) => {
+export const CommonTable: FC<CommonTable> = memo((props) => {
+    const {onPageChangeHandler,onRowsPerPageChangeHandler,sortHandler,rows, headCells, cardsTotalCount, pageCount, page}=props
 
+    const onPageChange = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
+        onPageChangeHandler(newPage+1)
+    }
+
+    const onRowsPerPageChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        onRowsPerPageChangeHandler(+event.target.value)
+    }
         return (
             <Box>
                 <Paper>
@@ -29,18 +42,15 @@ export const CommonTable: FC<CommonTable> = memo(({sortHandler,rows, headCells})
                             <EnhancedTableBody rows={rows}/>
                         </Table>
                     </TableContainer>
-                    {rows.length === 0 && <> o сurva! no cards?</>}
-
+                    {rows.length === 0 && <>no cards?</>}
                     <TablePagination
-                        rowsPerPageOptions={[-1]}
+                        rowsPerPageOptions={[4,10,20]}
                         component="div"
-                        count={-1}
-                        rowsPerPage={-1}
-                        page={1}
-                        onPageChange={() => {
-                        }}
-                        onRowsPerPageChange={() => {
-                        }}
+                        count={!!cardsTotalCount?cardsTotalCount:1}
+                        rowsPerPage={!!pageCount?pageCount:4}
+                        page={!!page?page-1:0}
+                        onPageChange={onPageChange}
+                        onRowsPerPageChange={onRowsPerPageChange}
                     />
                 </Paper>
             </Box>

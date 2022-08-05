@@ -12,20 +12,21 @@ import {thunksCards} from "../../../pages/cardsList/CardsReducer";
 
 type EnhancedTableToolbar = {
     title: string
-    cardsPack_id:string
+    cardsPack_id: string
+    isMyPack:boolean
 }
 
 
-export const EnhancedTableToolbar: FC<EnhancedTableToolbar> = memo(({title,cardsPack_id}) => {
+export const EnhancedTableToolbar: FC<EnhancedTableToolbar> = memo(({isMyPack,title, cardsPack_id}) => {
 
-        const navigate = useNavigate()
+    const navigate = useNavigate()
         const dispatch = useDispatchApp()
 
         const addNewCard = () => {
             dispatch(thunksCards.createCard({cardsPack_id}))
         }
-        const searchCard = (cardQuestion:string) => {
-          dispatch(thunksCards.searchCard(cardQuestion))
+        const searchCard = (cardQuestion: string) => {
+            dispatch(thunksCards.searchCard(cardQuestion))
         }
 
         return (
@@ -46,7 +47,15 @@ export const EnhancedTableToolbar: FC<EnhancedTableToolbar> = memo(({title,cards
                     </SearchCard>
                 </BoxLeft>
                 <BoxRight>
-                    <StyledButton onClick={addNewCard} color="inherit" variant='contained'> Add new card</StyledButton>
+                    {
+                        isMyPack
+                            ?
+                            <StyledButton onClick={addNewCard} color="inherit" variant='contained'>
+                                Add new card
+                            </StyledButton>
+                            :
+                            <></>
+                    }
                 </BoxRight>
             </BoxToolBar>
         );

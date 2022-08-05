@@ -33,33 +33,45 @@ type TableCardsType = {
 
 export const TableCards: React.FC<TableCardsType> = memo(({headCells, cards}) => {
 
-        const cardsPack_id=useSelectorApp(state => state.cards.queryParams.cardsPack_id)
+        const cardsPack_id = useSelectorApp(state => state.cards.queryParams.cardsPack_id)
+        const userId = useSelectorApp(state => state.auth._id)
+        const cardsUserId = useSelectorApp(state => state.cards.cards.packUserId)
+        const cardsTotalCount = useSelectorApp(state => state.cards.cards.cardsTotalCount)
+        const pageCount = useSelectorApp(state => state.cards.cards.pageCount)
+        const page = useSelectorApp(state => state.cards.cards.page)
+        const packName = useSelectorApp(state => state.cards.packTitle)
 
         const dispatch = useDispatchApp()
 
-        const sortHandler = (headCell: HeadCell) => {
-            console.log(headCell)
+        const isMyPack = cardsUserId === userId
+
+        const sortHandler = useCallback((headCell: HeadCell) => {
             dispatch(thunksCards.sortCards({...headCell, order: headCell.order === "0" ? "1" : "0"}))
-        }
+        }, [dispatch])
 
         const changeGrade = useCallback((_id: string, grade: number | null) => {
-            dispatch(thunksCards.updateCard({_id, grade}))
-        }, [dispatch])
+            isMyPack && dispatch(thunksCards.updateCard({_id, grade}))
+        }, [dispatch, isMyPack])
 
         const changeQuestion = useCallback((_id: string) => (question: string) => {
-            dispatch(thunksCards.updateCard({_id, question}))
-        }, [dispatch])
+            isMyPack && dispatch(thunksCards.updateCard({_id, question}))
+        }, [dispatch, isMyPack])
 
         const changeAnswer = useCallback((_id: string) => (answer: string) => {
-            dispatch(thunksCards.updateCard({_id, answer}))
+            isMyPack && dispatch(thunksCards.updateCard({_id, answer}))
+        }, [dispatch, isMyPack])
+
+        const onPageChangeHandler = useCallback((page: number) => {
+            dispatch(thunksCards.setPage(page))
         }, [dispatch])
 
+        const onRowsPerPageChangeHandler = useCallback((setPageCount: number) => {
+            dispatch(thunksCards.setPageCount(setPageCount))
+        }, [dispatch])
 
-        const packName = useSelectorApp(state => state.cards.packTitle)
 
         const rows: Array<Row[]> = useMemo(
             () => (
-
                 cards.map((card: ExtendedCardEntity) =>
                     [
                         {
@@ -91,8 +103,16 @@ export const TableCards: React.FC<TableCardsType> = memo(({headCells, cards}) =>
         return (
 
             <BoxCardPages container>
-                <EnhancedTableToolbar title={packName} cardsPack_id={cardsPack_id}/>
-                <CommonTable sortHandler={sortHandler} rows={rows} headCells={headCells}/>
+                <EnhancedTableToolbar isMyPack={isMyPack} title={packName} cardsPack_id={cardsPack_id}/>
+                <CommonTable
+                    onPageChangeHandler={onPageChangeHandler}
+                    onRowsPerPageChangeHandler={onRowsPerPageChangeHandler}
+                    cardsTotalCount={cardsTotalCount}
+                    pageCount={pageCount}
+                    page={page}
+                    sortHandler={sortHandler}
+                    rows={rows}
+                    headCells={headCells}/>
             </BoxCardPages>
 
         );
@@ -103,8 +123,7 @@ const BoxCardPages = styled(Grid)`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding:  2% 7% 2% 7% ;
-;
+  padding: 2% 7% 2% 7%;;
 
 `
 
