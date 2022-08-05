@@ -1,5 +1,5 @@
 
-import {Box} from "@mui/material";
+import {Box, Container, Grid} from "@mui/material";
 import * as React from "react";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {useEffect} from "react";
@@ -24,15 +24,9 @@ export const CardPage = () => {
       dispatch(thunksCards.createCard({cardsPack_id,question:'azaza??'}))
     }
     return (
-        <CardPageBox>
-                <TableCards cards={!!cards?cards:[]} headCells={headCells}/>
-        </CardPageBox>
+                <TableCards  cards={!!cards?cards:[]} headCells={headCells}/>
     )
 }
 
-const CardPageBox=styled(Box)`
-  background-color: #f5f1f1;
-  min-width: 900px;
-  
-  
-`
+
+
