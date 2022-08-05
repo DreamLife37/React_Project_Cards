@@ -5,11 +5,21 @@ import Paper from "@mui/material/Paper";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TablePagination from "@mui/material/TablePagination";
-import {HeadCell, Row} from "../../../pages/cardsList/TableCards";
+import {Row} from "../../../pages/cardsList/TableCards";
 import {EnhancedTableHead} from "./EnhancedTableHead";
 import {EnhancedTableBody} from "./EnhancedTableBody";
 import {styled} from "@mui/material/styles";
+import {ExtendedCardEntity} from "../../../DAL/API-Cards";
 
+
+export type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
+
+export interface HeadCell {
+    numeric: Numeric
+    id: keyof ExtendedCardEntity|"action";
+    label: string;
+    order: "0" | "1"|undefined
+}
 
 type CommonTable = {
     headCells: Array<HeadCell>

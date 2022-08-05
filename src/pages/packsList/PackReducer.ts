@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
-    APIPacks,
+    APIPacks, CardPacksEntityWithDeckCover,
     CreateNewCardPackPayload,
     getCardPacksPayload,
     GetCardsPackResponse,
@@ -8,8 +8,27 @@ import {
 } from "../../DAL/API-CardsPack";
 import {AppDispatchType, AppThunk} from "../app/store";
 import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
+import {ExtendedCardEntity, getCardsPayload, GetCardsResponse} from "../../DAL/API-Cards";
 
-const initialState = {
+
+type InitialState = {
+    packsData: GetCardsPackResponse
+    queryParams: getCardPacksPayload
+    initHeadCells: HeadCell[]
+}
+
+
+type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
+
+export interface HeadCell {
+    numeric: Numeric
+    id: keyof CardPacksEntityWithDeckCover|"action";
+    label: string;
+    order: "0" | "1"|undefined
+}
+
+
+const initialState: InitialState = {
     packsData: {} as GetCardsPackResponse,
     queryParams: {
         packName: undefined,
@@ -19,7 +38,39 @@ const initialState = {
         pageCount: undefined,
         user_id: undefined,
         sortPacks: undefined
-    } as getCardPacksPayload
+    } as getCardPacksPayload,
+    initHeadCells: [
+        {
+            id: 'name',
+            numeric: "center",
+            label: 'Name',
+            order: "1"
+        },
+        {
+            id: 'cardsCount',
+            numeric: "center",
+            label: 'Cards',
+            order: "1"
+        },
+        {
+            id: 'updated',
+            numeric: "center",
+            label: 'Last Updated',
+            order: "1"
+        },
+        {
+            id: 'created',
+            numeric: "center",
+            label: 'grade',
+            order: "1"
+        },
+        {
+            id: 'action',
+            numeric: "center",
+            label: 'action',
+            order: undefined
+        },
+    ]
 }
 
 
