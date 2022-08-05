@@ -16,9 +16,9 @@ type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
 
 export interface HeadCell {
     numeric: Numeric
-    id: keyof ExtendedCardEntity;
+    id: keyof ExtendedCardEntity|"action";
     label: string;
-    order: "0" | "1"
+    order: "0" | "1"|undefined
 }
 
 
@@ -59,6 +59,12 @@ const initialState: InitialState = {
             numeric: "center",
             label: 'grade',
             order: "1"
+        },
+        {
+            id: 'action',
+            numeric: "center",
+            label: 'action',
+            order: undefined
         },
     ]
 }

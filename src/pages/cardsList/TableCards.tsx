@@ -9,15 +9,19 @@ import {thunksCards} from "./CardsReducer";
 import {CustomEditSpan} from "../../common/components/table/CustomEditbleSpan";
 import {CardsTableToolbar} from "../../common/components/table/CardsTableToolbar";
 import {styled} from "@mui/material/styles";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 
 type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
 
 export interface HeadCell {
     numeric: Numeric
-    id: keyof ExtendedCardEntity;
+    id: keyof ExtendedCardEntity|"action";
     label: string;
-    order: "0" | "1"
+    order: "0" | "1"|undefined
 
 }
 
@@ -95,6 +99,10 @@ export const TableCards: React.FC<TableCardsType> = memo(({headCells, cards}) =>
                                 onChange={(event, value) => {
                                     changeGrade(card._id, value)
                                 }} value={card.grade}/>
+                        },
+                        {
+                            optionsCell: "center",
+                            cell: <CommonAction/>
                         }
                     ]
                 )
@@ -124,7 +132,21 @@ const BoxCardPages = styled(Grid)`
   flex-direction: column;
   align-items: stretch;
   padding: 2% 7% 2% 7%;;
-
 `
+const CommonAction = () => {
+  return(
+      <div>
+          <Tooltip title="Delete pack">
+              <IconButton >
+                  <DeleteIcon fontSize={"small"}/>
+              </IconButton></Tooltip>
+          <Tooltip title="Edit pack">
+              <IconButton
+                  >
+                  <EditIcon fontSize={"small"}/>
+              </IconButton></Tooltip>
+      </div>
+  )
+}
 
 
