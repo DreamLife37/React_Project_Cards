@@ -14,10 +14,8 @@ export const Search:FC<Search> = ({searchCallback }) => {
     const [valueSearch, setValueSearch]=useState("")
 
     useDebouncedEffect(()=>{
-
             if(!valueSearch.trim()){return}
             searchCallback(valueSearch)
-
     },[valueSearch],600)
 
     const searchAll = () => {

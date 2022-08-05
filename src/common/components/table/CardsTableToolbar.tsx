@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import {FC, memo} from "react";
+import {FC, memo, useState} from "react";
 import {Box, Button} from "@mui/material";
 import {ArrowBack} from "@mui/icons-material";
 import {styled} from "@mui/material/styles";
@@ -13,19 +13,25 @@ import {thunksCards} from "../../../pages/cardsList/CardsReducer";
 type EnhancedTableToolbar = {
     title: string
     cardsPack_id: string
-    isMyPack:boolean
+    isMyPack: boolean
 }
 
 
-export const EnhancedTableToolbar: FC<EnhancedTableToolbar> = memo(({isMyPack,title, cardsPack_id}) => {
+export const CardsTableToolbar: FC<EnhancedTableToolbar> = memo(({isMyPack, title, cardsPack_id}) => {
 
-    const navigate = useNavigate()
+        const[question,setQuestion ]=useState('')
+
+        const navigate = useNavigate()
+
         const dispatch = useDispatchApp()
 
         const addNewCard = () => {
-            dispatch(thunksCards.createCard({cardsPack_id}))
+            dispatch(thunksCards.createCard({cardsPack_id,question}))
+            setQuestion('')
         }
+
         const searchCard = (cardQuestion: string) => {
+            setQuestion(cardQuestion)
             dispatch(thunksCards.searchCard(cardQuestion))
         }
 
@@ -66,7 +72,6 @@ const StyledButton = styled(Button)`
   color: #050505;
   border-radius: 30px;
 `
-
 
 const BoxToolBar = styled(Box)`
   display: flex;

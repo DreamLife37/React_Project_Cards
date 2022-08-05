@@ -7,7 +7,7 @@ import {getTime} from "../../utils/getTime";
 import {Box, Container, Grid, Rating} from "@mui/material";
 import {thunksCards} from "./CardsReducer";
 import {CustomEditSpan} from "../../common/components/table/CustomEditbleSpan";
-import {EnhancedTableToolbar} from "../../common/components/table/EnhancedTableToolbar";
+import {CardsTableToolbar} from "../../common/components/table/CardsTableToolbar";
 import {styled} from "@mui/material/styles";
 
 
@@ -103,7 +103,7 @@ export const TableCards: React.FC<TableCardsType> = memo(({headCells, cards}) =>
         return (
 
             <BoxCardPages container>
-                <EnhancedTableToolbar isMyPack={isMyPack} title={packName} cardsPack_id={cardsPack_id}/>
+                <CardsTableToolbar isMyPack={isMyPack} title={packName} cardsPack_id={cardsPack_id}/>
                 <CommonTable
                     onPageChangeHandler={onPageChangeHandler}
                     onRowsPerPageChangeHandler={onRowsPerPageChangeHandler}
