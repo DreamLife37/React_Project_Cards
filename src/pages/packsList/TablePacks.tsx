@@ -179,9 +179,7 @@ type TablePacksPropsType = {
 export function TablePacks(props: TablePacksPropsType) {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Data>("created");
-    const [selected, setSelected] = React.useState<readonly string[]>([]);
     const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const dispatch = useDispatchApp()
@@ -276,15 +274,7 @@ export function TablePacks(props: TablePacksPropsType) {
                                         </TableRow>
                                     );
                                 })}
-                            {emptyRows > 0 && (
-                                <TableRow
-                                    style={{
-                                        height: (dense ? 33 : 53) * emptyRows,
-                                    }}
-                                >
-                                    <TableCell colSpan={6}/>
-                                </TableRow>
-                            )}
+
                         </TableBody>
                     </Table>
                 </TableContainer>
