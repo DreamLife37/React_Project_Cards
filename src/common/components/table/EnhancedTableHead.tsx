@@ -15,8 +15,8 @@ interface EnhancedTableProps {
 export const EnhancedTableHead: React.FC<EnhancedTableProps> = ({sortHandler, headCells}) => {
 
 
-    const createSortHandler = (headCell:HeadCell) => (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-
+    const createSortHandler = (headCell:HeadCell) => () => {
+        if(!headCell.order){return}
         sortHandler(headCell)
     }
 
@@ -30,8 +30,9 @@ export const EnhancedTableHead: React.FC<EnhancedTableProps> = ({sortHandler, he
                     >
                         <Typography>
                             <TableSortLabel
-                                active
-                                direction={headCell.order[0]==="0"?"asc":"desc"}
+                                hideSortIcon={!headCell.order}
+                                active={!!headCell.order}
+                                direction={headCell.order&&headCell.order==="0"?"asc":"desc"}
                                 onClick={createSortHandler(headCell)}
                             >
                                 {headCell.label}

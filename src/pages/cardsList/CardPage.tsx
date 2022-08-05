@@ -1,11 +1,10 @@
 
-import {Box, Container, Grid} from "@mui/material";
 import * as React from "react";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {useEffect} from "react";
 import {thunksCards} from "./CardsReducer";
 import {TableCards} from "./TableCards";
-import {styled} from "@mui/material/styles";
+
 
 
 export const CardPage = () => {

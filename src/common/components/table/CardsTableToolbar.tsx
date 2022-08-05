@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import {FC, memo} from "react";
+import {FC, memo, useState} from "react";
 import {Box, Button} from "@mui/material";
 import {ArrowBack} from "@mui/icons-material";
 import {styled} from "@mui/material/styles";
@@ -12,20 +12,27 @@ import {thunksCards} from "../../../pages/cardsList/CardsReducer";
 
 type EnhancedTableToolbar = {
     title: string
-    cardsPack_id:string
+    cardsPack_id: string
+    isMyPack: boolean
 }
 
 
-export const EnhancedTableToolbar: FC<EnhancedTableToolbar> = memo(({title,cardsPack_id}) => {
+export const CardsTableToolbar: FC<EnhancedTableToolbar> = memo(({isMyPack, title, cardsPack_id}) => {
+
+        const[question,setQuestion ]=useState('')
 
         const navigate = useNavigate()
+
         const dispatch = useDispatchApp()
 
         const addNewCard = () => {
-            dispatch(thunksCards.createCard({cardsPack_id}))
+            dispatch(thunksCards.createCard({cardsPack_id,question}))
+            setQuestion('')
         }
-        const searchCard = (cardQuestion:string) => {
-          dispatch(thunksCards.searchCard(cardQuestion))
+
+        const searchCard = (cardQuestion: string) => {
+            setQuestion(cardQuestion)
+            dispatch(thunksCards.searchCard(cardQuestion))
         }
 
         return (
@@ -46,7 +53,15 @@ export const EnhancedTableToolbar: FC<EnhancedTableToolbar> = memo(({title,cards
                     </SearchCard>
                 </BoxLeft>
                 <BoxRight>
-                    <StyledButton onClick={addNewCard} color="inherit" variant='contained'> Add new card</StyledButton>
+                    {
+                        isMyPack
+                            ?
+                            <StyledButton onClick={addNewCard} color="inherit" variant='contained'>
+                                Add new card
+                            </StyledButton>
+                            :
+                            <></>
+                    }
                 </BoxRight>
             </BoxToolBar>
         );
@@ -57,7 +72,6 @@ const StyledButton = styled(Button)`
   color: #050505;
   border-radius: 30px;
 `
-
 
 const BoxToolBar = styled(Box)`
   display: flex;

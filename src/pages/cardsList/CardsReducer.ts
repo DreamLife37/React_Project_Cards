@@ -10,14 +10,15 @@ import {
 import {AppThunk} from "../app/store";
 import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 import {restoreFromStorage} from "../../utils/LocalStorageUtils";
+import App from "../app/App";
 
 type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
 
 export interface HeadCell {
     numeric: Numeric
-    id: keyof ExtendedCardEntity;
+    id: keyof ExtendedCardEntity|"action";
     label: string;
-    order: "0" | "1"
+    order: "0" | "1"|undefined
 }
 
 
@@ -39,25 +40,31 @@ const initialState: InitialState = {
             id: 'question',
             numeric: "center",
             label: 'question',
-            order: "0"
+            order: "1"
         },
         {
             id: 'answer',
             numeric: "center",
             label: 'answer',
-            order: "0"
+            order: "1"
         },
         {
             id: 'updated',
             numeric: "center",
             label: 'Last Updated',
-            order: "0"
+            order: "1"
         },
         {
             id: 'grade',
             numeric: "center",
             label: 'grade',
-            order: "0"
+            order: "1"
+        },
+        {
+            id: 'action',
+            numeric: "center",
+            label: 'action',
+            order: undefined
         },
     ]
 }
@@ -138,6 +145,14 @@ export const thunksCards = {
     },
     searchCard:(cardQuestion:string):AppThunk=>(dispatch)=>{
         dispatch(actionsCards.setQueryParams({cardQuestion}))
+        dispatch(thunksCards.getCards())
+    },
+    setPage:(page:number):AppThunk=>(dispatch)=>{
+        dispatch(actionsCards.setQueryParams({page}))
+        dispatch(thunksCards.getCards())
+    },
+    setPageCount:(pageCount:number):AppThunk=>(dispatch)=>{
+        dispatch(actionsCards.setQueryParams({pageCount}))
         dispatch(thunksCards.getCards())
     }
 
