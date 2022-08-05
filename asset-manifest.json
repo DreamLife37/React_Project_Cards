@@ -1,16 +1,19 @@
 {
   "files": {
-    "main.css": "/React_Project_Cards/static/css/main.579b60a9.css",
-    "main.js": "/React_Project_Cards/static/js/main.4b3d96fa.js",
+    "main.css": "/React_Project_Cards/static/css/main.e9e5971a.css",
+    "main.js": "/React_Project_Cards/static/js/main.b5b1efc7.js",
     "static/js/787.819b2de1.chunk.js": "/React_Project_Cards/static/js/787.819b2de1.chunk.js",
     "static/media/profileAvatar.png": "/React_Project_Cards/static/media/profileAvatar.f888b13b55d6b056f0a3.png",
+    "static/media/Edit.svg": "/React_Project_Cards/static/media/Edit.a169cd90c950b39da314.svg",
+    "static/media/Group 61.svg": "/React_Project_Cards/static/media/Group 61.f44d951526acbd5ef97e.svg",
     "index.html": "/React_Project_Cards/index.html",
-    "main.579b60a9.css.map": "/React_Project_Cards/static/css/main.579b60a9.css.map",
-    "main.4b3d96fa.js.map": "/React_Project_Cards/static/js/main.4b3d96fa.js.map",
+    "static/media/logout.svg": "/React_Project_Cards/static/media/logout.1731b0b18f5a96bdef82.svg",
+    "main.e9e5971a.css.map": "/React_Project_Cards/static/css/main.e9e5971a.css.map",
+    "main.b5b1efc7.js.map": "/React_Project_Cards/static/js/main.b5b1efc7.js.map",
     "787.819b2de1.chunk.js.map": "/React_Project_Cards/static/js/787.819b2de1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.579b60a9.css",
-    "static/js/main.4b3d96fa.js"
+    "static/css/main.e9e5971a.css",
+    "static/js/main.b5b1efc7.js"
   ]
 }
