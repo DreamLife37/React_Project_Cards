@@ -13,7 +13,11 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import {CardPacksEntityWithDeckCover} from "../../DAL/API-CardsPack";
-import {HeadCell} from "./PackReducer";
+import {HeadCell, thunksPack} from "./PackReducer";
+import {actionsCards} from "../cardsList/CardsReducer";
+import {Path} from "../Routes";
+import {useNavigate} from "react-router-dom";
+import TableCell from '@material-ui/core/TableCell';
 
 
 //type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
@@ -47,6 +51,7 @@ export const TablePacks1: React.FC<TablePacksType> = memo(({headCells, packs}) =
         const packName = useSelectorApp(state => state.cards.packTitle)
 
         const dispatch = useDispatchApp()
+        const navigate = useNavigate()
 
         const isMyPack = cardsUserId === userId
 
@@ -55,15 +60,15 @@ export const TablePacks1: React.FC<TablePacksType> = memo(({headCells, packs}) =
         }, [dispatch])
 
         const changeGrade = useCallback((_id: string, grade: number | null) => {
-           // isMyPack && dispatch(thunksCards.updateCard({_id, grade}))
+            // isMyPack && dispatch(thunksCards.updateCard({_id, grade}))
         }, [dispatch, isMyPack])
 
         const changeQuestion = useCallback((_id: string) => (question: string) => {
-           // isMyPack && dispatch(thunksCards.updateCard({_id, question}))
+            // isMyPack && dispatch(thunksCards.updateCard({_id, question}))
         }, [dispatch, isMyPack])
 
         const changeAnswer = useCallback((_id: string) => (answer: string) => {
-           // isMyPack && dispatch(thunksCards.updateCard({_id, answer}))
+            // isMyPack && dispatch(thunksCards.updateCard({_id, answer}))
         }, [dispatch, isMyPack])
 
         const onPageChangeHandler = useCallback((page: number) => {
@@ -71,37 +76,52 @@ export const TablePacks1: React.FC<TablePacksType> = memo(({headCells, packs}) =
         }, [dispatch])
 
         const onRowsPerPageChangeHandler = useCallback((setPageCount: number) => {
-           // dispatch(thunksCards.setPageCount(setPageCount))
+            // dispatch(thunksCards.setPageCount(setPageCount))
         }, [dispatch])
+
+        const deletePackHandler = (packId: string) => {
+            dispatch(thunksPack.deletePack(packId))
+        }
+
+        const editPackHandler = (packId: string, namePack: string) => {
+            dispatch(thunksPack.updatePack({_id: packId, name: namePack}))
+        }
 
 
         const rows: Array<Row[]> = useMemo(
             () => (
-                packs.map((pack: CardPacksEntityWithDeckCover) =>
-                    [
-                        {
-                            optionsCell: 'center',
-                            cell: <CustomEditSpan autoFocus fullWidth variant='standard'
-                                                  onBlurInput={changeQuestion(pack._id)} value={pack.name}/>
-                        },
-                        {
-                            optionsCell: "center",
-                            cell: <CustomEditSpan autoFocus fullWidth variant='standard'
-                                                  onBlurInput={changeAnswer(pack._id)} value={String(pack.cardsCount)}/>
-                        },
-                        {
-                            optionsCell: "center",
-                            cell: getTime(pack.updated)
-                        },
-                        {
-                            optionsCell: "center",
-                            cell: getTime(pack.created)
-                        },
-                        {
-                            optionsCell: "center",
-                            cell: <CommonAction/>
+                packs.map((pack: CardPacksEntityWithDeckCover) => {
+                        const moveOnCardList = () => {
+                            dispatch(actionsCards.setQueryParams({cardsPack_id: pack._id}))
+                            dispatch(actionsCards.getTitle(pack.name))
+                            navigate(Path.cardList)
                         }
-                    ]
+                        return [
+                            {
+                                optionsCell: 'center',
+                                cell: <TableCell onClick={moveOnCardList}>{pack.name} </TableCell>
+                            },
+                            {
+                                optionsCell: "center",
+                                cell: <CustomEditSpan autoFocus fullWidth variant='standard'
+                                                      onBlurInput={changeAnswer(pack._id)} value={String(pack.cardsCount)}/>
+                            },
+                            {
+                                optionsCell: "center",
+                                cell: getTime(pack.updated)
+                            },
+                            {
+                                optionsCell: "center",
+                                cell: getTime(pack.created)
+                            },
+                            {
+                                optionsCell: "center",
+                                cell: <CommonAction row={pack} userId={userId}
+                                                    deleteRowHandler={deletePackHandler}
+                                                    editRowHandler={editPackHandler}/>
+                            }
+                        ]
+                    }
                 )
             ), [packs])
 
@@ -130,20 +150,31 @@ const BoxCardPages = styled(Grid)`
   align-items: stretch;
   padding: 2% 7% 2% 7%;;
 `
-const CommonAction = () => {
-  return(
-      <div>
-          <Tooltip title="Delete pack">
-              <IconButton >
-                  <DeleteIcon fontSize={"small"}/>
-              </IconButton></Tooltip>
-          <Tooltip title="Edit pack">
-              <IconButton
-                  >
-                  <EditIcon fontSize={"small"}/>
-              </IconButton></Tooltip>
-      </div>
-  )
+
+type CommonActionType = {
+    row: CardPacksEntityWithDeckCover
+    userId: string
+    deleteRowHandler: (id: string) => void
+    editRowHandler: (id: string, newTitle: string) => void
+}
+const CommonAction = (props: CommonActionType) => {
+
+    return (
+        <div>
+            <Tooltip title="Delete pack">
+                <IconButton disabled={props.userId !== props.row.user_id && true}
+                            onClick={() => props.deleteRowHandler(props.row._id)}>
+                    <DeleteIcon fontSize={"small"}/>
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Edit pack">
+                <IconButton disabled={props.userId !== props.row.user_id && true}
+                            onClick={() => props.editRowHandler(props.row._id, 'IT-INCUBATOR лучшие!')}>
+                    <EditIcon fontSize={"small"}/>
+                </IconButton>
+            </Tooltip>
+        </div>
+    )
 }
 
 
