@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {memo, ReactNode, useCallback, useEffect, useMemo, useState} from 'react';
-import {ExtendedCardEntity} from "../../DAL/API-Cards";
+import {FC, memo, ReactNode, useCallback, useEffect, useMemo} from 'react';
+import {ExtendedCardEntity, UpdateCardPayload} from "../../DAL/API-Cards";
 import {CommonTable} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
-import {Box, Container, Grid, Rating} from "@mui/material";
-import {thunksCards} from "./CardsReducer";
+import {Grid, LinearProgress, Rating} from "@mui/material";
+import {actionsCards, HeadCell, Numeric, thunksCards} from "./CardsReducer";
 import {CustomEditSpan} from "../../common/components/table/CustomEditbleSpan";
 import {CardsTableToolbar} from "../../common/components/table/CardsTableToolbar";
 import {styled} from "@mui/material/styles";
@@ -15,35 +15,32 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 
-type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
-
-export interface HeadCell {
-    numeric: Numeric
-    id: keyof ExtendedCardEntity|"action";
-    label: string;
-    order: "0" | "1"|undefined
-
-}
-
 export type Row = {
     optionsCell: Numeric,
     cell: string | number | ReactNode
 }
 
-type TableCardsType = {
-    cards: ExtendedCardEntity[]
-    headCells: HeadCell[]
-}
+export const CardsPage: React.FC = memo(() => {
 
-export const TableCards: React.FC<TableCardsType> = memo(({headCells, cards}) => {
-
-        const cardsPack_id = useSelectorApp(state => state.cards.queryParams.cardsPack_id)
+        const cardsPack_id = useSelectorApp(state => state.cards.cardsPack_id)
         const userId = useSelectorApp(state => state.auth._id)
         const cardsUserId = useSelectorApp(state => state.cards.cards.packUserId)
         const cardsTotalCount = useSelectorApp(state => state.cards.cards.cardsTotalCount)
         const pageCount = useSelectorApp(state => state.cards.cards.pageCount)
-        const page = useSelectorApp(state => state.cards.cards.page-1)
+        const page = useSelectorApp(state => state.cards.cards.page - 1)
         const packName = useSelectorApp(state => state.cards.packTitle)
+        const statusCards = useSelectorApp(state => state.cards.statusCards)
+        const cards = useSelectorApp(state => state.cards.cards.cards || [])
+        const headCells = useSelectorApp(state => state.cards.initHeadCells)
+        const requestPendingList = useSelectorApp(state => state.cards.requestPendingList)
+
+
+        useEffect(() => {
+            dispatch(thunksCards.getCards())
+            return () => {
+                dispatch(actionsCards.getCards({}))
+            }
+        }, [])
 
         const dispatch = useDispatchApp()
 
@@ -72,6 +69,13 @@ export const TableCards: React.FC<TableCardsType> = memo(({headCells, cards}) =>
         const onRowsPerPageChangeHandler = useCallback((setPageCount: number) => {
             dispatch(thunksCards.setPageCount(setPageCount))
         }, [dispatch])
+
+        const deleteCard = (id: string) => {
+            dispatch(thunksCards.deleteCard(id))
+        }
+        const editCard = (_id: string) => {
+          dispatch(thunksCards.updateCard({_id,answer:"azaza"}))
+        }
 
 
         const rows: Array<Row[]> = useMemo(
@@ -102,16 +106,20 @@ export const TableCards: React.FC<TableCardsType> = memo(({headCells, cards}) =>
                         },
                         {
                             optionsCell: "center",
-                            cell: <CommonAction/>
+                            cell: <CommonAction handleDelete={deleteCard}
+                                                handleEdit={editCard}
+                                                disabled={requestPendingList[card._id]}
+                                                id={card._id}/>
                         }
                     ]
                 )
-            ), [cards])
+            ), [cards,statusCards])
 
         return (
 
-            <BoxCardPages  container>
+            <BoxCardPages container>
                 <CardsTableToolbar isMyPack={isMyPack} title={packName} cardsPack_id={cardsPack_id}/>
+
                 <CommonTable
                     onPageChangeHandler={onPageChangeHandler}
                     onRowsPerPageChangeHandler={onRowsPerPageChangeHandler}
@@ -120,9 +128,10 @@ export const TableCards: React.FC<TableCardsType> = memo(({headCells, cards}) =>
                     page={page}
                     sortHandler={sortHandler}
                     rows={rows}
-                    headCells={headCells}/>
+                    headCells={headCells}
+                />
+                {statusCards === "loading" && <LinearProgress/>}
             </BoxCardPages>
-
         );
     }
 )
@@ -134,21 +143,33 @@ const BoxCardPages = styled(Grid)`
   padding: 2% 7% 2% 7%;;
 `
 
+type CommonActionT = {
+    handleDelete: (id: string) => void
+    handleEdit: (id: string) => void
+    id: string
+    disabled:boolean
+}
+const CommonAction: FC<CommonActionT> = ({handleDelete, handleEdit, id,disabled}) => {
+    console.log(disabled)
+    const onDelete = () => {
+        handleDelete(id)
+    }
+    const onEdite = () => {
+        handleEdit(id)
+    }
 
-const CommonAction = () => {
-  return(
-      <div>
-          <Tooltip title="Delete pack">
-              <IconButton >
-                  <DeleteIcon fontSize={"small"}/>
-              </IconButton></Tooltip>
-          <Tooltip title="Edit pack">
-              <IconButton
-                  >
-                  <EditIcon fontSize={"small"}/>
-              </IconButton></Tooltip>
-      </div>
-  )
+    return (
+        <div>
+            <Tooltip title="Delete pack">
+                <IconButton disabled={disabled} onClick={onDelete}>
+                    <DeleteIcon fontSize={"small"}/>
+                </IconButton></Tooltip>
+            <Tooltip title="Edit pack">
+                <IconButton disabled={disabled} onClick={onEdite}>
+                    <EditIcon fontSize={"small"}/>
+                </IconButton></Tooltip>
+        </div>
+    )
 }
 
 

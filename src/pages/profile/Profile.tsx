@@ -1,24 +1,23 @@
 import {Button, TextField} from "@mui/material";
 import image from './profileAvatar.png';
 import {FC, useState} from "react";
-import {useSelector} from "react-redux";
 import {Link, Navigate} from "react-router-dom";
-import {AppStoreType} from '../app/store';
 import {thunkAuth} from '../auth/auth-reducer';
 import style from './Profile.module.css';
-import {useDispatchApp} from "../../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {Path} from "../Routes";
 import {Container} from "@mui/material";
 import Grid from '@mui/material/Grid';
+import React from "react"
 
 export const Profile: FC = () => {
+
     const dispatch = useDispatchApp();
 
-    const isAuthorized = useSelector<AppStoreType, boolean>(state => state.auth.isAuthorized);
-    const profileName = useSelector<AppStoreType, string>(state => state.auth.name);
-    const profileEmail = useSelector<AppStoreType, string>(state => state.auth.email);
-    const avatar = useSelector<AppStoreType, string>(state => state.auth.avatar);
-    const isLoading = useSelector<AppStoreType, string>(state => state.app.status);
+    const isAuthorized = useSelectorApp(state => state.auth.isAuthorized);
+    const profileName = useSelectorApp(state => state.auth.name);
+    const profileEmail = useSelectorApp(state => state.auth.email);
+    const avatar = useSelectorApp(state => state.auth.avatar);
 
     const [changeNameStatus, setChangeNameStatus] = useState(false);
     const [inputValue, setInputValue] = useState(profileName);
@@ -53,10 +52,10 @@ export const Profile: FC = () => {
                         <div className={style.personalInfo}>
                             <h1 className={style.title}>Personal Information</h1>
 
-                            <img src={!!avatar ? avatar : image} className={style.avatar}></img>
+                            <img src={!!avatar ? avatar : image} className={style.avatar} alt={"AVA"}/>
 
-                            <input type='file' className={style.setAvatarInput} id='fileInput'></input>
-                            <label className={style.setAvatarInputLabel} htmlFor='fileInput'></label>
+                            <input type='file' className={style.setAvatarInput} id='fileInput'/>
+                            <label className={style.setAvatarInputLabel} htmlFor='fileInput'/>
 
                             <div className={style.changeNameWrapper}>
                                 {changeNameStatus ?
@@ -87,7 +86,7 @@ export const Profile: FC = () => {
                                     <>
                                         <p className={style.name}>{profileName}</p>
                                         <button type='button' className={style.changeNameBtn}
-                                                onClick={onChangeNameStatus}></button>
+                                                onClick={onChangeNameStatus}/>
                                     </>
                                 }
                             </div>

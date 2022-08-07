@@ -8,7 +8,8 @@ import {Profile} from "./profile/Profile";
 import {RedirectPage} from "./auth/recovery-password/RedirectPage";
 import {Settings} from "./Settings";
 import {PacksListPage} from "./packsList/PacksListPage";
-import {CardPage} from "./cardsList/CardPage";
+import {CardsPage} from "./cardsList/TableCards";
+
 
 
 export enum Path {
@@ -41,7 +42,7 @@ export const Router = () => {
                 <Route path={Path.redirectAfterSendRecoveryPassEmail} element={<RedirectPage/>}/>
                 <Route path={Path.settings} element={<Settings/>}/>
                 <Route path={Path.packsList} element={<PacksListPage/>}/>
-                <Route path={Path.cardList} element={<CardPage/>}/>
+                <Route path={Path.cardList} element={<CardsPage/>}/>
             </Routes>
         </div>
     )

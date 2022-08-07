@@ -51,22 +51,7 @@ const authSlice = createSlice({
 })
 
 export const authReducer = authSlice.reducer
-
 export const actionsAuth = authSlice.actions
-
-export const registration = (data: RegisterPayloadType): AppThunk => (dispatch: Dispatch<ActionAuthType>) => {
-
-    const response = APIAuth.register(data)
-        .then(() => {
-            dispatch(actionsAuth.setRegisteredUser(true))
-        })
-        .catch(err => {
-            handlerNetworkError(dispatch, err)
-        })
-    //утилитка переключения  статуса Апп
-    //если вызвать в try то сработает только при успешном запросе
-    HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
-}
 
 
 export const thunkAuth = {
@@ -77,9 +62,6 @@ export const thunkAuth = {
             .then(() => {
                 dispatch(actionsAuth.setRegisteredUser(true))
             })
-            .catch(err => {
-                handlerNetworkError(dispatch, err)
-            })
         //утилитка переключения  статуса Апп
         //если вызвать в try то сработает только при успешном запросе
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
@@ -89,8 +71,6 @@ export const thunkAuth = {
         const response = APIAuth.updateNickOrAvatar(payload)
             .then((res) => {
                 dispatch(actionsAuth.setLoginData({...res.data.updatedUser, isAuthorized: true, isRegistration: true}))
-            }).catch((e) => {
-                handlerNetworkError(dispatch, e)
             })
         //утилитка переключения  статуса Апп
         //если вызвать в try то сработает только при успешном запросе
@@ -106,8 +86,6 @@ export const thunkAuth = {
                     dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: true}))
                 }
             })
-        //утилитка переключения  статуса Апп
-        //если вызвать в try то сработает только при успешном запросе
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
     },
 
@@ -143,11 +121,6 @@ export const thunkAuth = {
                     )
                 }
             })
-            .catch((e) => {
-                handlerNetworkError(dispatch, e)
-            })
-        //утилитка переключения  статуса Апп
-        //если вызвать в try то сработает только при успешном запросе
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
     },
     fetchRecoveryPassMail: (email: string): AppThunk => (dispatch: AppDispatchType) => {
@@ -155,11 +128,7 @@ export const thunkAuth = {
         // если статус текст ОК то страница восстановления пароля редиректит на  страницу информирования
         // проверки почты, если  статус текст undefined то редиректит обратно на логин
         const message = "<div style=\"background-color: lime; padding: 15px\"> password recovery link: <a href='https://dreamlife37.github.io/React_Project_Cards/#/set-new-password/$token$'>Жмякни быстро на ссыль!</a></div>"
-
         const response = APIAuth.forgotPassword({email, message, from: ''})
-            .catch((e) => {
-                handlerNetworkError(dispatch, e)
-            })
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
         return response
 
@@ -170,9 +139,6 @@ export const thunkAuth = {
         // редиректит на страницу логина, если статус текст undefined  то редиректит
         // обратно на страницу запроса почты для отправки письма воссттановленя пароля
         const response = APIAuth.setNewPassWord(payload)
-            .catch((e) => {
-                handlerNetworkError(dispatch, e)
-            })
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
         return response
     }

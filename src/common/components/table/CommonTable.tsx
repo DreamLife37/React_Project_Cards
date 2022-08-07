@@ -5,11 +5,10 @@ import Paper from "@mui/material/Paper";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TablePagination from "@mui/material/TablePagination";
-import {HeadCell, Row} from "../../../pages/cardsList/TableCards";
+import {Row} from "../../../pages/cardsList/TableCards";
 import {EnhancedTableHead} from "./EnhancedTableHead";
 import {EnhancedTableBody} from "./EnhancedTableBody";
-import {styled} from "@mui/material/styles";
-
+import {HeadCell} from "../../../pages/cardsList/CardsReducer";
 
 type CommonTable = {
     headCells: Array<HeadCell>
@@ -57,5 +56,7 @@ export const CommonTable: FC<CommonTable> = memo((props) => {
         )
     }
 )
+
+
 
 

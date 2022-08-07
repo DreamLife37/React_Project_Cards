@@ -15,7 +15,7 @@ type FormikErrorType = {
 
 export const RestorePassword = () => {
 
-    const status = useSelectorApp(state => state.app.status)
+    const status = useSelectorApp(state => state.app.statusApp)
     const dispatch = useDispatchApp()
     const navigate = useNavigate()
 

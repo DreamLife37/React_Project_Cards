@@ -11,7 +11,7 @@ type FormikErrorType = {
 
 
 export const Settings = () => {
-    const statusApp = useSelectorApp(state => state.app.status)
+    const statusApp = useSelectorApp(state => state.app.statusApp)
     const dispatch = useDispatchApp()
 
     const formik = useFormik({

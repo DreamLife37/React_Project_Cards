@@ -31,7 +31,7 @@ function App() {
             <Router/>
             {/*Пока что alert для ошибок в будущем хочу заюзать библиотеку https://github.com/iamhosseindhv/notistack*/}
             <AlertErrorWrap/>
-            {/*Инициализационная заставка(Если App.status === 'loading' то вкл.)*/}
+            {/*Инициализационная заставка(Если App.statusApp === 'loading' то вкл.)*/}
             <BackDropWrap/>
             </div>
         </div>

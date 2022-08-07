@@ -1,4 +1,4 @@
-import {createSlice, Draft, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
     APICards,
     CreateCardPayload,
@@ -8,34 +8,33 @@ import {
     UpdateCardPayload
 } from "../../DAL/API-Cards";
 import {AppThunk} from "../app/store";
-import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 import {restoreFromStorage} from "../../utils/LocalStorageUtils";
-import {actionsErrors} from "../../Errors/ErrorsReducer";
-import {actionsApp, thunkApp} from "../app/app-reducer";
+import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
 
-type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
+export type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
 
-export interface HeadCell {
+export type HeadCell = {
     numeric: Numeric
     id: keyof ExtendedCardEntity | "action";
     label: string;
     order: "0" | "1" | undefined
 }
+type QueryParamsT = {
+    cardAnswer?: string,
+    cardQuestion?: string,
+    min?: number,
+    max?: number,
+    sortCards?: string,
+    page?: number,
+    pageCount?: number
+}
 
 
-const initialState: InitialState = {
-    packTitle: '',
-    cards: {} as GetCardsResponse,
-    queryParams: {
-        cardAnswer: undefined,
-        cardQuestion: undefined,
-        cardsPack_id: "",
-        sortCards: undefined,
-        page: undefined,
-        pageCount: undefined,
-        min: undefined,
-        max: undefined
-    },
+const initialState = {
+    packTitle: '' as string,
+    cards: {} as GetCardsResponse | Record<string, never>,
+    cardsPack_id: "",
+    queryParams: {} as QueryParamsT,
     initHeadCells: [
         {
             id: 'question',
@@ -67,36 +66,46 @@ const initialState: InitialState = {
             label: 'action',
             order: undefined
         },
-    ]
-}
-
-type InitialState = {
-    packTitle: string
-    cards: GetCardsResponse
-    queryParams: getCardsPayload
-    initHeadCells: HeadCell[]
+    ] as HeadCell[],
+    requestPendingList: {} as { [CardId: string]: boolean } | Record<string, never>,
+    statusCards: 'loading'
 }
 
 const cardsSlice = createSlice({
     name: "Cards",
     initialState,
     reducers: {
-        getCards: (state, action) => {
+        getCards: (state, action: PayloadAction<GetCardsResponse | {}>) => {
             state.cards = action.payload
         },
-        setQueryParams: (state, action) => {
-            state.queryParams = {...state.queryParams, ...action.payload}
+        setQueryParams: (state, action: PayloadAction<QueryParamsT>) => {
+            state.queryParams = {...state.queryParams,...action.payload}
         },
-        getTitle: (state, action) => {
+        getTitle: (state, action: PayloadAction<string>) => {
             state.packTitle = action.payload
         },
-        updateHeadCell: (state, action) => {
+        updateHeadCell: (state, action: PayloadAction<HeadCell>) => {
             state.initHeadCells = state.initHeadCells.map(HeadCell =>
                 action.payload.id === HeadCell.id ?
                     action.payload
                     : HeadCell)
+        },
+        //добавляет id карты в лист ожидания
+        setRequestPendingList: (state, action: PayloadAction<string>) => {
+            state.requestPendingList = {...state.requestPendingList, [action.payload]: true}
+        },
+        //удаляет id карты из листа ожидания
+        deleteIdInRequestPendingList: (state, action: PayloadAction<string>) => {
+            delete state.requestPendingList[action.payload]
+        },
+        setStatusCards: (state, action: PayloadAction<'idle' | 'loading'>) => {
+            state.statusCards = action.payload
+        },
+        setPackId:(state, action: PayloadAction<string>) => {
+            state.cardsPack_id=action.payload
         }
     }
+
 })
 
 
@@ -104,29 +113,32 @@ export const cards = cardsSlice.reducer
 export const actionsCards = cardsSlice.actions
 
 export const thunksCards = {
-    getCards: (promise?: Promise<unknown>): AppThunk => (dispatch, getState) => {
-        dispatch(actionsApp.setAppStatus("loading"))
+    getCards: (promise?: Promise<unknown>, id?: string): AppThunk => (dispatch, getState) => {
         //если cardsPack_id затерся после перезагрузки, берет его из хранилища
-        if (!getState().cards.queryParams.cardsPack_id) {
-            const cardsPack_id = restoreFromStorage("cardsPack_id")
-            dispatch(actionsCards.setQueryParams({cardsPack_id}))
+        if (!getState().cards.cardsPack_id) {
+            const cardsPack_id: string = restoreFromStorage("cardsPack_id")
+            dispatch(actionsCards.setPackId(cardsPack_id))
         }
         //то же самое с названием колоды
         if (!getState().packs.packsData.cardPacks) {
             const packName = restoreFromStorage("packName")
             dispatch(actionsCards.getTitle(packName))
         }
-
+        dispatch(actionsCards.setStatusCards("loading"))
         Promise.all([promise])
             .then(() => {
-                let getPromise = APICards.getCards(getState().cards.queryParams)
+                APICards.getCards({...getState().cards.queryParams,cardsPack_id:getState().cards.cardsPack_id})
                     .then((response) => {
-                        console.log('!!')
                         dispatch(actionsCards.getCards(response))
+                        dispatch(actionsCards.setStatusCards("idle"))
+                        if (!!id) {
+                            dispatch(actionsCards.deleteIdInRequestPendingList(id))
+                        }
                     })
-                HandleToggleStatusAppAndInterceptorErrors(dispatch, [promise, getPromise])
-            }).catch(() => {
-            HandleToggleStatusAppAndInterceptorErrors(dispatch, [promise])
+
+            }).catch((e) => {
+            handlerNetworkError(dispatch, e)
+            dispatch(actionsCards.setStatusCards("idle"))
         })
 
 
@@ -140,8 +152,9 @@ export const thunksCards = {
         dispatch(thunksCards.getCards(response))
     },
     deleteCard: (id: string): AppThunk => (dispatch) => {
+        dispatch(actionsCards.setRequestPendingList(id))
         const response = APICards.deleteCard(id)
-        dispatch(thunksCards.getCards(response))
+        dispatch(thunksCards.getCards(response, id))
     },
     sortCards: (headCell: HeadCell): AppThunk => (dispatch) => {
         dispatch(actionsCards.updateHeadCell(headCell))
