@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {memo, ReactNode, useCallback, useMemo} from 'react';
+import {memo, ReactNode, useCallback, useMemo, useState} from 'react';
 import {CommonTable} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
@@ -15,6 +15,8 @@ import {actionsCards} from "../cardsList/CardsReducer";
 import {Path} from "../Routes";
 import {useNavigate} from "react-router-dom";
 import TableCell from '@material-ui/core/TableCell';
+import {ModalFormikPackType} from "./modals/FormikFormModal";
+import {AddAndEditPackModal} from "./modals/AddAndEditPackModal";
 
 export type Row = {
     optionsCell: "inherit" | "right" | "left" | "center" | "justify" | undefined,
@@ -54,9 +56,10 @@ export const TablePacks1: React.FC<TablePacksType> = memo(({headCells, packs}) =
             dispatch(thunksPack.deletePack(packId))
         }
 
-        const editPackHandler = (packId: string, namePack: string) => {
-            dispatch(thunksPack.updatePack({_id: packId, name: namePack}))
+        const editPackHandler = (packId: string, newNamePack: string) => {
+            dispatch(thunksPack.updatePack({_id: packId, name: newNamePack}))
         }
+
 
         const rows: Array<Row[]> = useMemo(
             () => (
@@ -96,6 +99,7 @@ export const TablePacks1: React.FC<TablePacksType> = memo(({headCells, packs}) =
 
         return (
             <BoxCardPages container>
+
                 <CommonTable
                     onPageChangeHandler={onPageChangeHandler}
                     onRowsPerPageChangeHandler={onRowsPerPageChangeHandler}
@@ -122,11 +126,21 @@ type CommonActionType = {
     row: CardPacksEntityWithDeckCover
     userId: string
     deleteRowHandler: (id: string) => void
-    editRowHandler: (id: string, newTitle: string) => void
+    editRowHandler: (id: string, newNamePack: string) => void
 }
 const CommonAction = (props: CommonActionType) => {
+
+    const [open, setOpen] = useState(false)
+    const handleOpen = (): void => setOpen(true)
+    const handleClose = (): void => setOpen(false)
+
+    const editPack = (e: ModalFormikPackType) => {
+        props.editRowHandler(props.row._id, e.namePack)
+    }
     return (
         <div>
+            <AddAndEditPackModal callback={editPack} handleClose={handleClose} open={open}
+                                 title={'Edit name pack'}/>
             <Tooltip title="Delete pack">
                 <span>
                 <IconButton
@@ -139,7 +153,7 @@ const CommonAction = (props: CommonActionType) => {
             <Tooltip title="Edit pack">
                  <span>
                 <IconButton
-                    onClick={() => props.editRowHandler(props.row._id, 'IT-INCUBATOR лучшие!')}
+                    onClick={handleOpen}
                     disabled={props.userId !== props.row.user_id && true}>
                     <EditIcon fontSize={"small"}/>
                 </IconButton>
