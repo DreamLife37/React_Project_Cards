@@ -18,11 +18,11 @@ import EditIcon from "@mui/icons-material/Edit";
 type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
 
 export interface HeadCell {
-    numeric: Numeric
-    id: keyof ExtendedCardEntity|"action";
+    numeric: "inherit" | "right" | "left" | "center" | "justify" | undefined;
+    //id: keyof ExtendedCardEntity|"action";
+    id: string,
     label: string;
     order: "0" | "1"|undefined
-
 }
 
 export type Row = {

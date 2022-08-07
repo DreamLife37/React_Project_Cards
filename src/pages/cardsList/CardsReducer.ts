@@ -138,7 +138,7 @@ export const thunksCards = {
         const response = APICards.deleteCard(id)
         dispatch(thunksCards.getCards(response))
     },
-    sortCards: (headCell:HeadCell): AppThunk => (dispatch) => {
+    sortCards: (headCell: { numeric: "inherit" | "right" | "left" | "center" | "justify" | undefined; id: string; label: string; order: string }): AppThunk => (dispatch) => {
         dispatch(actionsCards.updateHeadCell(headCell))
         dispatch(actionsCards.setQueryParams({sortCards:headCell.order+headCell.id}))
         dispatch(thunksCards.getCards())
