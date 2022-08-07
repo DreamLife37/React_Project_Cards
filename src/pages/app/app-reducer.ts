@@ -30,8 +30,8 @@ export const actionsApp = appSlice.actions
 export const thunkApp={
     initializeApp:():AppThunk=>  (dispatch)=>{
         //санка включает статус, диспатчит санку authMe и ждет от нее любого ответа чтобы переключить статус
-        const response= dispatch(thunkAuth.authMe())
-        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response],"initialize")
+         dispatch(thunkAuth.authMe())
+        // HandleToggleStatusAppAndInterceptorErrors(dispatch, [response],"initialize")
 
     }
 }

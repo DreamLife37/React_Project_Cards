@@ -42,7 +42,7 @@ export const TableCards: React.FC<TableCardsType> = memo(({headCells, cards}) =>
         const cardsUserId = useSelectorApp(state => state.cards.cards.packUserId)
         const cardsTotalCount = useSelectorApp(state => state.cards.cards.cardsTotalCount)
         const pageCount = useSelectorApp(state => state.cards.cards.pageCount)
-        const page = useSelectorApp(state => state.cards.cards.page)
+        const page = useSelectorApp(state => state.cards.cards.page-1)
         const packName = useSelectorApp(state => state.cards.packTitle)
 
         const dispatch = useDispatchApp()
@@ -110,7 +110,7 @@ export const TableCards: React.FC<TableCardsType> = memo(({headCells, cards}) =>
 
         return (
 
-            <BoxCardPages container>
+            <BoxCardPages  container>
                 <CardsTableToolbar isMyPack={isMyPack} title={packName} cardsPack_id={cardsPack_id}/>
                 <CommonTable
                     onPageChangeHandler={onPageChangeHandler}
@@ -133,6 +133,8 @@ const BoxCardPages = styled(Grid)`
   align-items: stretch;
   padding: 2% 7% 2% 7%;;
 `
+
+
 const CommonAction = () => {
   return(
       <div>

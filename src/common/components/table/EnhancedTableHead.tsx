@@ -5,7 +5,6 @@ import TableCell from "@mui/material/TableCell";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import {HeadCell} from "../../../pages/cardsList/TableCards";
 import {Typography} from "@mui/material";
-import {useEffect, useState} from "react";
 
 interface EnhancedTableProps {
     headCells: HeadCell[]
@@ -13,7 +12,6 @@ interface EnhancedTableProps {
 }
 
 export const EnhancedTableHead: React.FC<EnhancedTableProps> = ({sortHandler, headCells}) => {
-
 
     const createSortHandler = (headCell:HeadCell) => () => {
         if(!headCell.order){return}

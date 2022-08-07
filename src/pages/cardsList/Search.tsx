@@ -25,7 +25,6 @@ export const Search:FC<Search> = ({searchCallback }) => {
 
     return (
         <Paper
-            component="form"
             sx={{p: '2px 4px', display: 'flex', alignItems: 'center', width: 350}}
         >
             <IconButton onClick={searchAll}  type="submit" sx={{p: '10px'}} aria-label="search">

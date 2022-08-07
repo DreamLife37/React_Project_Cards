@@ -27,7 +27,7 @@ export const CommonTable: FC<CommonTable> = memo((props) => {
     const {onPageChangeHandler,onRowsPerPageChangeHandler,sortHandler,rows, headCells, cardsTotalCount, pageCount, page}=props
 
     const onPageChange = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
-        onPageChangeHandler(newPage+1)
+        onPageChangeHandler(newPage)
     }
 
     const onRowsPerPageChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -48,7 +48,7 @@ export const CommonTable: FC<CommonTable> = memo((props) => {
                         component="div"
                         count={!!cardsTotalCount?cardsTotalCount:1}
                         rowsPerPage={!!pageCount?pageCount:4}
-                        page={!!page?page-1:0}
+                        page={!!page?page:0}
                         onPageChange={onPageChange}
                         onRowsPerPageChange={onRowsPerPageChange}
                     />

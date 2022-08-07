@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, Draft, PayloadAction} from "@reduxjs/toolkit";
 import {
     APICards,
     CreateCardPayload,
@@ -10,15 +10,16 @@ import {
 import {AppThunk} from "../app/store";
 import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 import {restoreFromStorage} from "../../utils/LocalStorageUtils";
-import App from "../app/App";
+import {actionsErrors} from "../../Errors/ErrorsReducer";
+import {actionsApp, thunkApp} from "../app/app-reducer";
 
 type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
 
 export interface HeadCell {
     numeric: Numeric
-    id: keyof ExtendedCardEntity|"action";
+    id: keyof ExtendedCardEntity | "action";
     label: string;
-    order: "0" | "1"|undefined
+    order: "0" | "1" | undefined
 }
 
 
@@ -103,7 +104,8 @@ export const cards = cardsSlice.reducer
 export const actionsCards = cardsSlice.actions
 
 export const thunksCards = {
-    getCards: (responseMore?: any): AppThunk => (dispatch, getState) => {
+    getCards: (promise?: Promise<unknown>): AppThunk => (dispatch, getState) => {
+        dispatch(actionsApp.setAppStatus("loading"))
         //если cardsPack_id затерся после перезагрузки, берет его из хранилища
         if (!getState().cards.queryParams.cardsPack_id) {
             const cardsPack_id = restoreFromStorage("cardsPack_id")
@@ -115,22 +117,25 @@ export const thunksCards = {
             dispatch(actionsCards.getTitle(packName))
         }
 
-        Promise.allSettled([responseMore])
+        Promise.all([promise])
             .then(() => {
-                const response = APICards.getCards(getState().cards.queryParams)
+                let getPromise = APICards.getCards(getState().cards.queryParams)
                     .then((response) => {
+                        console.log('!!')
                         dispatch(actionsCards.getCards(response))
-
                     })
-                HandleToggleStatusAppAndInterceptorErrors(dispatch, [responseMore, response])
-            })
+                HandleToggleStatusAppAndInterceptorErrors(dispatch, [promise, getPromise])
+            }).catch(() => {
+            HandleToggleStatusAppAndInterceptorErrors(dispatch, [promise])
+        })
+
+
     },
     createCard: (createCardPayload: CreateCardPayload): AppThunk => (dispatch) => {
         const response = APICards.createCard(createCardPayload)
         dispatch(thunksCards.getCards(response))
     },
     updateCard: (updateCardPayload: UpdateCardPayload): AppThunk => (dispatch) => {
-
         const response = APICards.updateCard(updateCardPayload)
         dispatch(thunksCards.getCards(response))
     },
@@ -138,20 +143,20 @@ export const thunksCards = {
         const response = APICards.deleteCard(id)
         dispatch(thunksCards.getCards(response))
     },
-    sortCards: (headCell:HeadCell): AppThunk => (dispatch) => {
+    sortCards: (headCell: HeadCell): AppThunk => (dispatch) => {
         dispatch(actionsCards.updateHeadCell(headCell))
-        dispatch(actionsCards.setQueryParams({sortCards:headCell.order+headCell.id}))
+        dispatch(actionsCards.setQueryParams({sortCards: headCell.order + headCell.id}))
         dispatch(thunksCards.getCards())
     },
-    searchCard:(cardQuestion:string):AppThunk=>(dispatch)=>{
+    searchCard: (cardQuestion: string): AppThunk => (dispatch) => {
         dispatch(actionsCards.setQueryParams({cardQuestion}))
         dispatch(thunksCards.getCards())
     },
-    setPage:(page:number):AppThunk=>(dispatch)=>{
-        dispatch(actionsCards.setQueryParams({page}))
+    setPage: (page: number): AppThunk => (dispatch) => {
+        dispatch(actionsCards.setQueryParams({page: page + 1}))
         dispatch(thunksCards.getCards())
     },
-    setPageCount:(pageCount:number):AppThunk=>(dispatch)=>{
+    setPageCount: (pageCount: number): AppThunk => (dispatch) => {
         dispatch(actionsCards.setQueryParams({pageCount}))
         dispatch(thunksCards.getCards())
     }

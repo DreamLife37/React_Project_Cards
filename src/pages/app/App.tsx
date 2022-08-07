@@ -27,13 +27,13 @@ function App() {
                 </AppBar>
                 {/*<Header/>*/}
             </header>
-            <body className={'App-body'}>
+            <div className={'App-body'}>
             <Router/>
             {/*Пока что alert для ошибок в будущем хочу заюзать библиотеку https://github.com/iamhosseindhv/notistack*/}
             <AlertErrorWrap/>
             {/*Инициализационная заставка(Если App.status === 'loading' то вкл.)*/}
             <BackDropWrap/>
-            </body>
+            </div>
         </div>
     );
 }
