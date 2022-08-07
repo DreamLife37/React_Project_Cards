@@ -8,15 +8,12 @@ import TablePagination from "@mui/material/TablePagination";
 import {Row} from "../../../pages/cardsList/TableCards";
 import {EnhancedTableHead} from "./EnhancedTableHead";
 import {EnhancedTableBody} from "./EnhancedTableBody";
-import {styled} from "@mui/material/styles";
-import {ExtendedCardEntity} from "../../../DAL/API-Cards";
 
 
 export type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
 
 export interface HeadCell {
     numeric: Numeric
-    //id: keyof ExtendedCardEntity|"action";
     id: string,
     label: string;
     order: "0" | "1" | undefined
