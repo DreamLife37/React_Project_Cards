@@ -3,7 +3,6 @@ import {
     APICards,
     CreateCardPayload,
     ExtendedCardEntity,
-    getCardsPayload,
     GetCardsResponse,
     UpdateCardPayload
 } from "../../DAL/API-Cards";
@@ -68,7 +67,7 @@ const initialState = {
         },
     ] as HeadCell[],
     requestPendingList: {} as { [CardId: string]: boolean } | Record<string, never>,
-    statusCards: 'loading'
+    statusCards: 'loading' as 'idle' | 'loading'
 }
 
 const cardsSlice = createSlice({
@@ -113,7 +112,7 @@ export const cards = cardsSlice.reducer
 export const actionsCards = cardsSlice.actions
 
 export const thunksCards = {
-    getCards: (promise?: Promise<unknown>, id?: string): AppThunk => (dispatch, getState) => {
+    getCards: (promise?: Promise<unknown>, cardId?: string): AppThunk => (dispatch, getState) => {
         //если cardsPack_id затерся после перезагрузки, берет его из хранилища
         if (!getState().cards.cardsPack_id) {
             const cardsPack_id: string = restoreFromStorage("cardsPack_id")
@@ -131,14 +130,20 @@ export const thunksCards = {
                     .then((response) => {
                         dispatch(actionsCards.getCards(response))
                         dispatch(actionsCards.setStatusCards("idle"))
-                        if (!!id) {
-                            dispatch(actionsCards.deleteIdInRequestPendingList(id))
+                        if (!!cardId) {
+                            dispatch(actionsCards.deleteIdInRequestPendingList(cardId))
                         }
-                    })
+                    }).catch((e)=>{
+                    handlerNetworkError(dispatch, e)
+                    dispatch(actionsCards.setStatusCards("idle"))
+                })
 
             }).catch((e) => {
             handlerNetworkError(dispatch, e)
             dispatch(actionsCards.setStatusCards("idle"))
+            if (!!cardId) {
+                dispatch(actionsCards.deleteIdInRequestPendingList(cardId))
+            }
         })
 
 

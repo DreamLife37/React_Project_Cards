@@ -1,5 +1,5 @@
-import * as React from "react";
-import {FC, memo, ReactNode} from "react";
+import  React from "react";
+import {FC, memo} from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import TableContainer from "@mui/material/TableContainer";

@@ -29,7 +29,7 @@ export const EnhancedTableHead: React.FC<EnhancedTableProps> = ({sortHandler, he
                         <Typography>
                             <TableSortLabel
                                 hideSortIcon={!headCell.order}
-                                active={!!headCell.order}
+                                // active={!!headCell.order}
                                 direction={headCell.order&&headCell.order==="0"?"asc":"desc"}
                                 onClick={onSortHandler(headCell)}
                             >
