@@ -9,6 +9,7 @@ import {
 import {AppDispatchType, AppThunk} from "../app/store";
 import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 import {ExtendedCardEntity, getCardsPayload, GetCardsResponse} from "../../DAL/API-Cards";
+import {actionsCards} from "../cardsList/CardsReducer";
 
 
 type InitialState = {
@@ -25,7 +26,7 @@ export interface HeadCell {
     //id: keyof CardPacksEntityWithDeckCover|"action";
     id: string,
     label: string;
-    order: "0" | "1"|undefined
+    order: "0" | "1" | undefined
 }
 
 
@@ -125,28 +126,25 @@ export const thunksPack = {
         dispatch(thunksPack.getPack())
     },
     filterMyPacks: (user_id: string): AppThunk => (dispatch: AppDispatchType) => {
-        //ни чего больше писать не надо все случится автоматически
-        //нужно только поменять в стейте квери параметр и вызвать санку getPack
         dispatch(actionsPacks.setQuery({user_id}))
         dispatch(thunksPack.getPack())
     },
-    sortPack: (sortPacks: string): AppThunk => (dispatch: AppDispatchType) => {
-        //ни чего больше писать не надо все случится автоматически
-        //нужно только поменять в стейте квери параметр и вызвать санку getPack
-        dispatch(actionsPacks.setQuery({sortPacks}))
-        dispatch(thunksPack.getPack())
-    },
-    sortPackMinMax: (min: number, max: number): AppThunk => (dispatch: AppDispatchType) => {
-        //ни чего больше писать не надо все случится автоматически
-        //нужно только поменять в стейте квери параметр и вызвать санку getPack
-        dispatch(actionsPacks.setQuery({min, max}))
-        dispatch(thunksPack.getPack())
-    },
-    getPackWithSetQuery: (payload: getCardPacksPayload): AppThunk => (dispatch: AppDispatchType) => {
-        //ни чего больше писать не надо все случится автоматически
-        //нужно только поменять в стейте квери параметр и вызвать санку getPack
-        dispatch(actionsPacks.setQuery(payload))
+
+    sortPack: (headCell: { numeric: "inherit" | "right" | "left" | "center" | "justify" | undefined; id: string; label: string; order: string }): AppThunk => (dispatch) => {
+        dispatch(actionsPacks.setQuery({sortPacks: headCell.order + headCell.id}))
         dispatch(thunksPack.getPack())
     },
 
+    sortPackMinMax: (min: number, max: number): AppThunk => (dispatch: AppDispatchType) => {
+        dispatch(actionsPacks.setQuery({min, max}))
+        dispatch(thunksPack.getPack())
+    },
+    setPage: (page: number): AppThunk => (dispatch) => {
+        dispatch(actionsPacks.setQuery({page}))
+        dispatch(thunksPack.getPack())
+    },
+    setPageCount: (pageCount: number): AppThunk => (dispatch) => {
+        dispatch(actionsPacks.setQuery({pageCount}))
+        dispatch(thunksPack.getPack())
+    }
 }

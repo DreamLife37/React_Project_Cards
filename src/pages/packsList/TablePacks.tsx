@@ -123,7 +123,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         align={headCell.numeric ? 'right' : 'left'}
                         padding={'none'}
                         sortDirection={orderBy === headCell.id ? order : false}
-                        onClick={() => dispatch(thunksPack.sortPack(sortHandler(headCell.id, order)))}
+                        //onClick={() => dispatch(thunksPack.sortPack(sortHandler(headCell.id, order)))}
                     >
                         <TableSortLabel
                             active={orderBy === headCell.id}
@@ -196,12 +196,12 @@ export function TablePacks(props: TablePacksPropsType) {
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
-        dispatch(thunksPack.getPackWithSetQuery({page: newPage}));
+        //dispatch(thunksPack.getPackWithSetQuery({page: newPage}));
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(+event.target.value);
-        dispatch(thunksPack.getPackWithSetQuery({pageCount: +event.target.value}))
+       // dispatch(thunksPack.getPackWithSetQuery({pageCount: +event.target.value}))
         setPage(0);
     };
 

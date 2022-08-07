@@ -14,7 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import {CardPacksEntityWithDeckCover} from "../../DAL/API-CardsPack";
 import {HeadCell, thunksPack} from "./PackReducer";
-import {actionsCards} from "../cardsList/CardsReducer";
+import {actionsCards, thunksCards} from "../cardsList/CardsReducer";
 import {Path} from "../Routes";
 import {useNavigate} from "react-router-dom";
 import TableCell from '@material-ui/core/TableCell';
@@ -45,9 +45,9 @@ export const TablePacks1: React.FC<TablePacksType> = memo(({headCells, packs}) =
         const cardsPack_id = useSelectorApp(state => state.cards.queryParams.cardsPack_id)
         const userId = useSelectorApp(state => state.auth._id)
         const cardsUserId = useSelectorApp(state => state.cards.cards.packUserId)
-        const cardsTotalCount = useSelectorApp(state => state.cards.cards.cardsTotalCount)
-        const pageCount = useSelectorApp(state => state.cards.cards.pageCount)
-        const page = useSelectorApp(state => state.cards.cards.page)
+        const packsTotalCount = useSelectorApp(state => state.packs.packsData.cardPacksTotalCount)
+        const pageCount = useSelectorApp(state => state.packs.packsData.pageCount)
+        const page = useSelectorApp(state => state.packs.packsData.page)
         const packName = useSelectorApp(state => state.cards.packTitle)
 
         const dispatch = useDispatchApp()
@@ -56,27 +56,18 @@ export const TablePacks1: React.FC<TablePacksType> = memo(({headCells, packs}) =
         const isMyPack = cardsUserId === userId
 
         const sortHandler = useCallback((headCell: HeadCell) => {
-            //dispatch(thunksCards.sortCards({...headCell, order: headCell.order === "0" ? "1" : "0"}))
+            dispatch(thunksPack.sortPack({...headCell, order: headCell.order === "0" ? "1" : "0"}))
+
         }, [dispatch])
 
-        const changeGrade = useCallback((_id: string, grade: number | null) => {
-            // isMyPack && dispatch(thunksCards.updateCard({_id, grade}))
-        }, [dispatch, isMyPack])
-
-        const changeQuestion = useCallback((_id: string) => (question: string) => {
-            // isMyPack && dispatch(thunksCards.updateCard({_id, question}))
-        }, [dispatch, isMyPack])
-
-        const changeAnswer = useCallback((_id: string) => (answer: string) => {
-            // isMyPack && dispatch(thunksCards.updateCard({_id, answer}))
-        }, [dispatch, isMyPack])
-
         const onPageChangeHandler = useCallback((page: number) => {
-            //dispatch(thunksCards.setPage(page))
+            dispatch(thunksPack.setPage(page))
         }, [dispatch])
 
         const onRowsPerPageChangeHandler = useCallback((setPageCount: number) => {
-            // dispatch(thunksCards.setPageCount(setPageCount))
+            //dispatch(thunksPack.setPageCount(setPageCount))
+            dispatch(thunksPack.setPageCount(setPageCount))
+
         }, [dispatch])
 
         const deletePackHandler = (packId: string) => {
@@ -86,7 +77,6 @@ export const TablePacks1: React.FC<TablePacksType> = memo(({headCells, packs}) =
         const editPackHandler = (packId: string, namePack: string) => {
             dispatch(thunksPack.updatePack({_id: packId, name: namePack}))
         }
-
 
         const rows: Array<Row[]> = useMemo(
             () => (
@@ -103,8 +93,7 @@ export const TablePacks1: React.FC<TablePacksType> = memo(({headCells, packs}) =
                             },
                             {
                                 optionsCell: "center",
-                                cell: <CustomEditSpan autoFocus fullWidth variant='standard'
-                                                      onBlurInput={changeAnswer(pack._id)} value={String(pack.cardsCount)}/>
+                                cell: <TableCell>{String(pack.cardsCount)}</TableCell>
                             },
                             {
                                 optionsCell: "center",
@@ -128,11 +117,10 @@ export const TablePacks1: React.FC<TablePacksType> = memo(({headCells, packs}) =
         return (
 
             <BoxCardPages container>
-                <CardsTableToolbar isMyPack={isMyPack} title={packName} cardsPack_id={cardsPack_id}/>
                 <CommonTable
                     onPageChangeHandler={onPageChangeHandler}
                     onRowsPerPageChangeHandler={onRowsPerPageChangeHandler}
-                    cardsTotalCount={cardsTotalCount}
+                    cardsTotalCount={packsTotalCount}
                     pageCount={pageCount}
                     page={page}
                     sortHandler={sortHandler}
@@ -162,16 +150,20 @@ const CommonAction = (props: CommonActionType) => {
     return (
         <div>
             <Tooltip title="Delete pack">
-                <IconButton disabled={props.userId !== props.row.user_id && true}
-                            onClick={() => props.deleteRowHandler(props.row._id)}>
+                <IconButton
+                    disabled={props.userId !== props.row.user_id && true}
+                    onClick={() => props.deleteRowHandler(props.row._id)}>
                     <DeleteIcon fontSize={"small"}/>
                 </IconButton>
             </Tooltip>
             <Tooltip title="Edit pack">
-                <IconButton disabled={props.userId !== props.row.user_id && true}
-                            onClick={() => props.editRowHandler(props.row._id, 'IT-INCUBATOR лучшие!')}>
+
+                <IconButton
+                    onClick={() => props.editRowHandler(props.row._id, 'IT-INCUBATOR лучшие!')}
+                    disabled={props.userId !== props.row.user_id && true}>
                     <EditIcon fontSize={"small"}/>
                 </IconButton>
+
             </Tooltip>
         </div>
     )

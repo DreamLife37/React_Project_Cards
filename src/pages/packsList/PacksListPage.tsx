@@ -16,14 +16,12 @@ export const PacksListPage = () => {
 
     const cardPackEntity = useSelectorApp(state => state.packs.packsData.cardPacks)
     const headCells = useSelectorApp(state => state.packs.initHeadCells)
-    //если этот юзеффект убрать то двойная перерисовка пропадет
+    const isAuthorized = useSelectorApp(state => state.auth.isAuthorized)
+
     const dispatch = useDispatchApp()
-    useEffect(() => {
-        dispatch(thunksPack.getPack())
-    }, [])
 
     const AddNewPack = () => {
-        dispatch(thunksPack.createPack({name: 'програмист! иди спать, ты пьян!'}))
+        dispatch(thunksPack.createPack({name: 'програмист!'}))
     }
 
     const StyledButton = styled(Button)`
@@ -35,13 +33,12 @@ export const PacksListPage = () => {
         <Grid container spacing={2} justifyContent='center' columnSpacing={{xs: 1, sm: 2, md: 3}}>
             <Grid container alignItems="center" direction="row"
                   justifyContent="center" paddingTop={'40px'}><Grid item xs={6}>PacksList</Grid>
-                <Grid item xs={6}>
-
-                    <StyledButton onClick={AddNewPack} color="inherit" variant='contained'>
-                        Add new pack
-                    </StyledButton>
-
-                </Grid>
+                {isAuthorized &&
+                    <Grid item xs={6}>
+                        <StyledButton onClick={AddNewPack} color="inherit" variant='contained'>
+                            Add new pack
+                        </StyledButton>
+                    </Grid>}
             </Grid>
             <Grid container alignItems="flex-start" direction="row"
                   justifyContent="center"
@@ -59,7 +56,7 @@ export const PacksListPage = () => {
                             Search
                         </Typography>
                         <Search/></Grid></Grid>
-                <Grid item xs={2}>
+                {isAuthorized && <Grid item xs={2}>
                     <Grid container alignItems="center" direction="row"
                           justifyContent="center">
                         <Typography
@@ -72,7 +69,7 @@ export const PacksListPage = () => {
                         </Typography>
                         <FilterMyPacks/>
                     </Grid>
-                </Grid>
+                </Grid>}
                 <Grid item xs={2}>
                     <Grid container alignItems="center" direction="row"
                           justifyContent="center">
@@ -84,7 +81,8 @@ export const PacksListPage = () => {
                         >
                             Number of cards
                         </Typography>
-                        <NumberOfCards/></Grid>
+                        <NumberOfCards/>
+                    </Grid>
                 </Grid>
             </Grid>
             <Grid item xs={10}>
