@@ -18,6 +18,7 @@ import TableCell from '@material-ui/core/TableCell';
 import {ModalFormikPackType} from "./modals/FormikFormModal";
 import {AddAndEditPackModal} from "./modals/AddAndEditPackModal";
 import {School} from "@mui/icons-material";
+import {DeletePackModal} from "./modals/DeletePackModal";
 
 export type Row = {
     optionsCell: Numeric,
@@ -140,22 +141,32 @@ type CommonActionType = {
 }
 const CommonAction = (props: CommonActionType) => {
 
-    const [open, setOpen] = useState(false)
-    const handleOpen = (): void => setOpen(true)
-    const handleClose = (): void => setOpen(false)
+    const [openModalAdd, setOpenModalAdd] = useState(false)
+    const handleOpenModalAdd = (): void => setOpenModalAdd(true)
+    const handleCloseModalAdd = (): void => setOpenModalAdd(false)
+
+    const [openModalDelete, setOpenModalDelete] = useState(false)
+    const handleOpenModalDelete = (): void => setOpenModalDelete(true)
+    const handleCloseModalDelete = (): void => setOpenModalDelete(false)
 
     const editPack = (e: ModalFormikPackType) => {
         props.editRowHandler(props.row._id, e.namePack)
     }
+
+    const deletePack = () => {
+        props.deleteRowHandler(props.row._id)
+    }
     return (
         <div>
-            <AddAndEditPackModal callback={editPack} handleClose={handleClose} open={open}
+            <AddAndEditPackModal callback={editPack} handleClose={handleCloseModalAdd} open={openModalAdd}
                                  title={'Edit name pack'}/>
+            <DeletePackModal open={openModalDelete} handleClose={handleCloseModalDelete} title={'Deleted pack'}
+                             callback={deletePack}/>
             <Tooltip title="Delete pack">
                 <span>
                 <IconButton
                     disabled={props.userId !== props.row.user_id && true}
-                    onClick={() => props.deleteRowHandler(props.row._id)}>
+                    onClick={handleOpenModalDelete}>
                     <DeleteIcon fontSize={"small"}/>
                 </IconButton>
                 </span>
@@ -163,7 +174,7 @@ const CommonAction = (props: CommonActionType) => {
             <Tooltip title="Edit pack">
                  <span>
                 <IconButton
-                    onClick={handleOpen}
+                    onClick={handleOpenModalAdd}
                     disabled={props.userId !== props.row.user_id && true}>
                     <EditIcon fontSize={"small"}/>
                 </IconButton>
