@@ -21,10 +21,11 @@ type PropsType = {
     children: ReactElement
     handleClose: () => void
     open: boolean
+    disabledStyle?:boolean
 
 }
 
-export const CustomModal: FC<PropsType> = ({children, handleClose, open}) => {
+export const CustomModal: FC<PropsType> = ({disabledStyle,children, handleClose, open}) => {
     return (
         <div>
             <Modal
@@ -33,7 +34,7 @@ export const CustomModal: FC<PropsType> = ({children, handleClose, open}) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={disabledStyle?undefined:style}>
                     {children}
                 </Box>
             </Modal>
