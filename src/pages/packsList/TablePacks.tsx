@@ -123,7 +123,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         align={headCell.numeric ? 'right' : 'left'}
                         padding={'none'}
                         sortDirection={orderBy === headCell.id ? order : false}
-                        onClick={() => dispatch(thunksPack.sortPack(sortHandler(headCell.id, order)))}
+                        //onClick={() => dispatch(thunksPack.sortPack(sortHandler(headCell.id, order)))}
                     >
                         <TableSortLabel
                             active={orderBy === headCell.id}
@@ -179,9 +179,7 @@ type TablePacksPropsType = {
 export function TablePacks(props: TablePacksPropsType) {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Data>("created");
-    const [selected, setSelected] = React.useState<readonly string[]>([]);
     const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const dispatch = useDispatchApp()
@@ -198,12 +196,12 @@ export function TablePacks(props: TablePacksPropsType) {
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
-        dispatch(thunksPack.getPackWithSetQuery({page: newPage}));
+        //dispatch(thunksPack.getPackWithSetQuery({page: newPage}));
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(+event.target.value);
-        dispatch(thunksPack.getPackWithSetQuery({pageCount: +event.target.value}))
+       // dispatch(thunksPack.getPackWithSetQuery({pageCount: +event.target.value}))
         setPage(0);
     };
 
@@ -276,15 +274,7 @@ export function TablePacks(props: TablePacksPropsType) {
                                         </TableRow>
                                     );
                                 })}
-                            {emptyRows > 0 && (
-                                <TableRow
-                                    style={{
-                                        height: (dense ? 33 : 53) * emptyRows,
-                                    }}
-                                >
-                                    <TableCell colSpan={6}/>
-                                </TableRow>
-                            )}
+
                         </TableBody>
                     </Table>
                 </TableContainer>

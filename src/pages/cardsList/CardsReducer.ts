@@ -14,10 +14,12 @@ export type Numeric = "inherit" | "right" | "left" | "center" | "justify" | unde
 
 export type HeadCell = {
     numeric: Numeric
-    id: keyof ExtendedCardEntity | "action";
+    id: string;
     label: string;
     order: "0" | "1" | undefined
 }
+
+
 type QueryParamsT = {
     cardAnswer?: string,
     cardQuestion?: string,
@@ -161,7 +163,9 @@ export const thunksCards = {
         const response = APICards.deleteCard(id)
         dispatch(thunksCards.getCards(response, id))
     },
+
     sortCards: (headCell: HeadCell): AppThunk => (dispatch) => {
+
         dispatch(actionsCards.updateHeadCell(headCell))
         dispatch(actionsCards.setQueryParams({sortCards: headCell.order + headCell.id}))
         dispatch(thunksCards.getCards())
