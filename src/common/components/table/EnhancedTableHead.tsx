@@ -1,20 +1,22 @@
-import  React from "react";
+import React from "react";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import {Typography} from "@mui/material";
-import {HeadCell} from "../../../pages/cardsList/CardsReducer";
+import {HeadCell} from "./CommonTable";
 
 interface EnhancedTableProps {
     headCells: HeadCell[]
-    sortHandler: (headCell:HeadCell) => void
+    sortHandler: (headCell: HeadCell) => void
 }
 
 export const EnhancedTableHead: React.FC<EnhancedTableProps> = ({sortHandler, headCells}) => {
 
-    const onSortHandler = (headCell:HeadCell) => () => {
-        if(!headCell.order){return}
+    const onSortHandler = (headCell: HeadCell) => () => {
+        if (!headCell.order) {
+            return
+        }
         sortHandler(headCell)
     }
 
@@ -30,7 +32,7 @@ export const EnhancedTableHead: React.FC<EnhancedTableProps> = ({sortHandler, he
                             <TableSortLabel
                                 hideSortIcon={!headCell.order}
                                 // active={!!headCell.order}
-                                direction={headCell.order&&headCell.order==="0"?"asc":"desc"}
+                                direction={headCell.order && headCell.order === "0" ? "asc" : "desc"}
                                 onClick={onSortHandler(headCell)}
                             >
                                 {headCell.label}

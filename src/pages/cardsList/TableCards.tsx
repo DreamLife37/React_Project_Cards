@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {FC, memo, ReactNode, useCallback, useEffect, useMemo} from 'react';
-import {ExtendedCardEntity, UpdateCardPayload} from "../../DAL/API-Cards";
-import {CommonTable} from "../../common/components/table/CommonTable";
+import {ExtendedCardEntity} from "../../DAL/API-Cards";
+import {CommonTable, HeadCell, Numeric} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
 import {Grid, LinearProgress, Rating} from "@mui/material";
-import {actionsCards, HeadCell, Numeric, thunksCards} from "./CardsReducer";
+import {actionsCards, thunksCards} from "./CardsReducer";
 import {CustomEditSpan} from "../../common/components/table/CustomEditbleSpan";
-import {CardsTableToolbar} from "../../common/components/table/CardsTableToolbar";
+import {CardsTableToolbar} from "./CardsTableToolbar";
 import {styled} from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";

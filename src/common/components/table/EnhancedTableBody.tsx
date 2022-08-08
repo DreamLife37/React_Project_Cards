@@ -15,8 +15,8 @@ export const EnhancedTableBody: FC<EnhancedTableBody> = memo(({rows}) => {
                 {rows.map((row, i) =>
                     <TableRow key={String(row) + i}>
                         {
-                            row.map((item:Row, i) => <TableCell key={String(item) + i}
-                                                              align={item.optionsCell}>{item.cell}</TableCell>
+                            row.map((item: Row, i) => <TableCell key={String(item) + i}
+                                                                 align={item.optionsCell}>{item.cell}</TableCell>
                             )
                         }
                     </TableRow>
