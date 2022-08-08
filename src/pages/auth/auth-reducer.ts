@@ -51,81 +51,58 @@ const authSlice = createSlice({
 })
 
 export const authReducer = authSlice.reducer
-
 export const actionsAuth = authSlice.actions
-
-export const registration = (data: RegisterPayloadType): AppThunk =>  (dispatch: Dispatch<ActionAuthType>) => {
-
-    const response =  APIAuth.register(data)
-        .then(() => {
-            dispatch(actionsAuth.setRegisteredUser(true))
-        })
-        .catch(err => {
-            handlerNetworkError(dispatch, err)
-        })
-    //утилитка переключения  статуса Апп
-    //если вызвать в try то сработает только при успешном запросе
-    HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
-}
 
 
 export const thunkAuth = {
 
-    registration : (data: RegisterPayloadType): AppThunk =>  (dispatch: Dispatch<ActionAuthType>) => {
+    registration: (data: RegisterPayloadType): AppThunk => (dispatch: Dispatch<ActionAuthType>) => {
 
-        const response =  APIAuth.register(data)
+        const response = APIAuth.register(data)
             .then(() => {
                 dispatch(actionsAuth.setRegisteredUser(true))
             })
-            .catch(err => {
-                handlerNetworkError(dispatch, err)
-            })
         //утилитка переключения  статуса Апп
         //если вызвать в try то сработает только при успешном запросе
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
     },
-    setNameOrAvatar:(payload:{name?: string,avatar?:string}):AppThunk=> (dispatch:AppDispatchType)=>{
+    setNameOrAvatar: (payload: { name?: string, avatar?: string }): AppThunk => (dispatch: AppDispatchType) => {
         dispatch(actionsApp.setAppStatus('loading'))
-        const response=  APIAuth.updateNickOrAvatar(payload)
-            .then((res)=>{
+        const response = APIAuth.updateNickOrAvatar(payload)
+            .then((res) => {
                 dispatch(actionsAuth.setLoginData({...res.data.updatedUser, isAuthorized: true, isRegistration: true}))
-            }).catch((e)=>{
-                handlerNetworkError(dispatch, e)
             })
         //утилитка переключения  статуса Апп
         //если вызвать в try то сработает только при успешном запросе
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
     },
 
-    login: (loginPayload: LoginPayloadType): AppThunk =>  (dispatch: AppDispatchType) => {
+    login: (loginPayload: LoginPayloadType): AppThunk => (dispatch: AppDispatchType) => {
 
 
-        const response =  APIAuth.login(loginPayload)
+        const response = APIAuth.login(loginPayload)
             .then((response) => {
                 if (response.statusText === 'OK') {
                     dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: true}))
                 }
             })
-        //утилитка переключения  статуса Апп
-        //если вызвать в try то сработает только при успешном запросе
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
     },
 
-    authMe: (): AppThunk => async (dispatch: AppDispatchType) => {
-        try {
-            const response = await APIAuth.authMe();
-            if (response.statusText === 'OK') {
-                dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: false}))
-                return response
+    authMe: (): AppThunk => (dispatch: AppDispatchType) => {
+
+        const response = APIAuth.authMe().then((response) => {
+                if (response.statusText === 'OK') {
+                    dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: false}))
+                }
             }
-        } catch (e) {
-            return e
-        }
+        )
+        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response], "initialize")
     },
 
-    logout: (): AppThunk =>  (dispatch: AppDispatchType) => {
+    logout: (): AppThunk => (dispatch: AppDispatchType) => {
 
-        const response =  APIAuth.logOut()
+        const response = APIAuth.logOut()
             .then((response) => {
                 if (response.statusText === 'OK') {
                     dispatch(actionsAuth.setLoginData(
@@ -144,36 +121,24 @@ export const thunkAuth = {
                     )
                 }
             })
-            .catch((e) => {
-                handlerNetworkError(dispatch, e)
-            })
-        //утилитка переключения  статуса Апп
-        //если вызвать в try то сработает только при успешном запросе
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
     },
-    fetchRecoveryPassMail: (email: string): AppThunk =>  (dispatch: AppDispatchType) => {
+    fetchRecoveryPassMail: (email: string): AppThunk => (dispatch: AppDispatchType) => {
         //санка отправляет запрос на восстановление пароля и ретернит любой ответ
         // если статус текст ОК то страница восстановления пароля редиректит на  страницу информирования
         // проверки почты, если  статус текст undefined то редиректит обратно на логин
         const message = "<div style=\"background-color: lime; padding: 15px\"> password recovery link: <a href='https://dreamlife37.github.io/React_Project_Cards/#/set-new-password/$token$'>Жмякни быстро на ссыль!</a></div>"
-
-        const response =  APIAuth.forgotPassword({email, message, from: ''})
-            .catch((e) => {
-                handlerNetworkError(dispatch, e)
-            })
+        const response = APIAuth.forgotPassword({email, message, from: ''})
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
         return response
 
     },
-    setPassword: (payload: setNewPassWordPayloadType): AppThunk =>  (dispatch: AppDispatchType) => {
+    setPassword: (payload: setNewPassWordPayloadType): AppThunk => (dispatch: AppDispatchType) => {
         //санка отправляет запрос с новым паролем и токеном из URL и  ретернит response,
         // если в респонсе статус текст ОК то страница изменения пароля
         // редиректит на страницу логина, если статус текст undefined  то редиректит
         // обратно на страницу запроса почты для отправки письма воссттановленя пароля
-        const response =  APIAuth.setNewPassWord(payload)
-            .catch((e) => {
-                handlerNetworkError(dispatch, e)
-            })
+        const response = APIAuth.setNewPassWord(payload)
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
         return response
     }

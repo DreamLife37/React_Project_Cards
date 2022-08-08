@@ -15,7 +15,7 @@ type FormikErrorType = {
 
 export const SetNewPassword = () => {
 
-    const status = useSelectorApp(state => state.app.status)
+    const status = useSelectorApp(state => state.app.statusApp)
     const params = useParams()
     const navigate = useNavigate()
     const dispatch = useDispatchApp()

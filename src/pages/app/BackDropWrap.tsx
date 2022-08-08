@@ -4,7 +4,7 @@ import React from "react";
 
 export const BackDropWrap = () => {
     //useSelectorApp кастомный хук, типизировать не надо
-    const status = useSelectorApp(state => state.app.status)
+    const status = useSelectorApp(state => state.app.statusApp)
     // при инициализации полностью затеняет фон, при загрузке затеняет фон частично
     const toggleBackGround = () => status === 'initialize'?'#282c34':undefined
 

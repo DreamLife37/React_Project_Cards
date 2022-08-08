@@ -47,7 +47,7 @@ export const CardsTableToolbar: FC<EnhancedTableToolbar> = memo(({isMyPack, titl
                     <Title>
                         {title}
                     </Title>
-                    <SearchCard>
+                    <SearchCard >
                         <div>Search</div>
                         <Search searchCallback={searchCard}/>
                     </SearchCard>
