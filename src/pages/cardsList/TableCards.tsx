@@ -149,7 +149,6 @@ type CommonActionT = {
     disabled:boolean
 }
 const CommonAction: FC<CommonActionT> = ({handleDelete, handleEdit, id,disabled}) => {
-    console.log(disabled)
     const onDelete = () => {
         handleDelete(id)
     }
