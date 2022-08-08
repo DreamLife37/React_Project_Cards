@@ -13,8 +13,8 @@ export type getCardsPayload = {
 }
 
 export interface CardsResponse {
-    //"token": string,
-    //"tokenDeathTime": number
+    "token": string,
+    "tokenDeathTime": number
 }
 
 export interface ExtendedCardsResponse extends CardsResponse {
@@ -40,7 +40,7 @@ export interface CardEntity {
     "more_id": string,
     "created": string,
     "updated": string,
-    //"__v": number
+    "__v": number
 }
 
 export interface ExtendedCardEntity extends CardEntity {
@@ -48,6 +48,21 @@ export interface ExtendedCardEntity extends CardEntity {
     "answerVideo": string,
     "questionImg": string,
     "questionVideo": string
+}
+
+export type UpdateGradeCardResponseT = {
+    "updatedGrade": {
+        "_id": string,
+        "cardsPack_id": string,
+        "card_id": string,
+        "user_id": string,
+        "grade": number,
+        "shots": number,
+        "more_id": string,
+        "created": string,
+        "updated": string,
+        "__v": number
+    }
 }
 
 export interface CreateCardResponse extends CardsResponse {
@@ -66,6 +81,8 @@ export interface GetCardsResponse extends ExtendedCardsResponse {
     cards: ExtendedCardEntity[]
 }
 
+
+
 export type CreateCardPayload = {
     cardsPack_id: string
     question?: string//"no question" // если не отправить будет таким
@@ -82,13 +99,17 @@ export type UpdateCardPayload = {
     "answer"?: string | null,
     "question"?: string | null,
     "grade"?: number | null, //на сколько я понял глобальный рейтинг нельзя выставлять
-    "shots"?: number | null,
+    "shots"?: number | null,//и попытки тоже
     "comments"?: string | null,
     "type"?: string | null,
     "answerImg"?: string | null,
     "answerVideo"?: string | null,
     "questionImg"?: string | null,
     "questionVideo"?: string | null
+}
+export type GradeCardPayLoad={
+    grade:1|2|3|4|5,
+    card_id:string
 }
 
 
@@ -127,5 +148,8 @@ export const APICards = {
             .then((response: AxiosResponse<UpdateCardResponse>) => response.data),
 
     deleteCard: (id: string) => instance.delete(`/cards/card`, {params: {id}})
-        .then((response: AxiosResponse<DeleteCardResponse>) => response.data)
+        .then((response: AxiosResponse<DeleteCardResponse>) => response.data),
+
+    updateGradeCard:(updateGradeCard:GradeCardPayLoad)=> instance.put(`/cards/grade`,updateGradeCard)
+        .then((response:AxiosResponse<UpdateGradeCardResponseT>)=> response.data)
 }

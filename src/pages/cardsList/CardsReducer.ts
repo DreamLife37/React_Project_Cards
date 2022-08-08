@@ -3,7 +3,7 @@ import {
     APICards,
     CreateCardPayload,
     ExtendedCardEntity,
-    GetCardsResponse,
+    GetCardsResponse, GradeCardPayLoad,
     UpdateCardPayload
 } from "../../DAL/API-Cards";
 import {AppThunk} from "../app/store";
@@ -181,6 +181,12 @@ export const thunksCards = {
     setPageCount: (pageCount: number): AppThunk => (dispatch) => {
         dispatch(actionsCards.setQueryParams({pageCount}))
         dispatch(thunksCards.getCards())
+    },
+    updateCardGrade:(gradeCardPayLoad:GradeCardPayLoad):AppThunk=>(dispatch)=>{
+        APICards.updateGradeCard(gradeCardPayLoad)
+            .catch((e)=>{
+                handlerNetworkError(dispatch,e)
+            })
     }
 
 
