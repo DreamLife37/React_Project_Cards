@@ -9,6 +9,7 @@ import {RedirectPage} from "./auth/recovery-password/RedirectPage";
 import {Settings} from "./Settings";
 import {PacksListPage} from "./packsList/PacksListPage";
 import {CardsPage} from "./cardsList/TableCards";
+import {LearnPage} from "./learn/LearnPage";
 
 
 
@@ -22,7 +23,8 @@ export enum Path {
     redirectAfterSendRecoveryPassEmail = '/redirect-page',
     settings = '/settings',
     packsList = '/packsList',
-    cardList='/cardList'
+    cardList='/cardList',
+    learn='/learn'
 }
 
 export const Router = () => {
@@ -43,6 +45,7 @@ export const Router = () => {
                 <Route path={Path.settings} element={<Settings/>}/>
                 <Route path={Path.packsList} element={<PacksListPage/>}/>
                 <Route path={Path.cardList} element={<CardsPage/>}/>
+                <Route path={Path.learn} element={<LearnPage/>}/>
             </Routes>
         </div>
     )

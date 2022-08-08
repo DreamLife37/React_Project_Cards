@@ -7,7 +7,6 @@ import {TablePacks1} from "./TablePacks1";
 
 export const PacksPage = () => {
 
-    const cardsPack_id = useSelectorApp(state => state.cards.queryParams.cardsPack_id)
     const packs = useSelectorApp(state => state.packs.packsData.cardPacks)
     const headCells = useSelectorApp(state => state.packs.initHeadCells)
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {FC, memo, ReactNode, useCallback, useEffect, useMemo} from 'react';
-import {ExtendedCardEntity, UpdateCardPayload} from "../../DAL/API-Cards";
+import {ExtendedCardEntity} from "../../DAL/API-Cards";
 import {CommonTable} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
@@ -149,7 +149,6 @@ type CommonActionT = {
     disabled:boolean
 }
 const CommonAction: FC<CommonActionT> = ({handleDelete, handleEdit, id,disabled}) => {
-    console.log(disabled)
     const onDelete = () => {
         handleDelete(id)
     }
