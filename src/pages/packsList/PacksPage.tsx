@@ -7,7 +7,6 @@ import {TablePacks} from "./TablePacks";
 
 export const PacksPage = () => {
 
-
     const packs = useSelectorApp(state => state.packs.packsData.cardPacks)
     const headCells = useSelectorApp(state => state.packs.initHeadCells)
 

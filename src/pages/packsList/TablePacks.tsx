@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {memo, ReactNode, useCallback, useMemo, useState} from 'react';
+import {memo, ReactElement, ReactNode, useCallback, useMemo, useState} from 'react';
 import {CommonTable, HeadCell, Numeric} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
@@ -17,6 +17,7 @@ import {useNavigate} from "react-router-dom";
 import TableCell from '@material-ui/core/TableCell';
 import {ModalFormikPackType} from "./modals/FormikFormModal";
 import {AddAndEditPackModal} from "./modals/AddAndEditPackModal";
+import {School} from "@mui/icons-material";
 
 export type Row = {
     optionsCell: Numeric,
@@ -69,6 +70,11 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                             dispatch(actionsCards.getTitle(pack.name))
                             navigate(Path.cardList)
                         }
+                        const moveOnLearnPage = () => {
+                            dispatch(actionsCards.setPackId(pack._id))
+                            dispatch(actionsCards.getTitle(pack.name))
+                            navigate(Path.learn)
+                        }
                         return [
                             {
                                 optionsCell: 'center',
@@ -89,6 +95,8 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                             {
                                 optionsCell: "center",
                                 cell: <CommonAction row={pack} userId={userId}
+                                                    children={<IconButton onClick={moveOnLearnPage}><School/></IconButton>}
+                                                    childrenTitle='Learn'
                                                     deleteRowHandler={deletePackHandler}
                                                     editRowHandler={editPackHandler}/>
                             }
@@ -127,6 +135,8 @@ type CommonActionType = {
     userId: string
     deleteRowHandler: (id: string) => void
     editRowHandler: (id: string, newNamePack: string) => void
+    children?: ReactElement
+    childrenTitle?: string
 }
 const CommonAction = (props: CommonActionType) => {
 
@@ -159,6 +169,16 @@ const CommonAction = (props: CommonActionType) => {
                 </IconButton>
                  </span>
             </Tooltip>
+
+            {
+                props.children &&
+                <Tooltip title={props.childrenTitle ? props.childrenTitle : false}>
+                 <span>
+                {props.children}
+                 </span>
+                </Tooltip>
+            }
+
         </div>
     )
 }
