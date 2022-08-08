@@ -6,11 +6,30 @@ import {CustomModal} from "../../common/components/modals/CustomModal";
 import {useEffect, useState} from "react";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {thunksCards} from "../cardsList/CardsReducer";
+import {ExtendedCardEntity} from "../../DAL/API-Cards";
+
+
+const grades = ['не знал', 'забыл', 'долго думал', 'перепутал', 'знал'];
+
+const getCard = (cards: ExtendedCardEntity[]) => {
+    const sum = cards.reduce((acc, card) => acc + (6 - card.grade) * (6 - card.grade), 0);
+    const rand = Math.random() * sum;
+    const res = cards.reduce((acc: { sum: number, id: number}, card, i) => {
+            const newSum = acc.sum + (6 - card.grade) * (6 - card.grade);
+            return {sum: newSum, id: newSum < rand ? i : acc.id}
+        }
+        , {sum: 0, id: -1});
+    console.log('test: ', sum, rand, res)
+
+    return cards[res.id + 1];
+}
 
 
 export const LearnPage = () => {
 
-    const p=useSelectorApp(state => state.cards.cardsPack_id)
+    const cards=useSelectorApp(state => state.cards.cards.cards)//рофлинг над картавыми
+    const [isChecked, setIsChecked] = useState<boolean>(false);
+    const [card, setCard] = useState<ExtendedCardEntity>({} as ExtendedCardEntity)
 
     const dispatch= useDispatchApp()
 
