@@ -4,7 +4,7 @@ import {ExtendedCardEntity} from "../../DAL/API-Cards";
 import {CommonTable} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
-import {Grid, LinearProgress, Rating} from "@mui/material";
+import {Container, Grid, LinearProgress, Rating} from "@mui/material";
 import {actionsCards, HeadCell, Numeric, thunksCards} from "./CardsReducer";
 import {CustomEditSpan} from "../../common/components/table/CustomEditbleSpan";
 import {CardsTableToolbar} from "../../common/components/table/CardsTableToolbar";
@@ -131,6 +131,7 @@ export const CardsPage: React.FC = memo(() => {
                 />
                 {statusCards === "loading" && <LinearProgress/>}
             </BoxCardPages>
+
         );
     }
 )
@@ -139,7 +140,8 @@ const BoxCardPages = styled(Grid)`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 2% 7% 2% 7%;;
+  padding: 2% 7% 2% 7%;
+  
 `
 
 type CommonActionT = {
@@ -148,6 +150,7 @@ type CommonActionT = {
     id: string
     disabled:boolean
 }
+
 const CommonAction: FC<CommonActionT> = ({handleDelete, handleEdit, id,disabled}) => {
     const onDelete = () => {
         handleDelete(id)
