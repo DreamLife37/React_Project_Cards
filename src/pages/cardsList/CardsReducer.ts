@@ -2,22 +2,13 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
     APICards,
     CreateCardPayload,
-    ExtendedCardEntity,
     GetCardsResponse,
     UpdateCardPayload
 } from "../../DAL/API-Cards";
 import {AppThunk} from "../app/store";
 import {restoreFromStorage} from "../../utils/LocalStorageUtils";
 import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
-
-export type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
-
-export type HeadCell = {
-    numeric: Numeric
-    id: string;
-    label: string;
-    order: "0" | "1" | undefined
-}
+import {HeadCell} from "../../common/components/table/CommonTable";
 
 
 type QueryParamsT = {
@@ -80,7 +71,7 @@ const cardsSlice = createSlice({
             state.cards = action.payload
         },
         setQueryParams: (state, action: PayloadAction<QueryParamsT>) => {
-            state.queryParams = {...state.queryParams,...action.payload}
+            state.queryParams = {...state.queryParams, ...action.payload}
         },
         getTitle: (state, action: PayloadAction<string>) => {
             state.packTitle = action.payload
@@ -102,8 +93,8 @@ const cardsSlice = createSlice({
         setStatusCards: (state, action: PayloadAction<'idle' | 'loading'>) => {
             state.statusCards = action.payload
         },
-        setPackId:(state, action: PayloadAction<string>) => {
-            state.cardsPack_id=action.payload
+        setPackId: (state, action: PayloadAction<string>) => {
+            state.cardsPack_id = action.payload
         }
     }
 
@@ -128,14 +119,14 @@ export const thunksCards = {
         dispatch(actionsCards.setStatusCards("loading"))
         Promise.all([promise])
             .then(() => {
-                APICards.getCards({...getState().cards.queryParams,cardsPack_id:getState().cards.cardsPack_id})
+                APICards.getCards({...getState().cards.queryParams, cardsPack_id: getState().cards.cardsPack_id})
                     .then((response) => {
                         dispatch(actionsCards.getCards(response))
                         dispatch(actionsCards.setStatusCards("idle"))
                         if (!!cardId) {
                             dispatch(actionsCards.deleteIdInRequestPendingList(cardId))
                         }
-                    }).catch((e)=>{
+                    }).catch((e) => {
                     handlerNetworkError(dispatch, e)
                     dispatch(actionsCards.setStatusCards("idle"))
                 })

@@ -9,7 +9,7 @@ import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {useState} from "react";
 import {thunksPack} from "./PackReducer";
 import {styled} from "@mui/material/styles";
-import {TablePacks1} from "./TablePacks1";
+import {TablePacks} from "./TablePacks";
 import {ModalFormikPackType} from "./modals/FormikFormModal";
 import { AddAndEditPackModal } from "./modals/AddAndEditPackModal";
 
@@ -94,7 +94,7 @@ export const PacksListPage = () => {
                 </Grid>
             </Grid>
             <Grid item xs={10}>
-                <TablePacks1 packs={!!cardPackEntity ? cardPackEntity : []} headCells={headCells}/>
+                <TablePacks packs={!!cardPackEntity ? cardPackEntity : []} headCells={headCells}/>
             </Grid>
         </Grid>
     )

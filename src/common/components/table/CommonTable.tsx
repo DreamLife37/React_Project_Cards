@@ -1,4 +1,4 @@
-import  React from "react";
+import React from "react";
 import {FC, memo} from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -44,9 +44,9 @@ export const CommonTable: FC<CommonTable> = memo((props) => {
         } = props
 
 
-    const onPageChange = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
-        onPageChangeHandler(newPage)
-    }
+        const onPageChange = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
+            onPageChangeHandler(newPage)
+        }
 
 
         const onRowsPerPageChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -66,9 +66,9 @@ export const CommonTable: FC<CommonTable> = memo((props) => {
                         rowsPerPageOptions={[4, 10, 20]}
                         component="div"
 
-                        count={!!cardsTotalCount?cardsTotalCount:1}
-                        rowsPerPage={!!pageCount?pageCount:4}
-                        page={!!page?page:0}
+                        count={!!cardsTotalCount ? cardsTotalCount : 1}
+                        rowsPerPage={!!pageCount ? pageCount : 4}
+                        page={!!page ? page : 0}
 
                         onPageChange={onPageChange}
                         onRowsPerPageChange={onRowsPerPageChange}

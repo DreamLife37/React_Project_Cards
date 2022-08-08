@@ -5,10 +5,10 @@ import {Box, Button} from "@mui/material";
 import {ArrowBack} from "@mui/icons-material";
 import {styled} from "@mui/material/styles";
 import {useNavigate} from "react-router-dom";
-import {Path} from "../../../pages/Routes";
-import {Search} from "../../../pages/cardsList/Search";
-import {useDispatchApp} from "../../../CustomHooks/CustomHooks";
-import {thunksCards} from "../../../pages/cardsList/CardsReducer";
+import {Path} from "../Routes";
+import {Search} from "./Search";
+import {useDispatchApp} from "../../CustomHooks/CustomHooks";
+import {thunksCards} from "./CardsReducer";
 
 type EnhancedTableToolbar = {
     title: string
