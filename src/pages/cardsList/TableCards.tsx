@@ -4,8 +4,8 @@ import {ExtendedCardEntity} from "../../DAL/API-Cards";
 import {CommonTable, HeadCell, Numeric} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
-import {Grid, LinearProgress, Rating} from "@mui/material";
-import {actionsCards, thunksCards} from "./CardsReducer";
+import {Container, Grid, LinearProgress, Rating} from "@mui/material";
+import {actionsCards,thunksCards} from "./CardsReducer";
 import {CustomEditSpan} from "../../common/components/table/CustomEditbleSpan";
 import {CardsTableToolbar} from "./CardsTableToolbar";
 import {styled} from "@mui/material/styles";
@@ -23,13 +23,13 @@ export const CardsPage: React.FC = memo(() => {
 
         const cardsPack_id = useSelectorApp(state => state.cards.cardsPack_id)
         const userId = useSelectorApp(state => state.auth._id)
-        const cardsUserId = useSelectorApp(state => state.cards.cards.packUserId)
-        const cardsTotalCount = useSelectorApp(state => state.cards.cards.cardsTotalCount)
-        const pageCount = useSelectorApp(state => state.cards.cards.pageCount)
-        const page = useSelectorApp(state => state.cards.cards.page - 1)
+        const cardsUserId = useSelectorApp(state => state.cards.cardsData.packUserId)
+        const cardsTotalCount = useSelectorApp(state => state.cards.cardsData.cardsTotalCount)
+        const pageCount = useSelectorApp(state => state.cards.cardsData.pageCount)
+        const page = useSelectorApp(state => state.cards.cardsData.page - 1)
         const packName = useSelectorApp(state => state.cards.packTitle)
         const statusCards = useSelectorApp(state => state.cards.statusCards)
-        const cards = useSelectorApp(state => state.cards.cards.cards || [])
+        const cards = useSelectorApp(state => state.cards.cardsData.cards || [])
         const headCells = useSelectorApp(state => state.cards.initHeadCells)
         const requestPendingList = useSelectorApp(state => state.cards.requestPendingList)
 
@@ -139,7 +139,8 @@ const BoxCardPages = styled(Grid)`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 2% 7% 2% 7%;;
+  padding: 2% 7% 2% 7%;
+  
 `
 
 type CommonActionT = {
