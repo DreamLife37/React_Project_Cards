@@ -49,7 +49,7 @@ export const FormikFormModal: FC<PropsType> = ({handleClose, submit}) => {
 
     return <div>
         <Container fixed>
-            <Grid container justifyContent='center' bgcolor='white' padding={1} borderRadius={1} m={1}>
+            <Grid container justifyContent='center' bgcolor='white'  borderRadius={1} >
                 <Grid item justifyContent={'center'}>
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl>
@@ -69,14 +69,14 @@ export const FormikFormModal: FC<PropsType> = ({handleClose, submit}) => {
                                                   }
                                 />
 
-                                <Grid container alignItems={'center'} direction={'row'} justifyContent={'center'}>
-                                    <Grid item xs={6}>
+                                <Grid container alignItems={'center'} direction={'row'} justifyContent={"space-between"}>
+                                    <Grid item xs={4} paddingLeft={'20px'}>
                                         <Button variant={'contained'} color={'primary'} onClick={handleClose}
                                         >
                                             Cancel
                                         </Button>
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={3}>
                                         <Button type={'submit'} variant={'contained'} color={'primary'}
                                                 disabled={disabledButton}>
                                             Save

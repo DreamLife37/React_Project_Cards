@@ -99,7 +99,7 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                                                     children={<IconButton onClick={moveOnLearnPage}><School/></IconButton>}
                                                     childrenTitle='Learn'
                                                     deleteRowHandler={deletePackHandler}
-                                                    editRowHandler={editPackHandler}/>
+                                                    editRowHandler={editPackHandler} titlePack={pack.name}/>
                             }
                         ]
                     }
@@ -138,6 +138,7 @@ type CommonActionType = {
     editRowHandler: (id: string, newNamePack: string) => void
     children?: ReactElement
     childrenTitle?: string
+    titlePack: string
 }
 const CommonAction = (props: CommonActionType) => {
 
@@ -161,7 +162,7 @@ const CommonAction = (props: CommonActionType) => {
             <AddAndEditPackModal callback={editPack} handleClose={handleCloseModalAdd} open={openModalAdd}
                                  title={'Edit name pack'}/>
             <DeletePackModal open={openModalDelete} handleClose={handleCloseModalDelete} title={'Deleted pack'}
-                             callback={deletePack}/>
+                             callback={deletePack} titlePack={props.titlePack}/>
             <Tooltip title="Delete pack">
                 <span>
                 <IconButton
