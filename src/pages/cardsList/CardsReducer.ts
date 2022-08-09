@@ -2,12 +2,15 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
     APICards,
     CreateCardPayload,
-    GetCardsResponse,
+    ExtendedCardEntity,
+    GetCardsResponse, GradeCardPayLoad,
     UpdateCardPayload
 } from "../../DAL/API-Cards";
 import {AppThunk} from "../app/store";
 import {restoreFromStorage} from "../../utils/LocalStorageUtils";
 import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
+import {actionsErrors} from "../../Errors/ErrorsReducer";
+
 import {HeadCell} from "../../common/components/table/CommonTable";
 
 
@@ -24,7 +27,7 @@ type QueryParamsT = {
 
 const initialState = {
     packTitle: '' as string,
-    cards: {} as GetCardsResponse | Record<string, never>,
+    cardsData: {} as GetCardsResponse | Record<string, never>,
     cardsPack_id: "",
     queryParams: {} as QueryParamsT,
     initHeadCells: [
@@ -68,10 +71,10 @@ const cardsSlice = createSlice({
     initialState,
     reducers: {
         getCards: (state, action: PayloadAction<GetCardsResponse | {}>) => {
-            state.cards = action.payload
+            state.cardsData = action.payload
         },
         setQueryParams: (state, action: PayloadAction<QueryParamsT>) => {
-            state.queryParams = {...state.queryParams, ...action.payload}
+            state.queryParams = {...state.queryParams,...action.payload}
         },
         getTitle: (state, action: PayloadAction<string>) => {
             state.packTitle = action.payload
@@ -93,8 +96,8 @@ const cardsSlice = createSlice({
         setStatusCards: (state, action: PayloadAction<'idle' | 'loading'>) => {
             state.statusCards = action.payload
         },
-        setPackId: (state, action: PayloadAction<string>) => {
-            state.cardsPack_id = action.payload
+        setPackId:(state, action: PayloadAction<string>) => {
+            state.cardsPack_id=action.payload
         }
     }
 
@@ -119,14 +122,14 @@ export const thunksCards = {
         dispatch(actionsCards.setStatusCards("loading"))
         Promise.all([promise])
             .then(() => {
-                APICards.getCards({...getState().cards.queryParams, cardsPack_id: getState().cards.cardsPack_id})
+                APICards.getCards({...getState().cards.queryParams,cardsPack_id:getState().cards.cardsPack_id})
                     .then((response) => {
                         dispatch(actionsCards.getCards(response))
                         dispatch(actionsCards.setStatusCards("idle"))
                         if (!!cardId) {
                             dispatch(actionsCards.deleteIdInRequestPendingList(cardId))
                         }
-                    }).catch((e) => {
+                    }).catch((e)=>{
                     handlerNetworkError(dispatch, e)
                     dispatch(actionsCards.setStatusCards("idle"))
                 })
@@ -172,6 +175,15 @@ export const thunksCards = {
     setPageCount: (pageCount: number): AppThunk => (dispatch) => {
         dispatch(actionsCards.setQueryParams({pageCount}))
         dispatch(thunksCards.getCards())
+    },
+    updateCardGrade:(gradeCardPayLoad:GradeCardPayLoad):AppThunk=>(dispatch)=>{
+       if (gradeCardPayLoad.grade<=5&&gradeCardPayLoad.grade>0){
+
+           const promise = APICards.updateGradeCard(gradeCardPayLoad)
+           dispatch(thunksCards.getCards(promise))
+       }else{
+           dispatch(actionsErrors.changeError(`оценка не может быть больше 5 и меньше 0. Вы поставли ${gradeCardPayLoad.grade}`))
+       }
     }
 
 
