@@ -108,7 +108,7 @@ export type UpdateCardPayload = {
     "questionVideo"?: string | null
 }
 export type GradeCardPayLoad={
-    grade:1|2|3|4|5,
+    grade:number,
     card_id:string
 }
 

@@ -9,6 +9,7 @@ import {
 import {AppThunk} from "../app/store";
 import {restoreFromStorage} from "../../utils/LocalStorageUtils";
 import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
+import {actionsErrors} from "../../Errors/ErrorsReducer";
 
 export type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
 
@@ -33,7 +34,7 @@ type QueryParamsT = {
 
 const initialState = {
     packTitle: '' as string,
-    cards: {} as GetCardsResponse | Record<string, never>,
+    cardsData: {} as GetCardsResponse | Record<string, never>,
     cardsPack_id: "",
     queryParams: {} as QueryParamsT,
     initHeadCells: [
@@ -77,7 +78,7 @@ const cardsSlice = createSlice({
     initialState,
     reducers: {
         getCards: (state, action: PayloadAction<GetCardsResponse | {}>) => {
-            state.cards = action.payload
+            state.cardsData = action.payload
         },
         setQueryParams: (state, action: PayloadAction<QueryParamsT>) => {
             state.queryParams = {...state.queryParams,...action.payload}
@@ -183,10 +184,13 @@ export const thunksCards = {
         dispatch(thunksCards.getCards())
     },
     updateCardGrade:(gradeCardPayLoad:GradeCardPayLoad):AppThunk=>(dispatch)=>{
-        APICards.updateGradeCard(gradeCardPayLoad)
-            .catch((e)=>{
-                handlerNetworkError(dispatch,e)
-            })
+       if (gradeCardPayLoad.grade<=5&&gradeCardPayLoad.grade>0){
+
+           const promise = APICards.updateGradeCard(gradeCardPayLoad)
+           dispatch(thunksCards.getCards(promise))
+       }else{
+           dispatch(actionsErrors.changeError(`оценка не может быть больше 5 и меньше 0. Вы поставли ${gradeCardPayLoad.grade}`))
+       }
     }
 
 
