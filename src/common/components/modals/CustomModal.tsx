@@ -25,13 +25,12 @@ type PropsType = {
     children: ReactElement
     handleClose: () => void
     open: boolean
-    disabledStyle?:boolean
+    disabledStyle?: boolean
     title: string
 
 }
 
-export const CustomModal: FC<PropsType> = ({disabledStyle,children, handleClose, open}) => {
-export const CustomModal: FC<PropsType> = ({children, handleClose, open, title}) => {
+export const CustomModal: FC<PropsType> = ({children, handleClose, open, title, disabledStyle}) => {
     return (
         <div>
             <Modal
@@ -40,10 +39,10 @@ export const CustomModal: FC<PropsType> = ({children, handleClose, open, title})
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={disabledStyle?undefined:style}>
-                <Box sx={style}>
-                    <Grid container alignItems={'center'} direction={'row'} justifyContent={"space-between"}
-                          paddingBottom={'15px'}>
+                <Box sx={disabledStyle ? undefined : style}>
+                    {!disabledStyle && <><Grid container alignItems={'center'} direction={'row'}
+                                               justifyContent={"space-between"}
+                                               paddingBottom={'15px'}>
                         <Grid item xs={6} fontSize={'20px'}>
                             {title}
                         </Grid>
@@ -53,7 +52,7 @@ export const CustomModal: FC<PropsType> = ({children, handleClose, open, title})
                             </IconButton>
                         </Grid>
                     </Grid>
-                    <p className={s.horizontalLine}></p>
+                        <p className={s.horizontalLine}></p></>}
                     {children}
                 </Box>
             </Modal>

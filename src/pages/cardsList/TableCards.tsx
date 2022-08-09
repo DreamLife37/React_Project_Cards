@@ -5,7 +5,7 @@ import {CommonTable, HeadCell, Numeric} from "../../common/components/table/Comm
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
 import {Container, Grid, LinearProgress, Rating} from "@mui/material";
-import {actionsCards, HeadCell, Numeric, thunksCards} from "./CardsReducer";
+import {actionsCards,thunksCards} from "./CardsReducer";
 import {CustomEditSpan} from "../../common/components/table/CustomEditbleSpan";
 import {CardsTableToolbar} from "./CardsTableToolbar";
 import {styled} from "@mui/material/styles";

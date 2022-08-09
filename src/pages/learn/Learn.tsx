@@ -79,7 +79,7 @@ export const Learn: FC<LearnPropsType> = memo((props) => {
                 </QuestionBoxStyled>
 
 
-                <CustomModal handleClose={handleClose} open={props.open} disabledStyle={true}>
+                <CustomModal handleClose={handleClose} open={props.open} disabledStyle={true} title={'ffsdfds'}>
                     <AnswerBoxStyled>
                         <LearnTitleBox>
                             <Typography variant={"h6"}>{props.packTitle}</Typography>
