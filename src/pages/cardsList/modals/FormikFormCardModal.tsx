@@ -1,6 +1,6 @@
 import {useDispatchApp, useSelectorApp} from "../../../CustomHooks/CustomHooks";
 import {useFormik} from "formik";
-import {Checkbox, Container, FormControlLabel} from "@mui/material";
+import {Container} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
@@ -10,35 +10,38 @@ import * as React from "react";
 import {FC} from "react";
 
 type FormikErrorType = {
-    namePack?: string
-    privatePack?: string
+    question?: string
+    answer?: string
 }
 
 type PropsType = {
     handleClose: () => void;
     submit: (values: any) => void
-    privatePack: boolean
-    namePack: string
+    question: string
+    answer: string
 }
 
-export type ModalFormikPackType = {
-    namePack: string
-    privatePack: boolean
+export type ModalFormikCardType = {
+    question: string
+    answer: string
+    typeQuestion?: string
 }
 
 
-export const FormikFormModal: FC<PropsType> = ({handleClose, submit, privatePack,namePack}) => {
+export const FormikFormCardModal: FC<PropsType> = ({handleClose, submit, question, answer}) => {
     const formik = useFormik({
         initialValues: {
-            namePack: namePack,
-            privatePack: privatePack,
+            typeQuestion: '',
+            question: question,
+            answer: answer,
+
         },
         validate: (values) => {
             const errors: FormikErrorType = {};
-            if (!values.namePack) {
-                errors.namePack = 'Required';
-            } else if (values.namePack.length < 1) {
-                errors.namePack = 'Min name pack 1 symbols';
+            if (!values.question) {
+                errors.question = 'Required';
+            } else if (!values.answer) {
+                errors.answer = 'Required';
             }
             return errors;
         },
@@ -48,30 +51,29 @@ export const FormikFormModal: FC<PropsType> = ({handleClose, submit, privatePack
         },
     })
 
-
-    const disabledButton = (formik.values.namePack && !formik.errors.namePack) ? false : true
+    const disabledButton = (!(!formik.errors.question && !formik.errors.answer &&
+        formik.values.question && formik.values.answer))
 
     return <div>
         <Container fixed>
             <Grid container justifyContent='center' bgcolor='white' borderRadius={1}>
-                <Grid item justifyContent={'center'}>
+                <Grid item justifyContent={'space-between'}>
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl>
                             <FormGroup>
-                                <TextField label="Name pack" margin="normal" autoFocus={true}
-                                           {...formik.getFieldProps('namePack')}
+                                <TextField label="Question" margin="normal" autoFocus={true}
+                                           {...formik.getFieldProps('question')}
                                 />
-                                {formik.touched.namePack && formik.errors.namePack
-                                    ? <div style={{color: '#9d1717', fontSize: '14px'}}>{formik.errors.namePack}</div>
+                                {formik.touched.question && formik.errors.question
+                                    ? <div style={{color: '#9d1717', fontSize: '14px'}}>{formik.errors.question}</div>
                                     : null}
-                                <FormControlLabel label='Private pack' style={{color: '#2c2929', fontSize: '14px'}}
-                                                  control={
-                                                      <Checkbox onChange={formik.handleChange}
-                                                                checked={formik.values.privatePack}
-                                                                name='privatePack'
-                                                      />
-                                                  }
+                                <TextField label="Answer" margin="normal"
+                                           {...formik.getFieldProps('answer')}
                                 />
+                                {formik.touched.answer && formik.errors.answer
+                                    ? <div style={{color: '#9d1717', fontSize: '14px'}}>{formik.errors.answer}</div>
+                                    : null}
+
 
                                 <Grid container alignItems={'center'} direction={'row'}
                                       justifyContent={"space-between"}>

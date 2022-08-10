@@ -2,32 +2,17 @@ import * as React from 'react';
 import {CustomModal} from '../../../common/components/modals/CustomModal';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import s from './DeletePackModal.module.css'
-import EditIcon from "@mui/icons-material/Edit";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from '@mui/icons-material/Close';
-
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
+import s from './DeleteCardModal.module.css'
 
 type PropsType = {
     open: boolean;
     handleClose: () => void;
     title: string;
     callback: () => void;
-    titlePack: string
+    titleCard: string
 }
 
-export const DeletePackModal: React.FC<PropsType> = ({open, handleClose, callback, title, titlePack}) => {
+export const DeleteCardModal: React.FC<PropsType> = ({open, handleClose, callback, title, titleCard}) => {
     const handleDelete = () => {
         handleClose()
         callback()
@@ -36,9 +21,8 @@ export const DeletePackModal: React.FC<PropsType> = ({open, handleClose, callbac
         <CustomModal handleClose={handleClose} open={open} title={title}>
             <div>
                 <div className={s.message}>
-                    <div>Do you really want to remove pack:
-                        <div className={s.titlePack}>{titlePack}?</div></div>
-                    <span>All cards will be deleted!</span>
+                    <div>Do you really want to remove card:
+                        <div className={s.titlePack}>{titleCard}?</div></div>
                 </div>
                 <Grid container alignItems={'center'} direction={'row'} justifyContent={"space-between"}>
                     <Grid item xs={4} paddingLeft={'20px'}>

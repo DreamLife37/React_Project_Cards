@@ -10,7 +10,7 @@ import {useState} from "react";
 import {thunksPack} from "./PackReducer";
 import {styled} from "@mui/material/styles";
 import {TablePacks} from "./TablePacks";
-import {ModalFormikPackType} from "./modals/FormikFormModal";
+import {ModalFormikPackType} from "./modals/FormikFormPackModal";
 import {AddAndEditPackModal} from "./modals/AddAndEditPackModal";
 
 export const PacksListPage = () => {
