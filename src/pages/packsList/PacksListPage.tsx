@@ -11,7 +11,7 @@ import {thunksPack} from "./PackReducer";
 import {styled} from "@mui/material/styles";
 import {TablePacks} from "./TablePacks";
 import {ModalFormikPackType} from "./modals/FormikFormModal";
-import { AddAndEditPackModal } from "./modals/AddAndEditPackModal";
+import {AddAndEditPackModal} from "./modals/AddAndEditPackModal";
 
 export const PacksListPage = () => {
 
@@ -27,7 +27,7 @@ export const PacksListPage = () => {
 
 
     const addNewPack = (e: ModalFormikPackType) => {
-        dispatch(thunksPack.createPack({name: e.namePack}))
+        dispatch(thunksPack.createPack({name: e.namePack, private: e.privatePack}))
     }
 
     const StyledButton = styled(Button)`
@@ -42,7 +42,7 @@ export const PacksListPage = () => {
                 {isAuthorized &&
                     <Grid item xs={6}>
                         <AddAndEditPackModal callback={addNewPack} handleClose={handleClose} open={open}
-                                         title={'Add new pack'}/>
+                                             title={'Add new pack'} privatePack={false} namePack={''}/>
                         <StyledButton color="inherit" variant='contained' onClick={handleOpen}>
                             Add new pack
                         </StyledButton>

@@ -1,4 +1,4 @@
-import {useDispatchApp} from "../../../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../../../CustomHooks/CustomHooks";
 import {useFormik} from "formik";
 import {Checkbox, Container, FormControlLabel} from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -17,6 +17,8 @@ type FormikErrorType = {
 type PropsType = {
     handleClose: () => void;
     submit: (values: any) => void
+    privatePack: boolean
+    namePack: string
 }
 
 export type ModalFormikPackType = {
@@ -24,17 +26,18 @@ export type ModalFormikPackType = {
     privatePack: boolean
 }
 
-export const FormikFormModal: FC<PropsType> = ({handleClose, submit}) => {
+
+export const FormikFormModal: FC<PropsType> = ({handleClose, submit, privatePack,namePack}) => {
     const formik = useFormik({
         initialValues: {
-            namePack: '',
-            privatePack: false,
+            namePack: namePack,
+            privatePack: privatePack,
         },
         validate: (values) => {
             const errors: FormikErrorType = {};
             if (!values.namePack) {
                 errors.namePack = 'Required';
-            } else if (values.namePack.length < 2) {
+            } else if (values.namePack.length < 1) {
                 errors.namePack = 'Min name pack 1 symbols';
             }
             return errors;
@@ -45,16 +48,17 @@ export const FormikFormModal: FC<PropsType> = ({handleClose, submit}) => {
         },
     })
 
+
     const disabledButton = (formik.values.namePack && !formik.errors.namePack) ? false : true
 
     return <div>
         <Container fixed>
-            <Grid container justifyContent='center' bgcolor='white'  borderRadius={1} >
+            <Grid container justifyContent='center' bgcolor='white' borderRadius={1}>
                 <Grid item justifyContent={'center'}>
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl>
                             <FormGroup>
-                                <TextField label="Name pack" margin="normal"
+                                <TextField label="Name pack" margin="normal" autoFocus={true}
                                            {...formik.getFieldProps('namePack')}
                                 />
                                 {formik.touched.namePack && formik.errors.namePack
@@ -69,7 +73,8 @@ export const FormikFormModal: FC<PropsType> = ({handleClose, submit}) => {
                                                   }
                                 />
 
-                                <Grid container alignItems={'center'} direction={'row'} justifyContent={"space-between"}>
+                                <Grid container alignItems={'center'} direction={'row'}
+                                      justifyContent={"space-between"}>
                                     <Grid item xs={4} paddingLeft={'20px'}>
                                         <Button variant={'contained'} color={'primary'} onClick={handleClose}
                                         >
