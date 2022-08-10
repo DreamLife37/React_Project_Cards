@@ -74,6 +74,9 @@ const cardsSlice = createSlice({
             state.cardsData = action.payload
         },
         setQueryParams: (state, action: PayloadAction<QueryParamsT>) => {
+            if(Object.keys(action.payload).length === 0){
+                state.queryParams={}
+            }
             state.queryParams = {...state.queryParams,...action.payload}
         },
         getTitle: (state, action: PayloadAction<string>) => {

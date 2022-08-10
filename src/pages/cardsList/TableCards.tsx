@@ -38,6 +38,7 @@ export const CardsPage: React.FC = memo(() => {
             dispatch(thunksCards.getCards())
             return () => {
                 dispatch(actionsCards.getCards({}))
+                dispatch(actionsCards.setQueryParams({}))
             }
         }, [])
 
