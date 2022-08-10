@@ -58,7 +58,6 @@ export function FilterMyPacks() {
     const isMyPacks = useSelectorApp(state => state.packs.isMyPacks)
 
     const showMyPacks = (e: ChangeEvent<HTMLInputElement>) => {
-        console.log(e.currentTarget.checked)
         dispatch(actionsPacks.filterMyPacks(e.currentTarget.checked))
         isMyPacks ? dispatch(thunksPack.filterMyPacks(myId)) : dispatch(thunksPack.filterMyPacks(''))
     }
