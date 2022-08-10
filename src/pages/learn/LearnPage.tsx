@@ -4,6 +4,8 @@ import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {actionsCards, thunksCards} from "../cardsList/CardsReducer";
 import {ExtendedCardEntity} from "../../DAL/API-Cards";
 import {Learn} from "./Learn";
+import {useNavigate} from "react-router-dom";
+import {Path} from "../Routes";
 
 
 const grades = ['не знал', 'забыл', 'долго думал', 'перепутал', 'знал'];
@@ -34,6 +36,7 @@ export const LearnPage = () => {
     const [randomCard, setRandomCard] = useState<ExtendedCardEntity>({} as ExtendedCardEntity)
 
     const dispatch = useDispatchApp()
+    const navigate=useNavigate()
 
     //если в state cardsData пустой объект отправляет запрос
     //при выходе со страницы отчищает cardsData
@@ -61,7 +64,7 @@ export const LearnPage = () => {
         setOpen(false)
         setCurrentGrade('')
     }, [randomCard, currentGrade, cards])
-
+    if(cards&&cards.length===0){navigate(Path.packsList)}
     return (
         <Learn grades={grades}
                open={open}
