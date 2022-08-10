@@ -9,6 +9,9 @@ import {Path} from "../Routes";
 import {Search} from "./Search";
 import {useDispatchApp} from "../../CustomHooks/CustomHooks";
 import {thunksCards} from "./CardsReducer";
+import {AddAndEditPackModal} from "../packsList/modals/AddAndEditPackModal";
+import {AddAndEditCardModal} from "./modals/AddAndEditCardModal";
+import {ModalFormikCardType} from "./modals/FormikFormCardModal";
 
 type EnhancedTableToolbar = {
     title: string
@@ -19,19 +22,18 @@ type EnhancedTableToolbar = {
 
 export const CardsTableToolbar: FC<EnhancedTableToolbar> = memo(({isMyPack, title, cardsPack_id}) => {
 
-        const[question,setQuestion ]=useState('')
+        const [open, setOpen] = useState(false)
+        const handleOpen = (): void => setOpen(true)
+        const handleClose = (): void => setOpen(false)
 
         const navigate = useNavigate()
-
         const dispatch = useDispatchApp()
 
-        const addNewCard = () => {
-            dispatch(thunksCards.createCard({cardsPack_id,question}))
-            setQuestion('')
+        const addNewCard = (e: ModalFormikCardType) => {
+            dispatch(thunksCards.createCard({cardsPack_id, question: e.question, answer: e.answer}))
         }
 
         const searchCard = (cardQuestion: string) => {
-            setQuestion(cardQuestion)
             dispatch(thunksCards.searchCard(cardQuestion))
         }
 
@@ -47,16 +49,18 @@ export const CardsTableToolbar: FC<EnhancedTableToolbar> = memo(({isMyPack, titl
                     <Title>
                         {title}
                     </Title>
-                    <SearchCard >
+                    <SearchCard>
                         <div>Search</div>
                         <Search searchCallback={searchCard}/>
                     </SearchCard>
                 </BoxLeft>
                 <BoxRight>
+                    <AddAndEditCardModal callback={addNewCard} handleClose={handleClose} open={open}
+                                         title={'Add new card'} answer={''} question={''}/>
                     {
                         isMyPack
                             ?
-                            <StyledButton onClick={addNewCard} color="inherit" variant='contained'>
+                            <StyledButton onClick={handleOpen} color="inherit" variant='contained'>
                                 Add new card
                             </StyledButton>
                             :

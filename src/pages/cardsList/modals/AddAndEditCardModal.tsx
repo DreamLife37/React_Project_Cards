@@ -1,32 +1,33 @@
 import * as React from 'react';
 import {CustomModal} from '../../../common/components/modals/CustomModal';
-import {FormikFormPackModal, ModalFormikPackType} from "./FormikFormPackModal";
+import {FormikFormCardModal, ModalFormikCardType} from "./FormikFormCardModal";
 
 type PropsType = {
     open: boolean;
     handleClose: () => void;
     title: string;
-    callback: (values: ModalFormikPackType) => void;
-    privatePack: boolean
-    namePack: string
+    callback: (values: ModalFormikCardType) => void;
+    question: string
+    answer: string
 }
 
-export const AddAndEditPackModal: React.FC<PropsType> = ({
+export const AddAndEditCardModal: React.FC<PropsType> = ({
                                                              open,
                                                              handleClose,
                                                              callback,
                                                              title,
-                                                             privatePack,
-                                                             namePack
+                                                             question,
+                                                             answer
                                                          }) => {
-    const submit = (values: ModalFormikPackType): void => {
+    const submit = (values: ModalFormikCardType): void => {
         callback(values)
         handleClose()
     }
     return (
         <CustomModal handleClose={handleClose} open={open} title={title}>
             <div>
-                {<FormikFormPackModal handleClose={handleClose} submit={submit} privatePack={privatePack} namePack={namePack}/>}
+                {<FormikFormCardModal handleClose={handleClose} submit={submit} question={question}
+                                      answer={answer}/>}
             </div>
         </CustomModal>
     );

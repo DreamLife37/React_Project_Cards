@@ -15,7 +15,7 @@ import {actionsCards} from "../cardsList/CardsReducer";
 import {Path} from "../Routes";
 import {useNavigate} from "react-router-dom";
 import TableCell from '@material-ui/core/TableCell';
-import {ModalFormikPackType} from "./modals/FormikFormModal";
+import {ModalFormikPackType} from "./modals/FormikFormPackModal";
 import {AddAndEditPackModal} from "./modals/AddAndEditPackModal";
 import {School} from "@mui/icons-material";
 import {DeletePackModal} from "./modals/DeletePackModal";

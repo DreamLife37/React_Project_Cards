@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {FC, memo, ReactNode, useCallback, useEffect, useMemo} from 'react';
+import {FC, memo, ReactNode, useCallback, useEffect, useMemo, useState} from 'react';
 import {ExtendedCardEntity} from "../../DAL/API-Cards";
 import {CommonTable, HeadCell, Numeric} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
-import {Container, Grid, LinearProgress, Rating} from "@mui/material";
-import {actionsCards,thunksCards} from "./CardsReducer";
+import {Grid, LinearProgress, Rating} from "@mui/material";
+import {actionsCards, thunksCards} from "./CardsReducer";
 import {CustomEditSpan} from "../../common/components/table/CustomEditbleSpan";
 import {CardsTableToolbar} from "./CardsTableToolbar";
 import {styled} from "@mui/material/styles";
@@ -13,6 +13,9 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import {AddAndEditCardModal} from "./modals/AddAndEditCardModal";
+import {ModalFormikCardType} from "./modals/FormikFormCardModal";
+import {DeleteCardModal} from "./modals/DeleteCardModal";
 
 export type Row = {
     optionsCell: Numeric,
@@ -73,8 +76,8 @@ export const CardsPage: React.FC = memo(() => {
         const deleteCard = (id: string) => {
             dispatch(thunksCards.deleteCard(id))
         }
-        const editCard = (_id: string) => {
-          dispatch(thunksCards.updateCard({_id,answer:"azaza"}))
+        const editCard = (_id: string, newQuestion: string, newAnswer: string) => {
+            dispatch(thunksCards.updateCard({_id, question: newQuestion, answer: newAnswer}))
         }
 
 
@@ -109,11 +112,13 @@ export const CardsPage: React.FC = memo(() => {
                             cell: <CommonAction handleDelete={deleteCard}
                                                 handleEdit={editCard}
                                                 disabled={requestPendingList[card._id]}
-                                                id={card._id}/>
+                                                id={card._id}
+                                                card={card}
+                            />
                         }
                     ]
                 )
-            ), [cards,statusCards])
+            ), [cards, statusCards])
 
         return (
 
@@ -141,33 +146,49 @@ const BoxCardPages = styled(Grid)`
   flex-direction: column;
   align-items: stretch;
   padding: 2% 7% 2% 7%;
-  
+
 `
 
 type CommonActionT = {
     handleDelete: (id: string) => void
-    handleEdit: (id: string) => void
+    handleEdit: (id: string, question: string, answer: string) => void
     id: string
-    disabled:boolean
+    disabled: boolean
+    card: ExtendedCardEntity
 }
-const CommonAction: FC<CommonActionT> = ({handleDelete, handleEdit, id,disabled}) => {
+const CommonAction: FC<CommonActionT> = ({handleDelete, handleEdit, id, disabled, card}) => {
+
+    const [openModalAdd, setOpenModalAdd] = useState(false)
+    const handleOpenModalAdd = (): void => setOpenModalAdd(true)
+    const handleCloseModalAdd = (): void => setOpenModalAdd(false)
+
+    const [openModalDelete, setOpenModalDelete] = useState(false)
+    const handleOpenModalDelete = (): void => setOpenModalDelete(true)
+    const handleCloseModalDelete = (): void => setOpenModalDelete(false)
+
     const onDelete = () => {
         handleDelete(id)
     }
-    const onEdite = () => {
-        handleEdit(id)
+    const onEdite = (e: ModalFormikCardType) => {
+        handleEdit(id, e.question, e.answer)
     }
 
     return (
         <div>
+            <AddAndEditCardModal callback={onEdite} handleClose={handleCloseModalAdd} open={openModalAdd}
+                                 title={'Edit name title'} question={card.question} answer={card.answer}/>
+            <DeleteCardModal open={openModalDelete} handleClose={handleCloseModalDelete} title={'Deleted card'}
+                             callback={onDelete} titleCard={card.question}/>
             <Tooltip title="Delete pack">
-                <IconButton disabled={disabled} onClick={onDelete}>
+                <IconButton disabled={disabled} onClick={handleOpenModalDelete}>
                     <DeleteIcon fontSize={"small"}/>
-                </IconButton></Tooltip>
+                </IconButton>
+            </Tooltip>
             <Tooltip title="Edit pack">
-                <IconButton disabled={disabled} onClick={onEdite}>
+                <IconButton disabled={disabled} onClick={handleOpenModalAdd}>
                     <EditIcon fontSize={"small"}/>
-                </IconButton></Tooltip>
+                </IconButton>
+            </Tooltip>
         </div>
     )
 }
