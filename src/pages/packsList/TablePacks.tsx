@@ -102,11 +102,14 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                             },
                             {
                                 optionsCell: "center",
-                                cell: <CommonAction row={pack} userId={userId}
-                                                    children={<IconButton onClick={moveOnLearnPage}><School/></IconButton>}
-                                                    childrenTitle='Learn'
-                                                    deleteRowHandler={deletePackHandler}
-                                                    editRowHandler={editPackHandler} titlePack={pack.name}/>
+                                cell: userId === pack.user_id && <CommonAction row={pack} userId={userId}
+                                                                               children={<IconButton
+                                                                                   onClick={moveOnLearnPage}><School/></IconButton>}
+                                                                               childrenTitle='Learn'
+                                                                               deleteRowHandler={deletePackHandler}
+                                                                               editRowHandler={editPackHandler}
+                                                                               titlePack={pack.name}/>
+
                             }
                         ]
                     }
@@ -172,9 +175,8 @@ const CommonAction = (props: CommonActionType) => {
                              callback={deletePack} titlePack={props.titlePack}/>
             <Tooltip title="Delete pack">
                 <span>
-                <IconButton
-                    disabled={props.userId !== props.row.user_id && true}
-                    onClick={handleOpenModalDelete}>
+               <IconButton
+                   onClick={handleOpenModalDelete}>
                     <DeleteIcon fontSize={"small"}/>
                 </IconButton>
                 </span>

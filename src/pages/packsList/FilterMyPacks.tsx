@@ -5,8 +5,8 @@ import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
-import {ChangeEvent, useState} from "react";
-import {thunksPack} from "./PackReducer";
+import {ChangeEvent} from "react";
+import {actionsPacks, thunksPack} from "./PackReducer";
 
 
 const AntSwitch = styled(Switch)(({theme}) => ({
@@ -55,10 +55,11 @@ const AntSwitch = styled(Switch)(({theme}) => ({
 export function FilterMyPacks() {
     const dispatch = useDispatchApp()
     const myId = useSelectorApp(state => state.auth._id)
-    const [isMyPacks, setIsMyPacks] = useState(true)
+    const isMyPacks = useSelectorApp(state => state.packs.isMyPacks)
 
     const showMyPacks = (e: ChangeEvent<HTMLInputElement>) => {
-        setIsMyPacks(e.currentTarget.checked)
+        console.log(e.currentTarget.checked)
+        dispatch(actionsPacks.filterMyPacks(e.currentTarget.checked))
         isMyPacks ? dispatch(thunksPack.filterMyPacks(myId)) : dispatch(thunksPack.filterMyPacks(''))
     }
 

@@ -8,12 +8,13 @@ import {
 } from "../../DAL/API-CardsPack";
 import {AppDispatchType, AppThunk} from "../app/store";
 import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
-import { HeadCell } from "../../common/components/table/CommonTable";
+import {HeadCell} from "../../common/components/table/CommonTable";
 
 
 type InitialState = {
     packsData: GetCardsPackResponse
-    queryParams: getCardPacksPayload
+    queryParams: getCardPacksPayload,
+    isMyPacks: boolean,
     initHeadCells: HeadCell[]
 }
 
@@ -28,6 +29,7 @@ const initialState: InitialState = {
         user_id: undefined,
         sortPacks: undefined
     } as getCardPacksPayload,
+    isMyPacks: true,
     initHeadCells: [
         {
             id: 'name',
@@ -72,6 +74,9 @@ const packsSlice = createSlice({
         },
         setQuery: (state, action) => {
             state.queryParams = {...state.queryParams, ...action.payload}
+        },
+        filterMyPacks: (state, action) => {
+            state.isMyPacks = action.payload
         }
     }
 })
