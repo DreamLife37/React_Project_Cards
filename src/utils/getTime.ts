@@ -1,12 +1,16 @@
 
-//утилита переводит время с бекенда в читабельный вид:
+//утилита переводит время с бекенда в читабельный вид при условии что с бекенда
+// приходящая дата не изменится, можно было бы заюзать библиотеку но мне лень:
 export const getTime = (date: string) => {
 
-    const dateParsNumber = Date.parse(date)
-    let day = new Date(dateParsNumber).getDay()
-    let month = new Date(dateParsNumber).getMonth()
-    let year = new Date(dateParsNumber).getFullYear()
-    let hours = new Date(dateParsNumber).getHours()
-    let minutes = new Date(dateParsNumber).getMinutes()
-    return `${day < 10 ? 0 : ''}${day}.${month !== 12 ? month + 1 : month}.${year} ${hours < 10 ? 0 : ''}${hours}:${minutes < 10 ? 0 : ''}${minutes}`
+    const year=date.match(/^[0-9]{4}((?=-))/g)
+    const month=date.match(/(?<=-)\d{1,2}(?=-)/g)
+    const day=date.match(/(?<=-)\d{2}(?=\w)/g)
+    const time=date.match(/(?<=\w)\d{1,2}:\d{1,2}(?=:)/g)
+
+    if (month&&year&&day&&time) {
+     return `${day[0]}.${month[0]}.${year[0]} ${time[0]}`
+    }else{
+      return   "some problem with date time"
+    }
 }
