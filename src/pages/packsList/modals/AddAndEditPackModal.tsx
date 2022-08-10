@@ -1,19 +1,24 @@
 import * as React from 'react';
 import {CustomModal} from '../../../common/components/modals/CustomModal';
 import {FormikFormModal, ModalFormikPackType} from "./FormikFormModal";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import s from "./DeletePackModal.module.css";
 
 type PropsType = {
     open: boolean;
     handleClose: () => void;
     title: string;
     callback: (values: ModalFormikPackType) => void;
+    privatePack: boolean
+    namePack: string
 }
 
-export const AddAndEditPackModal: React.FC<PropsType> = ({open, handleClose, callback, title}) => {
+export const AddAndEditPackModal: React.FC<PropsType> = ({
+                                                             open,
+                                                             handleClose,
+                                                             callback,
+                                                             title,
+                                                             privatePack,
+                                                             namePack
+                                                         }) => {
     const submit = (values: ModalFormikPackType): void => {
         callback(values)
         handleClose()
@@ -21,7 +26,7 @@ export const AddAndEditPackModal: React.FC<PropsType> = ({open, handleClose, cal
     return (
         <CustomModal handleClose={handleClose} open={open} title={title}>
             <div>
-                {<FormikFormModal handleClose={handleClose} submit={submit}/>}
+                {<FormikFormModal handleClose={handleClose} submit={submit} privatePack={privatePack} namePack={namePack}/>}
             </div>
         </CustomModal>
     );

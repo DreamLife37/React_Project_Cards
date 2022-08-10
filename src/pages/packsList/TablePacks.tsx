@@ -19,6 +19,8 @@ import {ModalFormikPackType} from "./modals/FormikFormModal";
 import {AddAndEditPackModal} from "./modals/AddAndEditPackModal";
 import {School} from "@mui/icons-material";
 import {DeletePackModal} from "./modals/DeletePackModal";
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+
 
 export type Row = {
     optionsCell: Numeric,
@@ -58,8 +60,8 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
             dispatch(thunksPack.deletePack(packId))
         }
 
-        const editPackHandler = (packId: string, newNamePack: string) => {
-            dispatch(thunksPack.updatePack({_id: packId, name: newNamePack}))
+        const editPackHandler = (packId: string, newNamePack: string, privatePack: boolean) => {
+            dispatch(thunksPack.updatePack({_id: packId, name: newNamePack, private: privatePack}))
         }
 
 
@@ -79,7 +81,12 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                         return [
                             {
                                 optionsCell: 'center',
-                                cell: <TableCell onClick={moveOnCardList}>{pack.name} </TableCell>
+                                cell: <TableCell>
+                                    <span onClick={moveOnCardList}
+                                          style={{cursor: 'pointer'}}>{pack.name}</span>
+                                    {pack.private && <span style={{paddingLeft: '10px'}}><VisibilityOffIcon fontSize={"small"}/>
+                                                    </span>}
+                                </TableCell>
                             },
                             {
                                 optionsCell: "center",
@@ -135,7 +142,7 @@ type CommonActionType = {
     row: CardPacksEntityWithDeckCover
     userId: string
     deleteRowHandler: (id: string) => void
-    editRowHandler: (id: string, newNamePack: string) => void
+    editRowHandler: (id: string, newNamePack: string, privatePack: boolean) => void
     children?: ReactElement
     childrenTitle?: string
     titlePack: string
@@ -151,7 +158,7 @@ const CommonAction = (props: CommonActionType) => {
     const handleCloseModalDelete = (): void => setOpenModalDelete(false)
 
     const editPack = (e: ModalFormikPackType) => {
-        props.editRowHandler(props.row._id, e.namePack)
+        props.editRowHandler(props.row._id, e.namePack, e.privatePack)
     }
 
     const deletePack = () => {
@@ -160,7 +167,7 @@ const CommonAction = (props: CommonActionType) => {
     return (
         <div>
             <AddAndEditPackModal callback={editPack} handleClose={handleCloseModalAdd} open={openModalAdd}
-                                 title={'Edit name pack'}/>
+                                 title={'Edit name pack'} privatePack={props.row.private} namePack={props.row.name}/>
             <DeletePackModal open={openModalDelete} handleClose={handleCloseModalDelete} title={'Deleted pack'}
                              callback={deletePack} titlePack={props.titlePack}/>
             <Tooltip title="Delete pack">
