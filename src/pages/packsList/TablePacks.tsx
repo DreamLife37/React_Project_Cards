@@ -103,10 +103,13 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                             {
                                 optionsCell: "center",
                                 cell: <CommonAction row={pack} userId={userId}
-                                                    children={<IconButton onClick={moveOnLearnPage}><School/></IconButton>}
-                                                    childrenTitle='Learn'
-                                                    deleteRowHandler={deletePackHandler}
-                                                    editRowHandler={editPackHandler} titlePack={pack.name}/>
+                                                                               children={<IconButton
+                                                                                   onClick={moveOnLearnPage}><School/></IconButton>}
+                                                                               childrenTitle='Learn'
+                                                                               deleteRowHandler={deletePackHandler}
+                                                                               editRowHandler={editPackHandler}
+                                                                               titlePack={pack.name}/>
+
                             }
                         ]
                     }
@@ -170,16 +173,15 @@ const CommonAction = (props: CommonActionType) => {
                                  title={'Edit name pack'} privatePack={props.row.private} namePack={props.row.name}/>
             <DeletePackModal open={openModalDelete} handleClose={handleCloseModalDelete} title={'Deleted pack'}
                              callback={deletePack} titlePack={props.titlePack}/>
-            <Tooltip title="Delete pack">
+            {props.userId === props.row.user_id &&<><Tooltip title="Delete pack">
                 <span>
-                <IconButton
-                    disabled={props.userId !== props.row.user_id && true}
-                    onClick={handleOpenModalDelete}>
+               <IconButton
+                   onClick={handleOpenModalDelete}>
                     <DeleteIcon fontSize={"small"}/>
                 </IconButton>
                 </span>
             </Tooltip>
-            <Tooltip title="Edit pack">
+                <Tooltip title="Edit pack">
                  <span>
                 <IconButton
                     onClick={handleOpenModalAdd}
@@ -187,7 +189,7 @@ const CommonAction = (props: CommonActionType) => {
                     <EditIcon fontSize={"small"}/>
                 </IconButton>
                  </span>
-            </Tooltip>
+                </Tooltip></>}
 
             {
                 props.children &&
