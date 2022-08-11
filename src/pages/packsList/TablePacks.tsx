@@ -1,26 +1,20 @@
 import * as React from 'react';
-import {memo, ReactElement, ReactNode, useCallback, useMemo, useState} from 'react';
+import {memo, ReactNode, useCallback, useMemo} from 'react';
 import {CommonTable, HeadCell, Numeric} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
 import {Grid} from "@mui/material";
 import {styled} from "@mui/material/styles";
-import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import {CardPacksEntityWithDeckCover} from "../../DAL/API-CardsPack";
 import {thunksPack} from "./PackReducer";
 import {actionsCards} from "../cardsList/CardsReducer";
 import {Path} from "../Routes";
 import {useNavigate} from "react-router-dom";
 import TableCell from '@material-ui/core/TableCell';
-import {ModalFormikPackType} from "./modals/FormikFormPackModal";
-import {AddAndEditPackModal} from "./modals/AddAndEditPackModal";
 import {School} from "@mui/icons-material";
-import {DeletePackModal} from "./modals/DeletePackModal";
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-
+import {CommonAction} from "./CommonActionPacks";
 
 export type Row = {
     optionsCell: Numeric,
@@ -34,7 +28,6 @@ type TablePacksType = {
 
 export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) => {
         const userId = useSelectorApp(state => state.auth._id)
-        const cardsUserId = useSelectorApp(state => state.cards.cardsData.packUserId)
         const packsTotalCount = useSelectorApp(state => state.packs.packsData.cardPacksTotalCount)
         const pageCount = useSelectorApp(state => state.packs.packsData.pageCount)
         const page = useSelectorApp(state => state.packs.packsData.page)
@@ -137,67 +130,3 @@ const BoxCardPages = styled(Grid)`
   align-items: stretch;
   padding: 2% 7% 2% 7%;;
 `
-
-type CommonActionType = {
-    row: CardPacksEntityWithDeckCover
-    userId: string
-    deleteRowHandler: (id: string) => void
-    editRowHandler: (id: string, newNamePack: string, privatePack: boolean) => void
-    children?: ReactElement
-    childrenTitle?: string
-    titlePack: string
-}
-const CommonAction = (props: CommonActionType) => {
-
-    const [openModalAdd, setOpenModalAdd] = useState(false)
-    const handleOpenModalAdd = (): void => setOpenModalAdd(true)
-    const handleCloseModalAdd = (): void => setOpenModalAdd(false)
-
-    const [openModalDelete, setOpenModalDelete] = useState(false)
-    const handleOpenModalDelete = (): void => setOpenModalDelete(true)
-    const handleCloseModalDelete = (): void => setOpenModalDelete(false)
-
-    const editPack = (e: ModalFormikPackType) => {
-        props.editRowHandler(props.row._id, e.namePack, e.privatePack)
-    }
-
-    const deletePack = () => {
-        props.deleteRowHandler(props.row._id)
-    }
-    return (
-        <div>
-            <AddAndEditPackModal callback={editPack} handleClose={handleCloseModalAdd} open={openModalAdd}
-                                 title={'Edit name pack'} privatePack={props.row.private} namePack={props.row.name}/>
-            <DeletePackModal open={openModalDelete} handleClose={handleCloseModalDelete} title={'Deleted pack'}
-                             callback={deletePack} titlePack={props.titlePack}/>
-            {props.userId === props.row.user_id && <><Tooltip title="Delete pack">
-                <span>
-               <IconButton
-                   onClick={handleOpenModalDelete}>
-                    <DeleteIcon fontSize={"small"}/>
-                </IconButton>
-                </span>
-            </Tooltip>
-                <Tooltip title="Edit pack">
-                 <span>
-                <IconButton
-                    onClick={handleOpenModalAdd}>
-                    <EditIcon fontSize={"small"}/>
-                </IconButton>
-                 </span>
-                </Tooltip></>}
-
-            {
-                props.children &&
-                <Tooltip title={props.childrenTitle ? props.childrenTitle : false}>
-                 <span>
-                {props.children}
-                 </span>
-                </Tooltip>
-            }
-
-        </div>
-    )
-}
-
-
