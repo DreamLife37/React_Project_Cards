@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import {FC, memo, useState} from "react";
-import {Box, Button} from "@mui/material";
+import {Button, Grid} from "@mui/material";
 import {ArrowBack} from "@mui/icons-material";
 import {styled} from "@mui/material/styles";
 import {useNavigate} from "react-router-dom";
@@ -9,7 +9,6 @@ import {Path} from "../Routes";
 import {Search} from "./Search";
 import {useDispatchApp} from "../../CustomHooks/CustomHooks";
 import {thunksCards} from "./CardsReducer";
-import {AddAndEditPackModal} from "../packsList/modals/AddAndEditPackModal";
 import {AddAndEditCardModal} from "./modals/AddAndEditCardModal";
 import {ModalFormikCardType} from "./modals/FormikFormCardModal";
 
@@ -18,7 +17,6 @@ type EnhancedTableToolbar = {
     cardsPack_id: string
     isMyPack: boolean
 }
-
 
 export const CardsTableToolbar: FC<EnhancedTableToolbar> = memo(({isMyPack, title, cardsPack_id}) => {
 
@@ -38,89 +36,67 @@ export const CardsTableToolbar: FC<EnhancedTableToolbar> = memo(({isMyPack, titl
         }
 
         return (
-            <BoxToolBar>
-                <BoxLeft>
-                    <GoBack onClick={() => {
-                        navigate(Path.packsList)
-                    }}>
-                        <ArrowBack/>
-                        go back
-                    </GoBack>
-                    <Title>
-                        {title}
-                    </Title>
-                    <SearchCard>
-                        <div>Search</div>
-                        <Search searchCallback={searchCard}/>
-                    </SearchCard>
-                </BoxLeft>
-                <BoxRight>
-                    <AddAndEditCardModal callback={addNewCard} handleClose={handleClose} open={open}
-                                         title={'Add new card'} answer={''} question={''}/>
-                    {
-                        isMyPack
-                            ?
-                            <StyledButton onClick={handleOpen} color="inherit" variant='contained'>
-                                Add new card
-                            </StyledButton>
-                            :
-                            <></>
-                    }
-                </BoxRight>
-            </BoxToolBar>
+            <Grid container spacing={2} justifyContent='center' columns={10}>
+                <Grid container alignItems="center" direction="row"
+                      justifyContent="center" paddingTop={'40px'}>
+                    <Grid item xs={6}>{title}</Grid>
+                    <Grid item xs={6}>
+                        <AddAndEditCardModal callback={addNewCard} handleClose={handleClose} open={open}
+                                             title={'Add new card'} answer={''} question={''}/>
+                        {isMyPack && <StyledButton onClick={handleOpen} color="inherit" variant='contained'>
+                            Add new card
+                        </StyledButton>}
+                    </Grid>
+                </Grid>
+                <Grid container alignItems="flex-start" direction="row"
+                      justifyContent="center"
+                      paddingTop={'40px'}
+                >
+                    <Grid item xs={5}>
+                        <Grid container alignItems="center" direction="row"
+                              justifyContent="center">
+                            <Typography
+                                style={{cursor: 'pointer'}}
+                                sx={{flex: '1 1 100%'}}
+                                component="div"
+                                onClick={() => {
+                                    navigate(Path.packsList)
+                                }}
+                            >
+                                <ArrowBack/>
+                                Back to Pack List
+                            </Typography>
+
+                        </Grid>
+                    </Grid>
+
+                    <Grid item xs={6} marginBottom={'20px'}>
+                        <Grid container alignItems="center" direction="row"
+                              justifyContent="center">
+                            <Typography
+                                sx={{flex: '1 1 100%'}}
+                                variant="h6"
+                                id="tableTitle"
+                                component="div"
+                            >
+                                Search
+                            </Typography>
+                            <Search searchCallback={searchCard}/>
+                        </Grid>
+                    </Grid>
+
+
+                    <Grid item xs={2}>
+
+                    </Grid>
+                </Grid>
+            </Grid>
         );
     }
 )
+
 
 const StyledButton = styled(Button)`
   color: #050505;
   border-radius: 30px;
 `
-
-const BoxToolBar = styled(Box)`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: stretch;
-  min-height: 30vh;
-`
-const BoxRight = styled(Box)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-const BoxLeft = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: space-around;
-`
-
-const GoBack = styled(Typography)`
-  display: flex;
-  flex-direction: row;
-  cursor: pointer;
-`
-const Title = styled(Typography)`
-  display: flex;
-  flex-direction: row;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 22px;
-  line-height: 27px;
-`
-
-const SearchCard = styled(Typography)`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  row-gap: 5px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-`
-
-
-

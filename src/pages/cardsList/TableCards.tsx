@@ -6,10 +6,12 @@ import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
 import {Grid, LinearProgress, Rating} from "@mui/material";
 import {actionsCards, thunksCards} from "./CardsReducer";
-import {CustomEditSpan} from "../../common/components/table/CustomEditbleSpan";
-import {CardsTableToolbar} from "./CardsTableToolbar";
 import {styled} from "@mui/material/styles";
 import {CommonAction} from "./CommonActionCards";
+import Typography from '@material-ui/core/Typography';
+import Button from "@mui/material/Button";
+import {CardsTableToolbar} from './CardsTableToolbar';
+
 
 export type Row = {
     optionsCell: Numeric,
@@ -30,7 +32,6 @@ export const CardsPage: FC = memo(() => {
         const headCells = useSelectorApp(state => state.cards.initHeadCells)
         const requestPendingList = useSelectorApp(state => state.cards.requestPendingList)
 
-
         useEffect(() => {
             dispatch(thunksCards.getCards())
             return () => {
@@ -46,18 +47,6 @@ export const CardsPage: FC = memo(() => {
         const sortHandler = useCallback((headCell: HeadCell) => {
             dispatch(thunksCards.sortCards({...headCell, order: headCell.order === "0" ? "1" : "0"}))
         }, [dispatch])
-
-        const changeGrade = useCallback((_id: string, grade: number | null) => {
-            isMyPack && dispatch(thunksCards.updateCard({_id, grade}))
-        }, [dispatch, isMyPack])
-
-        const changeQuestion = useCallback((_id: string) => (question: string) => {
-            isMyPack && dispatch(thunksCards.updateCard({_id, question}))
-        }, [dispatch, isMyPack])
-
-        const changeAnswer = useCallback((_id: string) => (answer: string) => {
-            isMyPack && dispatch(thunksCards.updateCard({_id, answer}))
-        }, [dispatch, isMyPack])
 
         const onPageChangeHandler = useCallback((page: number) => {
             dispatch(thunksCards.setPage(page))
@@ -79,14 +68,12 @@ export const CardsPage: FC = memo(() => {
                 cards.map((card: ExtendedCardEntity) =>
                     [
                         {
-                            optionsCell: 'center',
-                            cell: <CustomEditSpan autoFocus fullWidth variant='standard'
-                                                  onBlurInput={changeQuestion(card._id)} value={card.question}/>
+                            optionsCell: "left",
+                            cell: <Typography component="span">{card.question}</Typography>
                         },
                         {
-                            optionsCell: "center",
-                            cell: <CustomEditSpan autoFocus fullWidth variant='standard'
-                                                  onBlurInput={changeAnswer(card._id)} value={card.answer}/>
+                            optionsCell: "left",
+                            cell: <Typography component="span">{card.answer}</Typography>
                         },
                         {
                             optionsCell: "center",
@@ -115,7 +102,7 @@ export const CardsPage: FC = memo(() => {
 
         return (
 
-            <BoxCardPages container>
+            <Grid>
                 <CardsTableToolbar isMyPack={isMyPack} title={packName} cardsPack_id={cardsPack_id}/>
 
                 <CommonTable
@@ -129,14 +116,7 @@ export const CardsPage: FC = memo(() => {
                     headCells={headCells}
                 />
                 {statusCards === "loading" && <LinearProgress/>}
-            </BoxCardPages>
+            </Grid>
         );
     }
 )
-
-const BoxCardPages = styled(Grid)`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: 2% 7% 2% 7%;
-`

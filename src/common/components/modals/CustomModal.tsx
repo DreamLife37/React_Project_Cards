@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import {FC, ReactElement} from "react";
 import Grid from "@mui/material/Grid";
@@ -27,7 +25,6 @@ type PropsType = {
     open: boolean
     disabledStyle?: boolean
     title: string
-
 }
 
 export const CustomModal: FC<PropsType> = ({children, handleClose, open, title, disabledStyle}) => {
@@ -40,19 +37,7 @@ export const CustomModal: FC<PropsType> = ({children, handleClose, open, title, 
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={disabledStyle ? undefined : style}>
-                    {!disabledStyle && <><Grid container alignItems={'center'} direction={'row'}
-                                               justifyContent={"space-between"}
-                                               paddingBottom={'15px'}>
-                        <Grid item xs={6} fontSize={'20px'}>
-                            {title}
-                        </Grid>
-                        <Grid item xs={1}>
-                            <IconButton onClick={handleClose}>
-                                <CloseIcon fontSize={"small"}/>
-                            </IconButton>
-                        </Grid>
-                    </Grid>
-                        <p className={s.horizontalLine}></p></>}
+
                     {children}
                 </Box>
             </Modal>

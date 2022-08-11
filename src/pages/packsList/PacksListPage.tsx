@@ -25,7 +25,6 @@ export const PacksListPage = () => {
     const handleOpen = (): void => setOpen(true)
     const handleClose = (): void => setOpen(false)
 
-
     const addNewPack = (e: ModalFormikPackType) => {
         dispatch(thunksPack.createPack({name: e.namePack, private: e.privatePack}))
     }

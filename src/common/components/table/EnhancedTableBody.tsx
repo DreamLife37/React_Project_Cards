@@ -1,5 +1,5 @@
 import * as React from "react";
-import {FC, memo, ReactNode} from "react";
+import {FC, memo} from "react";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
