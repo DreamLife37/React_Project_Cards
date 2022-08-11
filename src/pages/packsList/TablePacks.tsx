@@ -42,8 +42,6 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
         const dispatch = useDispatchApp()
         const navigate = useNavigate()
 
-        const isMyPack = cardsUserId === userId
-
         const sortHandler = useCallback((headCell: HeadCell) => {
             dispatch(thunksPack.sortPack({...headCell, order: headCell.order === "0" ? "1" : "0"}))
         }, [dispatch])

@@ -162,7 +162,6 @@ export const thunksCards = {
     },
 
     sortCards: (headCell: HeadCell): AppThunk => (dispatch) => {
-
         dispatch(actionsCards.updateHeadCell(headCell))
         dispatch(actionsCards.setQueryParams({sortCards: headCell.order + headCell.id}))
         dispatch(thunksCards.getCards())

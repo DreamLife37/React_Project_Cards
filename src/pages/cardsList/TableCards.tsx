@@ -80,7 +80,6 @@ export const CardsPage: React.FC = memo(() => {
             dispatch(thunksCards.updateCard({_id, question: newQuestion, answer: newAnswer}))
         }
 
-
         const rows: Array<Row[]> = useMemo(
             () => (
                 cards.map((card: ExtendedCardEntity) =>
@@ -114,6 +113,7 @@ export const CardsPage: React.FC = memo(() => {
                                                 disabled={requestPendingList[card._id]}
                                                 id={card._id}
                                                 card={card}
+                                                isMyPack={isMyPack}
                             />
                         }
                     ]
@@ -155,8 +155,9 @@ type CommonActionT = {
     id: string
     disabled: boolean
     card: ExtendedCardEntity
+    isMyPack: boolean
 }
-const CommonAction: FC<CommonActionT> = ({handleDelete, handleEdit, id, disabled, card}) => {
+const CommonAction: FC<CommonActionT> = ({handleDelete, handleEdit, id, disabled, card, isMyPack}) => {
 
     const [openModalAdd, setOpenModalAdd] = useState(false)
     const handleOpenModalAdd = (): void => setOpenModalAdd(true)
@@ -179,16 +180,16 @@ const CommonAction: FC<CommonActionT> = ({handleDelete, handleEdit, id, disabled
                                  title={'Edit name title'} question={card.question} answer={card.answer}/>
             <DeleteCardModal open={openModalDelete} handleClose={handleCloseModalDelete} title={'Deleted card'}
                              callback={onDelete} titleCard={card.question}/>
-            <Tooltip title="Delete pack">
+            {isMyPack && <><Tooltip title="Delete pack">
                 <IconButton disabled={disabled} onClick={handleOpenModalDelete}>
                     <DeleteIcon fontSize={"small"}/>
                 </IconButton>
             </Tooltip>
-            <Tooltip title="Edit pack">
-                <IconButton disabled={disabled} onClick={handleOpenModalAdd}>
-                    <EditIcon fontSize={"small"}/>
-                </IconButton>
-            </Tooltip>
+                <Tooltip title="Edit pack">
+                    <IconButton disabled={disabled} onClick={handleOpenModalAdd}>
+                        <EditIcon fontSize={"small"}/>
+                    </IconButton>
+                </Tooltip></>}
         </div>
     )
 }
