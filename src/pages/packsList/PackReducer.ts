@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
     APIPacks,
     CreateNewCardPackPayload,
@@ -9,7 +9,6 @@ import {
 import {AppDispatchType, AppThunk} from "../app/store";
 import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 import {HeadCell} from "../../common/components/table/CommonTable";
-
 
 type InitialState = {
     packsData: GetCardsPackResponse
@@ -77,7 +76,13 @@ const packsSlice = createSlice({
         },
         filterMyPacks: (state, action) => {
             state.isMyPacks = action.payload
-        }
+        },
+        updateHeadCell: (state, action: PayloadAction<HeadCell>) => {
+            state.initHeadCells = state.initHeadCells.map(HeadCell =>
+                action.payload.id === HeadCell.id ?
+                    action.payload
+                    : HeadCell)
+        },
     }
 })
 
@@ -122,7 +127,8 @@ export const thunksPack = {
         dispatch(thunksPack.getPack())
     },
 
-    sortPack: (headCell: { numeric: "inherit" | "right" | "left" | "center" | "justify" | undefined; id: string; label: string; order: string }): AppThunk => (dispatch) => {
+    sortPack: (headCell: HeadCell): AppThunk => (dispatch) => {
+        dispatch(actionsPacks.updateHeadCell(headCell))
         dispatch(actionsPacks.setQuery({sortPacks: headCell.order + headCell.id}))
         dispatch(thunksPack.getPack())
     },

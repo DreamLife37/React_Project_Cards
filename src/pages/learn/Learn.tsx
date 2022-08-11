@@ -79,7 +79,7 @@ export const Learn: FC<LearnPropsType> = memo((props) => {
                 </QuestionBoxStyled>
 
 
-                <CustomModal handleClose={handleClose} open={props.open} disabledStyle={true} title={'ffsdfds'}>
+                <CustomModal handleClose={handleClose} open={props.open} disabledStyle={true} title={''}>
                     <AnswerBoxStyled>
                         <LearnTitleBox>
                             <Typography variant={"h6"}>{props.packTitle}</Typography>
@@ -102,8 +102,8 @@ export const Learn: FC<LearnPropsType> = memo((props) => {
     }
 )
 const LightStyledButton = styled(Button)`
-
   border-radius: 50px;
+  margin-top: 20px;
 
 `
 const LearnTitleBox = styled(Box)`
@@ -126,14 +126,13 @@ const QuestionBoxStyled = styled(Box)`
   "Title"
   "Content";
   grid-auto-rows: 2fr 10fr;
-  margin: 1% 1% 1% 1%;
   padding: 1% 1% 0% 1%;
   color: black;
-  min-width: 439px;
+  min-width: 410px;
   min-height: 284px;
   max-width: min-content;
   max-height: min-content;
-
+  margin-top: 60px;
   border-radius: 5px;
   background-color: #f0f0f3;
 
@@ -144,19 +143,17 @@ const AnswerBoxStyled = styled(Box)`
   "Title"
   "Content";
   grid-auto-rows: 2fr 10fr;
-  margin: 1% 1% 1% 1%;
+  margin-top: 30px;
   padding: 1% 1% 0% 1%;
   color: black;
-  min-width: 439px;
+  min-width: 440px;
   min-height: 284px;
   max-width: max-content;
   max-height: max-content;
-
   position: absolute;
   top: 35%;
   left: 49.2%;
   transform: translate(-50%, -50%);
-
   border-radius: 5px;
   background-color: #f0f0f3;
   //  box-shadow: -10px -10px 10px #d3d3d6;,
