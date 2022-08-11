@@ -55,7 +55,6 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
             dispatch(thunksPack.updatePack({_id: packId, name: newNamePack, private: privatePack}))
         }
 
-
         const rows: Array<Row[]> = useMemo(
             () => (
                 packs.map((pack: CardPacksEntityWithDeckCover) => {
@@ -100,7 +99,6 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                                                     deleteRowHandler={deletePackHandler}
                                                     editRowHandler={editPackHandler}
                                                     titlePack={pack.name}/>
-
                             }
                         ]
                     }

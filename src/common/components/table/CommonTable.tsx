@@ -9,7 +9,6 @@ import {Row} from "../../../pages/cardsList/TableCards";
 import {EnhancedTableHead} from "./EnhancedTableHead";
 import {EnhancedTableBody} from "./EnhancedTableBody";
 
-
 export type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
 
 export interface HeadCell {
@@ -43,18 +42,16 @@ export const CommonTable: FC<CommonTable> = memo((props) => {
             page
         } = props
 
-
         const onPageChange = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
             onPageChangeHandler(newPage)
         }
-
 
         const onRowsPerPageChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             onRowsPerPageChangeHandler(+event.target.value)
         }
         return (
             <Box>
-                <Paper>
+                <Paper sx={{margin: 'auto', maxWidth: 1000, flexGrow: 1}}>
                     <TableContainer>
                         <Table aria-labelledby="tableTitle">
                             <EnhancedTableHead sortHandler={sortHandler} headCells={headCells}/>
