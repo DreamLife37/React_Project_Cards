@@ -152,8 +152,9 @@ export const thunksCards = {
         dispatch(thunksCards.getCards(response))
     },
     updateCard: (updateCardPayload: UpdateCardPayload): AppThunk => (dispatch) => {
+        dispatch(actionsCards.setRequestPendingList(updateCardPayload._id))
         const response = APICards.updateCard(updateCardPayload)
-        dispatch(thunksCards.getCards(response))
+        dispatch(thunksCards.getCards(response,updateCardPayload._id))
     },
     deleteCard: (id: string): AppThunk => (dispatch) => {
         dispatch(actionsCards.setRequestPendingList(id))

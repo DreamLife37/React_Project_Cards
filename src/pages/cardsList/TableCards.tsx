@@ -102,9 +102,8 @@ export const CardsPage: React.FC = memo(() => {
                             optionsCell: "center",
                             cell: <Rating
                                 name="simple-controlled"
-                                onChange={(event, value) => {
-                                    changeGrade(card._id, value)
-                                }} value={card.grade}/>
+                                readOnly
+                                value={card.grade}/>
                         },
                         {
                             optionsCell: "center",
