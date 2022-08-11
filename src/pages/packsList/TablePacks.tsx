@@ -98,17 +98,17 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                             },
                             {
                                 optionsCell: "center",
-                                cell: getTime(pack.created)
+                                cell: pack.user_name
                             },
                             {
                                 optionsCell: "center",
                                 cell: <CommonAction row={pack} userId={userId}
-                                                                               children={<IconButton
-                                                                                   onClick={moveOnLearnPage}><School/></IconButton>}
-                                                                               childrenTitle='Learn'
-                                                                               deleteRowHandler={deletePackHandler}
-                                                                               editRowHandler={editPackHandler}
-                                                                               titlePack={pack.name}/>
+                                                    children={<IconButton
+                                                        onClick={moveOnLearnPage}><School/></IconButton>}
+                                                    childrenTitle='Learn'
+                                                    deleteRowHandler={deletePackHandler}
+                                                    editRowHandler={editPackHandler}
+                                                    titlePack={pack.name}/>
 
                             }
                         ]
@@ -118,7 +118,6 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
 
         return (
             <BoxCardPages container>
-
                 <CommonTable
                     onPageChangeHandler={onPageChangeHandler}
                     onRowsPerPageChangeHandler={onRowsPerPageChangeHandler}
@@ -173,7 +172,7 @@ const CommonAction = (props: CommonActionType) => {
                                  title={'Edit name pack'} privatePack={props.row.private} namePack={props.row.name}/>
             <DeletePackModal open={openModalDelete} handleClose={handleCloseModalDelete} title={'Deleted pack'}
                              callback={deletePack} titlePack={props.titlePack}/>
-            {props.userId === props.row.user_id &&<><Tooltip title="Delete pack">
+            {props.userId === props.row.user_id && <><Tooltip title="Delete pack">
                 <span>
                <IconButton
                    onClick={handleOpenModalDelete}>
@@ -184,8 +183,7 @@ const CommonAction = (props: CommonActionType) => {
                 <Tooltip title="Edit pack">
                  <span>
                 <IconButton
-                    onClick={handleOpenModalAdd}
-                    disabled={props.userId !== props.row.user_id && true}>
+                    onClick={handleOpenModalAdd}>
                     <EditIcon fontSize={"small"}/>
                 </IconButton>
                  </span>
