@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FC, memo, ReactNode, useCallback, useEffect, useMemo, useState} from 'react';
+import {FC, memo, ReactNode, useCallback, useEffect, useMemo} from 'react';
 import {ExtendedCardEntity} from "../../DAL/API-Cards";
 import {CommonTable, HeadCell, Numeric} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
@@ -9,20 +9,14 @@ import {actionsCards, thunksCards} from "./CardsReducer";
 import {CustomEditSpan} from "../../common/components/table/CustomEditbleSpan";
 import {CardsTableToolbar} from "./CardsTableToolbar";
 import {styled} from "@mui/material/styles";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import {AddAndEditCardModal} from "./modals/AddAndEditCardModal";
-import {ModalFormikCardType} from "./modals/FormikFormCardModal";
-import {DeleteCardModal} from "./modals/DeleteCardModal";
+import {CommonAction} from "./CommonActionCards";
 
 export type Row = {
     optionsCell: Numeric,
     cell: string | number | ReactNode
 }
 
-export const CardsPage: React.FC = memo(() => {
+export const CardsPage: FC = memo(() => {
 
         const cardsPack_id = useSelectorApp(state => state.cards.cardsPack_id)
         const userId = useSelectorApp(state => state.auth._id)
@@ -146,52 +140,4 @@ const BoxCardPages = styled(Grid)`
   flex-direction: column;
   align-items: stretch;
   padding: 2% 7% 2% 7%;
-
 `
-
-type CommonActionT = {
-    handleDelete: (id: string) => void
-    handleEdit: (id: string, question: string, answer: string) => void
-    id: string
-    disabled: boolean
-    card: ExtendedCardEntity
-    isMyPack: boolean
-}
-const CommonAction: FC<CommonActionT> = ({handleDelete, handleEdit, id, disabled, card, isMyPack}) => {
-
-    const [openModalAdd, setOpenModalAdd] = useState(false)
-    const handleOpenModalAdd = (): void => setOpenModalAdd(true)
-    const handleCloseModalAdd = (): void => setOpenModalAdd(false)
-
-    const [openModalDelete, setOpenModalDelete] = useState(false)
-    const handleOpenModalDelete = (): void => setOpenModalDelete(true)
-    const handleCloseModalDelete = (): void => setOpenModalDelete(false)
-
-    const onDelete = () => {
-        handleDelete(id)
-    }
-    const onEdite = (e: ModalFormikCardType) => {
-        handleEdit(id, e.question, e.answer)
-    }
-
-    return (
-        <div>
-            <AddAndEditCardModal callback={onEdite} handleClose={handleCloseModalAdd} open={openModalAdd}
-                                 title={'Edit name title'} question={card.question} answer={card.answer}/>
-            <DeleteCardModal open={openModalDelete} handleClose={handleCloseModalDelete} title={'Deleted card'}
-                             callback={onDelete} titleCard={card.question}/>
-            {isMyPack && <><Tooltip title="Delete pack">
-                <IconButton disabled={disabled} onClick={handleOpenModalDelete}>
-                    <DeleteIcon fontSize={"small"}/>
-                </IconButton>
-            </Tooltip>
-                <Tooltip title="Edit pack">
-                    <IconButton disabled={disabled} onClick={handleOpenModalAdd}>
-                        <EditIcon fontSize={"small"}/>
-                    </IconButton>
-                </Tooltip></>}
-        </div>
-    )
-}
-
-
