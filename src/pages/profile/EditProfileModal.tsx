@@ -6,7 +6,7 @@ import image from './profileAvatar.png';
 import style from './Profile.module.css';
 import { FC, useState } from 'react';
 import { thunkAuth } from '../auth/auth-reducer';
-import { useDispatchApp } from '../../CustomHooks/CustomHooks';
+import { useDispatchApp } from '../../customHooks/CustomHooks';
 
 type PropsType = {
     email: string

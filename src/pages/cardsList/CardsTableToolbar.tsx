@@ -7,7 +7,7 @@ import {styled} from "@mui/material/styles";
 import {useNavigate} from "react-router-dom";
 import {Path} from "../Routes";
 import {Search} from "./Search";
-import {useDispatchApp} from "../../CustomHooks/CustomHooks";
+import {useDispatchApp} from "../../customHooks/CustomHooks";
 import {thunksCards} from "./CardsReducer";
 import {AddAndEditCardModal} from "./modals/AddAndEditCardModal";
 import {ModalFormikCardType} from "./modals/FormikFormCardModal";

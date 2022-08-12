@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {useSelectorApp} from "../../CustomHooks/CustomHooks";
+import {useSelectorApp} from "../../customHooks/CustomHooks";
 import {useNavigate} from "react-router-dom";
 import {Path} from "../../pages/Routes";
 

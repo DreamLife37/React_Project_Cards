@@ -8,7 +8,7 @@ import TablePagination from "@mui/material/TablePagination";
 import {Row} from "../../../pages/cardsList/TableCards";
 import {EnhancedTableHead} from "./EnhancedTableHead";
 import {EnhancedTableBody} from "./EnhancedTableBody";
-import {useSelectorApp} from "../../../CustomHooks/CustomHooks";
+import {useSelectorApp} from "../../../customHooks/CustomHooks";
 
 export type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
 

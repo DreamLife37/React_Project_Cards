@@ -1,4 +1,4 @@
-import {useSelectorApp} from "../../CustomHooks/CustomHooks";
+import {useSelectorApp} from "../../customHooks/CustomHooks";
 import {Backdrop, CircularProgress} from "@mui/material";
 import React from "react";
 

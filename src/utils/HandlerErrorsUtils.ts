@@ -1,5 +1,5 @@
 import {AxiosError} from "axios";
-import {actionsErrors} from "../Errors/ErrorsReducer";
+import {actionsErrors} from "../error/ErrorsReducer";
 import {AppDispatchType} from "../pages/app/store";
 
 type ErrorResponse={

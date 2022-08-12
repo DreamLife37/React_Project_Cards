@@ -12,7 +12,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import React, {useState} from "react";
 import {Path} from "../../Routes";
-import {useDispatchApp, useSelectorApp} from "../../../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../../../customHooks/CustomHooks";
 
 type FormikErrorType = {
     email?: string
