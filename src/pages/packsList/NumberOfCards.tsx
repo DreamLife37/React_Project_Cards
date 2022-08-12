@@ -26,8 +26,8 @@ export function NumberOfCards() {
             <Slider
                 getAriaLabel={() => 'Min and Max cards'}
                 value={value}
+                valueLabelDisplay="on"
                 onChange={handleChange}
-                valueLabelDisplay="auto"
             />
         </Box>
     );

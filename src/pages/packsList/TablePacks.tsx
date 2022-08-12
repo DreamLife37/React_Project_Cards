@@ -115,7 +115,8 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                     page={page}
                     sortHandler={sortHandler}
                     rows={rows}
-                    headCells={headCells}/>
+                    headCells={headCells}
+                />
             </BoxCardPages>
 
         );
