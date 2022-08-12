@@ -6,6 +6,7 @@ import {ExtendedCardEntity} from "../../DAL/API-Cards";
 import {Learn} from "./Learn";
 import {useNavigate} from "react-router-dom";
 import {Path} from "../Routes";
+import {NavigateIfNotAuthorised} from "../../common/HOC/NavigateIfNotAuthorised";
 
 
 const grades = ['не знал', 'забыл', 'долго думал', 'перепутал', 'знал'];
@@ -22,7 +23,7 @@ const getSmartRandomCard = (cards: ExtendedCardEntity[]) => {
 }
 
 
-export const LearnPage = () => {
+export const LearnPage = NavigateIfNotAuthorised( () => {
 
     const cardsData = useSelectorApp(state => state.cards.cardsData)
     const cards = useSelectorApp(state => state.cards.cardsData.cards)
@@ -77,6 +78,6 @@ export const LearnPage = () => {
                packTitle={packTitle}
         />
     )
-}
+})
 
 
