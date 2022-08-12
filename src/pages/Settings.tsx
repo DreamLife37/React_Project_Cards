@@ -2,7 +2,7 @@ import {Button, FormControl, FormGroup, FormLabel, Grid, TextField} from "@mui/m
 import {useFormik} from "formik";
 import React from "react";
 import {thunkAuth} from "./auth/auth-reducer";
-import {useDispatchApp, useSelectorApp} from "../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../customHooks/CustomHooks";
 
 
 type FormikErrorType = {

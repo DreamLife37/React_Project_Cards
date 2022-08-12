@@ -4,7 +4,7 @@ import FormGroup from '@mui/material/FormGroup';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
 import {ChangeEvent} from "react";
 import {actionsPacks, thunksPack} from "./PackReducer";
 

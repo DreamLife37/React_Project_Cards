@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useCallback, useEffect, useState} from "react";
-import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
 import {actionsCards, thunksCards} from "../cardsList/CardsReducer";
 import {ExtendedCardEntity} from "../../DAL/API-Cards";
 import {Learn} from "./Learn";

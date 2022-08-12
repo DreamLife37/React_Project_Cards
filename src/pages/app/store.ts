@@ -2,7 +2,7 @@ import {combineReducers} from "redux";
 
 import {actionsAuth, authReducer} from "../auth/auth-reducer";
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {actionsErrors, ErrorReducer} from "../../Errors/ErrorsReducer";
+import {actionsErrors, ErrorReducer} from "../../error/ErrorsReducer";
 import {appReducer} from "./app-reducer";
 import {configureStore} from "@reduxjs/toolkit";
 import {actionsPacks, packs} from "../packsList/PackReducer";

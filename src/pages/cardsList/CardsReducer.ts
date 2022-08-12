@@ -9,7 +9,7 @@ import {
 import {AppThunk} from "../app/store";
 import {restoreFromStorage} from "../../utils/LocalStorageUtils";
 import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
-import {actionsErrors} from "../../Errors/ErrorsReducer";
+import {actionsErrors} from "../../error/ErrorsReducer";
 
 import {HeadCell} from "../../common/components/table/CommonTable";
 

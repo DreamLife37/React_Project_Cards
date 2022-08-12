@@ -3,7 +3,7 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
-import {useDebouncedEffect, useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
+import {useDebouncedEffect, useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
 import {useState} from "react";
 import {thunksPack} from "./PackReducer";
 

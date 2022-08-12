@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import {thunksPack} from "./PackReducer";
-import {useDebouncedEffect, useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
+import {useDebouncedEffect, useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
 
 
 export function NumberOfCards() {

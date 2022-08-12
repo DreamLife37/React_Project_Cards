@@ -4,7 +4,7 @@ import React from "react";
 import {useNavigate} from "react-router-dom";
 import {thunkAuth} from "../auth-reducer";
 import {Path} from "../../Routes";
-import {useDispatchApp, useSelectorApp} from "../../../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../../../customHooks/CustomHooks";
 
 
 type FormikErrorType = {

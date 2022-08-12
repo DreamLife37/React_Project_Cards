@@ -1,4 +1,4 @@
-import {useDispatchApp, useSelectorApp} from "../../../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../../../customHooks/CustomHooks";
 import {useFormik} from "formik";
 import {Checkbox, Container, FormControlLabel} from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -72,16 +72,16 @@ export const FormikFormPackModal: FC<PropsType> = ({handleClose, submit, private
                                                   }
                                 />
 
-                                <Grid container alignItems={'center'} direction={'row'}
-                                      justifyContent={"space-between"}>
-                                    <Grid item xs={4} paddingLeft={'20px'}>
+                                <Grid container
+                                      justifyContent={"space-between"} direction="row">
+                                    <Grid item >
                                         <Button variant={'contained'} color={'primary'} onClick={handleClose}
                                         >
                                             Cancel
                                         </Button>
                                     </Grid>
-                                    <Grid item xs={3}>
-                                        <Button type={'submit'} variant={'contained'} color={'primary'}
+                                    <Grid item marginLeft={'50px'}>
+                                        <Button type={'submit'} variant={'contained'} color={"success"}
                                                 disabled={disabledButton}>
                                             Save
                                         </Button>

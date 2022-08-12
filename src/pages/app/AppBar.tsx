@@ -16,7 +16,7 @@ import {useSelector} from "react-redux";
 import {AppStoreType} from "./store";
 import {Link, NavLink, useNavigate} from "react-router-dom";
 import {thunkAuth} from "../auth/auth-reducer";
-import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import {Path} from "../Routes";
 import {Settings} from "../Settings";

@@ -1,4 +1,4 @@
-import {useDispatchApp, useSelectorApp} from "../../../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../../../customHooks/CustomHooks";
 import {useFormik} from "formik";
 import {Container} from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -57,7 +57,7 @@ export const FormikFormCardModal: FC<PropsType> = ({handleClose, submit, questio
     return <div>
         <Container fixed>
             <Grid container justifyContent='center' bgcolor='white' borderRadius={1}>
-                <Grid item justifyContent={'space-between'}>
+                <Grid item justifyContent={'space-around'}>
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl>
                             <FormGroup>
@@ -73,18 +73,16 @@ export const FormikFormCardModal: FC<PropsType> = ({handleClose, submit, questio
                                 {formik.touched.answer && formik.errors.answer
                                     ? <div style={{color: '#9d1717', fontSize: '14px'}}>{formik.errors.answer}</div>
                                     : null}
-
-
-                                <Grid container alignItems={'center'} direction={'row'}
-                                      justifyContent={"space-between"}>
-                                    <Grid item xs={4} paddingLeft={'20px'}>
+                                <Grid container
+                                      justifyContent={"space-between"} direction="row" >
+                                    <Grid item >
                                         <Button variant={'contained'} color={'primary'} onClick={handleClose}
                                         >
                                             Cancel
                                         </Button>
                                     </Grid>
-                                    <Grid item xs={3}>
-                                        <Button type={'submit'} variant={'contained'} color={'primary'}
+                                    <Grid item marginLeft={'50px'} >
+                                        <Button type={'submit'} variant={'contained'} color={"success"}
                                                 disabled={disabledButton}>
                                             Save
                                         </Button>

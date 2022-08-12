@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {memo, ReactNode, useCallback, useMemo} from 'react';
 import {CommonTable, HeadCell, Numeric} from "../../common/components/table/CommonTable";
-import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
 import {Grid} from "@mui/material";
 import {styled} from "@mui/material/styles";

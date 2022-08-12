@@ -4,7 +4,7 @@ import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import {FC, useState} from "react";
-import {useDebouncedEffect} from "../../CustomHooks/CustomHooks";
+import {useDebouncedEffect} from "../../customHooks/CustomHooks";
 
 type Search={
     searchCallback:(valueSearch:string)=>void

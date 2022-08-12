@@ -4,7 +4,7 @@ import {FC, useState} from "react";
 import {Link, Navigate} from "react-router-dom";
 import {thunkAuth} from '../auth/auth-reducer';
 import style from './Profile.module.css';
-import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
+import {useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
 import {Path} from "../Routes";
 import {Container} from "@mui/material";
 import Grid from '@mui/material/Grid';
