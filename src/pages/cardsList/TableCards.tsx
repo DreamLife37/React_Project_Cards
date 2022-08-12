@@ -6,10 +6,8 @@ import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
 import {getTime} from "../../utils/getTime";
 import {Grid, LinearProgress, Rating} from "@mui/material";
 import {actionsCards, thunksCards} from "./CardsReducer";
-import {styled} from "@mui/material/styles";
 import {CommonAction} from "./CommonActionCards";
 import Typography from '@material-ui/core/Typography';
-import Button from "@mui/material/Button";
 import {CardsTableToolbar} from './CardsTableToolbar';
 
 
@@ -114,6 +112,7 @@ export const CardsPage: FC = memo(() => {
                     sortHandler={sortHandler}
                     rows={rows}
                     headCells={headCells}
+                    status={statusCards}
                 />
                 {statusCards === "loading" && <LinearProgress/>}
             </Grid>

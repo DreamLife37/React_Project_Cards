@@ -71,6 +71,7 @@ export const PacksListPage = () => {
                             variant="h6"
                             id="tableTitle"
                             component="div"
+                            paddingBottom={'30px'}
                         >
                             Show packs cards
                         </Typography>
@@ -85,6 +86,7 @@ export const PacksListPage = () => {
                             variant="h6"
                             id="tableTitle"
                             component="div"
+                            paddingBottom={'30px'}
                         >
                             Number of cards
                         </Typography>

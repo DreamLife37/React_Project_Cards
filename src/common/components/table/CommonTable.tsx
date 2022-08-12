@@ -8,6 +8,7 @@ import TablePagination from "@mui/material/TablePagination";
 import {Row} from "../../../pages/cardsList/TableCards";
 import {EnhancedTableHead} from "./EnhancedTableHead";
 import {EnhancedTableBody} from "./EnhancedTableBody";
+import {useSelectorApp} from "../../../CustomHooks/CustomHooks";
 
 export type Numeric = "inherit" | "right" | "left" | "center" | "justify" | undefined;
 
@@ -27,6 +28,8 @@ type CommonTable = {
     onRowsPerPageChangeHandler: (newTotalCount: number) => void
     pageCount: number
     page: number
+    status?: string
+    isAuthorized?: boolean
 }
 
 //универсальная таблица ждет название, массив из масивов  и массив обьектов для шапки таблицы:
@@ -39,8 +42,12 @@ export const CommonTable: FC<CommonTable> = memo((props) => {
             headCells,
             cardsTotalCount,
             pageCount,
-            page
+            page,
+            status
         } = props
+
+        const statusApp = useSelectorApp(state => state.app.statusApp)
+        const isAuthorized = useSelectorApp(state => state.auth.isAuthorized)
 
         const onPageChange = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
             onPageChangeHandler(newPage)
@@ -58,7 +65,13 @@ export const CommonTable: FC<CommonTable> = memo((props) => {
                             <EnhancedTableBody rows={rows}/>
                         </Table>
                     </TableContainer>
-                    {rows.length === 0 && <>Packs/cards not found or you no authorized</>}
+                    {(statusApp === 'idle') ?
+                        !isAuthorized
+                            ? <>You no authorized</>
+                            : (rows.length === 0 && status !== "loading" ) && <>Packs/cards not
+                            found</>
+                        : <>Loading</>
+                    }
                     <TablePagination
                         rowsPerPageOptions={[4, 10, 20]}
                         component="div"
