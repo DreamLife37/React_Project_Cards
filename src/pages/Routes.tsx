@@ -12,7 +12,6 @@ import {CardsPage} from "./cardsList/TableCards";
 import {LearnPage} from "./learn/LearnPage";
 
 
-
 export enum Path {
     login = '/login',
     registration = '/registration',

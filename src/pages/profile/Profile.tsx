@@ -9,8 +9,9 @@ import {Path} from "../Routes";
 import {Container} from "@mui/material";
 import Grid from '@mui/material/Grid';
 import React from "react"
+import {NavigateIfNotAuthorised} from "../../common/HOC/NavigateIfNotAuthorised";
 
-export const Profile: FC = () => {
+export const Profile: FC = NavigateIfNotAuthorised( () => {
 
     const dispatch = useDispatchApp();
 
@@ -105,4 +106,4 @@ export const Profile: FC = () => {
             </Container>
         </div>
     )
-}
+})

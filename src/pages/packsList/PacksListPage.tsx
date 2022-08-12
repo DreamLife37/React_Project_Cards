@@ -6,14 +6,15 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import {useDispatchApp, useSelectorApp} from "../../CustomHooks/CustomHooks";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {thunksPack} from "./PackReducer";
 import {styled} from "@mui/material/styles";
 import {TablePacks} from "./TablePacks";
 import {ModalFormikPackType} from "./modals/FormikFormPackModal";
 import {AddAndEditPackModal} from "./modals/AddAndEditPackModal";
+import {NavigateIfNotAuthorised} from "../../common/HOC/NavigateIfNotAuthorised";
 
-export const PacksListPage = () => {
+export const PacksListPage = NavigateIfNotAuthorised( () => {
 
     const cardPackEntity = useSelectorApp(state => state.packs.packsData.cardPacks)
     const headCells = useSelectorApp(state => state.packs.initHeadCells)
@@ -99,4 +100,4 @@ export const PacksListPage = () => {
             </Grid>
         </Grid>
     )
-}
+})

@@ -9,6 +9,7 @@ import {actionsCards, thunksCards} from "./CardsReducer";
 import {CommonAction} from "./CommonActionCards";
 import Typography from '@material-ui/core/Typography';
 import {CardsTableToolbar} from './CardsTableToolbar';
+import {NavigateIfNotAuthorised} from "../../common/HOC/NavigateIfNotAuthorised";
 
 
 export type Row = {
@@ -16,7 +17,7 @@ export type Row = {
     cell: string | number | ReactNode
 }
 
-export const CardsPage: FC = memo(() => {
+export const CardsPage: FC = NavigateIfNotAuthorised(memo(() => {
 
         const cardsPack_id = useSelectorApp(state => state.cards.cardsPack_id)
         const userId = useSelectorApp(state => state.auth._id)
@@ -118,4 +119,4 @@ export const CardsPage: FC = memo(() => {
             </Grid>
         );
     }
-)
+))
