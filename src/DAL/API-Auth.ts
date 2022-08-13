@@ -43,7 +43,6 @@ type RegisterResponseDataType = {
         __v: number
         _id: string
     }
-    error?: string;
 }
 export type EntityUser = {
     _id: string
@@ -52,12 +51,11 @@ export type EntityUser = {
     name: string
     avatar: string
     publicCardPacksCount: number// количество колод
-    created: Date
-    updated: Date
+    created: string
+    updated: string
     isAdmin: boolean
     verified: boolean // подтвердил ли почту
     rememberMe: boolean
-    error?: string
     token: string
     tokenDeathTime: number
 }
@@ -93,6 +91,8 @@ export const APIAuth = {
                     publicCardPacksCount: response.data.publicCardPacksCount,
                     isAdmin: response.data.isAdmin,
                     token: response.data.token,
+                    tokenDeathTime:response.data.tokenDeathTime,
+                    isAuthorized: true,
                 },
                 statusText: response.statusText
             }

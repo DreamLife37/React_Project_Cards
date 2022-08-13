@@ -10,6 +10,7 @@ import {Settings} from "./Settings";
 import {PacksListPage} from "./packsList/PacksListPage";
 import {CardsPage} from "./cardsList/TableCards";
 import {LearnPage} from "./learn/LearnPage";
+import {NavigateIfNotAuthorised} from "../common/HOC/NavigateIfNotAuthorised";
 
 
 export enum Path {

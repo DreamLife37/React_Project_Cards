@@ -4,7 +4,7 @@ import {
     LoginPayloadType,
     RegisterPayloadType,
     setNewPassWordPayloadType
-} from "../../DAL/APIAuth";
+} from "../../DAL/API-Auth";
 import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
 import {actionsApp} from "../app/app-reducer";
 import {AppDispatchType, AppThunk, InferActionsType} from "../app/store";
@@ -20,10 +20,7 @@ type initialStateType = {
     isAdmin: boolean,
     token: string | null,
     isAuthorized: boolean
-    isRegistration: boolean
 }
-
-type ActionAuthType = InferActionsType<typeof actionsAuth | typeof actionsApp>
 
 const initialState = {
     _id: '',
@@ -34,19 +31,16 @@ const initialState = {
     isAdmin: false,
     token: '',
     isAuthorized: false,
-    isRegistration: false
 }
+
 
 const authSlice = createSlice({
     name: 'AUTH',
-    initialState: initialState,
+    initialState,
     reducers: {
         setLoginData: (state, action: PayloadAction<initialStateType>) => {
             Object.assign(state, action.payload);
-        },
-        setRegisteredUser: (state, action: PayloadAction<boolean>) => {
-            state.isRegistration = action.payload
-        },
+        }
     }
 })
 
@@ -56,48 +50,50 @@ export const actionsAuth = authSlice.actions
 
 export const thunkAuth = {
 
-    registration: (data: RegisterPayloadType): AppThunk => (dispatch: Dispatch<ActionAuthType>) => {
+    authMe: (): AppThunk => (dispatch) => {
+
+        const response = APIAuth.authMe().then((response) => {
+                if (response.statusText === 'OK') {
+                    dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true}))
+                }
+            }
+        )
+        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response], "initialize")
+    },
+
+    registration: (data: RegisterPayloadType): AppThunk => (dispatch) => {
 
         const response = APIAuth.register(data)
             .then(() => {
-                dispatch(actionsAuth.setRegisteredUser(true))
+               return true
             })
         //утилитка переключения  статуса Апп
         //если вызвать в try то сработает только при успешном запросе
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
+        //ответ ожидается на странице регистрации для дальнейшего перехода на страницу логинизации
+        return response
     },
-    setNameOrAvatar: (payload: { name?: string, avatar?: string }): AppThunk => (dispatch: AppDispatchType) => {
+    setNameOrAvatar: (payload: { name?: string, avatar?: string }): AppThunk => (dispatch) => {
         dispatch(actionsApp.setAppStatus('loading'))
         const response = APIAuth.updateNickOrAvatar(payload)
             .then((res) => {
-                dispatch(actionsAuth.setLoginData({...res.data.updatedUser, isAuthorized: true, isRegistration: true}))
+                dispatch(actionsAuth.setLoginData({...res.data.updatedUser, isAuthorized: true}))
             })
         //утилитка переключения  статуса Апп
         //если вызвать в try то сработает только при успешном запросе
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
     },
 
-    login: (loginPayload: LoginPayloadType): AppThunk => (dispatch: AppDispatchType) => {
+    login: (loginPayload: LoginPayloadType): AppThunk => (dispatch) => {
 
 
         const response = APIAuth.login(loginPayload)
             .then((response) => {
                 if (response.statusText === 'OK') {
-                    dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: true}))
+                    dispatch(actionsAuth.setLoginData({...response.data}))
                 }
             })
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
-    },
-
-    authMe: (): AppThunk => (dispatch: AppDispatchType) => {
-
-        const response = APIAuth.authMe().then((response) => {
-                if (response.statusText === 'OK') {
-                    dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: false}))
-                }
-            }
-        )
-        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response], "initialize")
     },
 
     logout: (): AppThunk => (dispatch: AppDispatchType) => {
@@ -115,7 +111,6 @@ export const thunkAuth = {
                                 isAdmin: false,
                                 token: '',
                                 isAuthorized: false,
-                                isRegistration: false
                             }
                         )
                     )
