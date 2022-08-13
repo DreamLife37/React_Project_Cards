@@ -14,8 +14,6 @@ function App() {
     //useDispatchApp кастомный хук типизировать не надо
     const dispatch = useDispatchApp();
 
-
-
     useEffect(() => {
         if (!isAuthorized) {
             dispatch(thunkApp.initializeApp());

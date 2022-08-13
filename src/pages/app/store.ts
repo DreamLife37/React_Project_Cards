@@ -1,5 +1,5 @@
 import {combineReducers} from "redux";
-import {actionsAuth, authReducer} from "../auth/auth-reducer";
+import {actionsAuth, authReducer, thunkAuth} from "../auth/auth-reducer";
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {actionsErrors, ErrorReducer} from "../../error/ErrorsReducer";
 import {appReducer} from "./app-reducer";
@@ -7,6 +7,7 @@ import {configureStore} from "@reduxjs/toolkit";
 import {actionsPacks, packs} from "../packsList/PackReducer";
 import {actionsCards, cards} from "../cardsList/CardsReducer";
 import {restoreFromStorage, saveInStorage} from "../../utils/LocalStorageUtils";
+import {getTime} from "../../utils/getTime";
 
 
 
@@ -39,14 +40,19 @@ store.subscribe(()=>{
     //сохраняет в localStorage аутентификационные данные из стейта при условии что authData не пуста
     if(Object.keys(store.getState().auth.authData).length!==0){
         saveInStorage("authData",store.getState().auth.authData)
-        console.log(store.getState().auth.authData.tokenDeathTime-Date.now())
+
+        console.log(new Date(store.getState().auth.authData.tokenDeathTime-Date.now()))
+
+        //за 10 мин до конца жизни токена отправит запрос на авторизацию и по идее бек должен обновить время жизни токена
+        if (store.getState().auth.authData.tokenDeathTime-Date.now()<=360){
+            store.dispatch(thunkAuth.authMe())
+        }
         //когда время жизни токена истечет переведет isAuthorized в false в следствие этого я надеюсь приложение
         //отреагирует редиректом на LoginPage
         if(store.getState().auth.authData.tokenDeathTime-Date.now()<=0){
             saveInStorage("authData", {...store.getState().auth.authData,isAuthorized:false})
         }
     }
-
 
     //пилит в лок.хранилище id колоды чтобы после перезагрузки не терялась
     if (!store.getState().cards.cardsPack_id){return}
