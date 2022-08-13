@@ -1,52 +1,32 @@
-import {Dispatch} from "redux";
+
 import {
-    APIAuth,
+    APIAuth, EntityUser,
     LoginPayloadType,
     RegisterPayloadType,
     setNewPassWordPayloadType
-} from "../../DAL/APIAuth";
-import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
+} from "../../DAL/API-Auth";
+
 import {actionsApp} from "../app/app-reducer";
 import {AppDispatchType, AppThunk, InferActionsType} from "../app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 
-type initialStateType = {
-    _id: string,
-    email: string,
-    name: string,
-    avatar: string,
-    publicCardPacksCount: number | null,
-    isAdmin: boolean,
-    token: string | null,
-    isAuthorized: boolean
-    isRegistration: boolean
+type InitialStateType = {
+    authData: EntityUser & { isAuthorized: boolean } | Record<string, never>
 }
 
-type ActionAuthType = InferActionsType<typeof actionsAuth | typeof actionsApp>
-
-const initialState = {
-    _id: '',
-    email: '',
-    name: '',
-    avatar: '',
-    publicCardPacksCount: null,
-    isAdmin: false,
-    token: '',
-    isAuthorized: false,
-    isRegistration: false
+const initialState: InitialStateType = {
+    authData: {},
 }
+
 
 const authSlice = createSlice({
     name: 'AUTH',
-    initialState: initialState,
+    initialState,
     reducers: {
-        setLoginData: (state, action: PayloadAction<initialStateType>) => {
-            Object.assign(state, action.payload);
-        },
-        setRegisteredUser: (state, action: PayloadAction<boolean>) => {
-            state.isRegistration = action.payload
-        },
+        setLoginData: (state, action: PayloadAction<InitialStateType["authData"]>) => {
+            state.authData = action.payload
+        }
     }
 })
 
@@ -56,48 +36,50 @@ export const actionsAuth = authSlice.actions
 
 export const thunkAuth = {
 
-    registration: (data: RegisterPayloadType): AppThunk => (dispatch: Dispatch<ActionAuthType>) => {
-
-        const response = APIAuth.register(data)
-            .then(() => {
-                dispatch(actionsAuth.setRegisteredUser(true))
-            })
-        //утилитка переключения  статуса Апп
-        //если вызвать в try то сработает только при успешном запросе
-        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
-    },
-    setNameOrAvatar: (payload: { name?: string, avatar?: string }): AppThunk => (dispatch: AppDispatchType) => {
-        dispatch(actionsApp.setAppStatus('loading'))
-        const response = APIAuth.updateNickOrAvatar(payload)
-            .then((res) => {
-                dispatch(actionsAuth.setLoginData({...res.data.updatedUser, isAuthorized: true, isRegistration: true}))
-            })
-        //утилитка переключения  статуса Апп
-        //если вызвать в try то сработает только при успешном запросе
-        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
-    },
-
-    login: (loginPayload: LoginPayloadType): AppThunk => (dispatch: AppDispatchType) => {
-
-
-        const response = APIAuth.login(loginPayload)
-            .then((response) => {
-                if (response.statusText === 'OK') {
-                    dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: true}))
-                }
-            })
-        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
-    },
-
-    authMe: (): AppThunk => (dispatch: AppDispatchType) => {
+    authMe: (): AppThunk => (dispatch) => {
 
         const response = APIAuth.authMe().then((response) => {
                 if (response.statusText === 'OK') {
-                    dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true, isRegistration: false}))
+                    dispatch(actionsAuth.setLoginData(response.data))
                 }
             }
         )
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response], "initialize")
+    },
+
+    registration: (data: RegisterPayloadType): AppThunk => (dispatch) => {
+
+        const response = APIAuth.register(data)
+            .then(() => {
+                //ответ ожидается на странице регистрации для дальнейшего перехода на страницу логинизации
+                return true
+            })
+        //утилитка переключения  статуса Апп
+        //если вызвать в try то сработает только при успешном запросе
+        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
+
+        return response
+    },
+    setNameOrAvatar: (payload: { name?: string, avatar?: string }): AppThunk => (dispatch) => {
+        dispatch(actionsApp.setAppStatus('loading'))
+        const response = APIAuth.updateNickOrAvatar(payload)
+            .then((response) => {
+                dispatch(actionsAuth.setLoginData(response))
+            })
+        //утилитка переключения  статуса Апп
+        //если вызвать в try то сработает только при успешном запросе
+        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
+    },
+
+    login: (loginPayload: LoginPayloadType): AppThunk => (dispatch) => {
+
+        const response = APIAuth.login(loginPayload)
+            .then((response) => {
+                if (response.statusText === 'OK') {
+                    dispatch(actionsAuth.setLoginData(response.data))
+                }
+            })
+        HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
     },
 
     logout: (): AppThunk => (dispatch: AppDispatchType) => {
@@ -105,19 +87,7 @@ export const thunkAuth = {
         const response = APIAuth.logOut()
             .then((response) => {
                 if (response.statusText === 'OK') {
-                    dispatch(actionsAuth.setLoginData(
-                            {
-                                _id: '',
-                                email: '',
-                                name: '',
-                                avatar: '',
-                                publicCardPacksCount: null,
-                                isAdmin: false,
-                                token: '',
-                                isAuthorized: false,
-                                isRegistration: false
-                            }
-                        )
+                    dispatch(actionsAuth.setLoginData({})
                     )
                 }
             })

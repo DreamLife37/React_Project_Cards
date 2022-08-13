@@ -20,7 +20,7 @@ export type Row = {
 export const CardsPage: FC = NavigateIfNotAuthorised(memo(() => {
 
         const cardsPack_id = useSelectorApp(state => state.cards.cardsPack_id)
-        const userId = useSelectorApp(state => state.auth._id)
+        const userId = useSelectorApp(state => state.auth.authData._id)
         const cardsUserId = useSelectorApp(state => state.cards.cardsData.packUserId)
         const cardsTotalCount = useSelectorApp(state => state.cards.cardsData.cardsTotalCount)
         const pageCount = useSelectorApp(state => state.cards.cardsData.pageCount)

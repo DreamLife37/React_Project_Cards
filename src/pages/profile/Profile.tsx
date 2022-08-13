@@ -15,10 +15,10 @@ export const Profile: FC = NavigateIfNotAuthorised( () => {
 
     const dispatch = useDispatchApp();
 
-    const isAuthorized = useSelectorApp(state => state.auth.isAuthorized);
-    const profileName = useSelectorApp(state => state.auth.name);
-    const profileEmail = useSelectorApp(state => state.auth.email);
-    const avatar = useSelectorApp(state => state.auth.avatar);
+    const isAuthorized = useSelectorApp(state => state.auth.authData.isAuthorized);
+    const profileName = useSelectorApp(state => state.auth.authData.name);
+    const profileEmail = useSelectorApp(state => state.auth.authData.email);
+    const avatar = useSelectorApp(state => state.auth.authData.avatar);
 
     const [changeNameStatus, setChangeNameStatus] = useState(false);
     const [inputValue, setInputValue] = useState(profileName);

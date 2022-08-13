@@ -26,8 +26,8 @@ const pages = ['packsList'];
 
 export const ResponsiveAppBar = () => {
 
-    const isAuthorized = useSelector((state: AppStoreType) => state.auth.isAuthorized)
-    const avatar = useSelectorApp(state => state.auth.avatar)
+    const isAuthorized = useSelector((state: AppStoreType) => state.auth.authData.isAuthorized)
+    const avatar = useSelectorApp(state => state.auth.authData.avatar)
     const dispatch = useDispatchApp()
     const navigate = useNavigate()
 

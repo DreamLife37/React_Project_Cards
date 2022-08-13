@@ -43,7 +43,6 @@ type RegisterResponseDataType = {
         __v: number
         _id: string
     }
-    error?: string;
 }
 export type EntityUser = {
     _id: string
@@ -52,12 +51,11 @@ export type EntityUser = {
     name: string
     avatar: string
     publicCardPacksCount: number// количество колод
-    created: Date
-    updated: Date
+    created: string
+    updated: string
     isAdmin: boolean
     verified: boolean // подтвердил ли почту
     rememberMe: boolean
-    error?: string
     token: string
     tokenDeathTime: number
 }
@@ -85,15 +83,7 @@ export const APIAuth = {
     login: (loginPayload: LoginPayloadType) => instance.post(`/auth/login`, {...loginPayload})
         .then((response: AxiosResponse<EntityUser>) => {
             return {
-                data: {
-                    _id: response.data._id,
-                    email: response.data.email,
-                    name: response.data.name,
-                    avatar: response.data.avatar,
-                    publicCardPacksCount: response.data.publicCardPacksCount,
-                    isAdmin: response.data.isAdmin,
-                    token: response.data.token,
-                },
+                data: {...response.data,isAuthorized:true},
                 statusText: response.statusText
             }
         }),
@@ -106,13 +96,13 @@ export const APIAuth = {
 
     authMe: () => instance.post(`/auth/me`, {})
         .then((response: AxiosResponse<EntityUser>) => {
-            return {data: response.data, statusText: response.statusText}
+            return {data: {...response.data,isAuthorized:true}, statusText: response.statusText}
         }),
 
     updateNickOrAvatar: (updatePayload: UpdatePayloadType) => instance.put(`/auth/me`, {...updatePayload})
-        .then((response: AxiosResponse<{ updatedUser: EntityUser, error?: string }>) => {
+        .then((response: AxiosResponse<{updatedUser: EntityUser}>) => {
             /*изменение имени или аватарки*/
-            return response
+            return {...response.data.updatedUser,isAuthorized:true}
         }),
 
     forgotPassword: (forgotPassWordPayload: ForgotPasswordPayloadType) => instance.post(`/auth/forgot`, {...forgotPassWordPayload})

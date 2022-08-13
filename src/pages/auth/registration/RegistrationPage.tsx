@@ -1,4 +1,4 @@
-import {Navigate, NavLink} from "react-router-dom";
+import {Navigate, NavLink, useNavigate} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
 import {useFormik} from "formik";
@@ -21,10 +21,11 @@ type FormikErrorType = {
 }
 
 export const RegistrationPage = () => {
+    const [passwordHide, togglePasswordHide] = useState(true)
 
     const dispatch = useDispatchApp()
-    const isRegistration = useSelectorApp(state => state.auth.isRegistration)
-    const [passwordHide, togglePasswordHide] = useState(true)
+    const navigate=useNavigate()
+
 
     const formik = useFormik({
         initialValues: {
@@ -53,17 +54,18 @@ export const RegistrationPage = () => {
             }
             return errors;
         },
-        onSubmit: values => {
-            dispatch(thunkAuth.registration(values))
-            isRegistration && formik.resetForm()
+        onSubmit: async values => {
+         let isRegistration= await  dispatch(thunkAuth.registration(values))
+
+            if(isRegistration){
+                formik.resetForm()
+                navigate(Path.login)
+            }
+
         },
     })
 
     const disabledButton = (formik.values.email && formik.values.password.length > 7 && formik.values.confirmPassword.length > 7 && !formik.errors.confirmPassword && !formik.errors.email) ? false : true
-
-    if (isRegistration) {
-        return <Navigate to={'/login'}/>
-    }
 
     return <div>
 

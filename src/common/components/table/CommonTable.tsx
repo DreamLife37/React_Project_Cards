@@ -47,7 +47,7 @@ export const CommonTable: FC<CommonTable> = memo((props) => {
         } = props
 
         const statusApp = useSelectorApp(state => state.app.statusApp)
-        const isAuthorized = useSelectorApp(state => state.auth.isAuthorized)
+        const isAuthorized = useSelectorApp(state => state.auth.authData.isAuthorized)
 
         const onPageChange = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
             onPageChangeHandler(newPage)
