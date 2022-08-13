@@ -27,7 +27,7 @@ type TablePacksType = {
 }
 
 export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) => {
-        const userId = useSelectorApp(state => state.auth._id)
+        const userId = useSelectorApp(state => state.auth.authData._id)
         const packsTotalCount = useSelectorApp(state => state.packs.packsData.cardPacksTotalCount)
         const pageCount = useSelectorApp(state => state.packs.packsData.pageCount)
         const page = useSelectorApp(state => state.packs.packsData.page)

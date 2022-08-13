@@ -9,9 +9,12 @@ import {thunkApp} from "./app-reducer";
 import {BackDropWrap} from "./BackDropWrap";
 
 function App() {
+
+    const isAuthorized = useSelectorApp(state => state.auth.authData.isAuthorized)
     //useDispatchApp кастомный хук типизировать не надо
-    const isAuthorized = useSelectorApp(state => state.auth.isAuthorized)
     const dispatch = useDispatchApp();
+
+
 
     useEffect(() => {
         if (!isAuthorized) {

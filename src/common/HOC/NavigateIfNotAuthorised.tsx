@@ -7,7 +7,7 @@ import {Path} from "../../pages/Routes";
 export function NavigateIfNotAuthorised<P>(WrappedComponent: React.ComponentType<P>) {
 
     const Foo = (props: P) => {
-        const isAuthorized = useSelectorApp(state => state.auth.isAuthorized)
+        const isAuthorized = useSelectorApp(state => state.auth.authData.isAuthorized)
         const navigate = useNavigate()
          useEffect(() => {
              if (!isAuthorized) {

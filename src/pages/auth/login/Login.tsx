@@ -15,7 +15,7 @@ type FormikErrorType = {
 
 export const Login = () => {
 
-    const isAuthorized = useSelectorApp((state) => state.auth.isAuthorized)
+    const isAuthorized = useSelectorApp(state => state.auth.authData.isAuthorized)
     const status = useSelectorApp(state => state.app.statusApp)
     const dispatch = useDispatchApp()
 

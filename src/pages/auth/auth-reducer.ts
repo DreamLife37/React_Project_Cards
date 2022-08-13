@@ -1,36 +1,22 @@
-import {Dispatch} from "redux";
+
 import {
-    APIAuth,
+    APIAuth, EntityUser,
     LoginPayloadType,
     RegisterPayloadType,
     setNewPassWordPayloadType
 } from "../../DAL/API-Auth";
-import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
+
 import {actionsApp} from "../app/app-reducer";
 import {AppDispatchType, AppThunk, InferActionsType} from "../app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 
-type initialStateType = {
-    _id: string,
-    email: string,
-    name: string,
-    avatar: string,
-    publicCardPacksCount: number | null,
-    isAdmin: boolean,
-    token: string | null,
-    isAuthorized: boolean
+type InitialStateType = {
+    authData: EntityUser & { isAuthorized: boolean } | Record<string, never>
 }
 
-const initialState = {
-    _id: '',
-    email: '',
-    name: '',
-    avatar: '',
-    publicCardPacksCount: null,
-    isAdmin: false,
-    token: '',
-    isAuthorized: false,
+const initialState: InitialStateType = {
+    authData: {},
 }
 
 
@@ -38,8 +24,8 @@ const authSlice = createSlice({
     name: 'AUTH',
     initialState,
     reducers: {
-        setLoginData: (state, action: PayloadAction<initialStateType>) => {
-            Object.assign(state, action.payload);
+        setLoginData: (state, action: PayloadAction<InitialStateType["authData"]>) => {
+            state.authData = action.payload
         }
     }
 })
@@ -54,7 +40,7 @@ export const thunkAuth = {
 
         const response = APIAuth.authMe().then((response) => {
                 if (response.statusText === 'OK') {
-                    dispatch(actionsAuth.setLoginData({...response.data, isAuthorized: true}))
+                    dispatch(actionsAuth.setLoginData(response.data))
                 }
             }
         )
@@ -65,19 +51,20 @@ export const thunkAuth = {
 
         const response = APIAuth.register(data)
             .then(() => {
-               return true
+                //ответ ожидается на странице регистрации для дальнейшего перехода на страницу логинизации
+                return true
             })
         //утилитка переключения  статуса Апп
         //если вызвать в try то сработает только при успешном запросе
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
-        //ответ ожидается на странице регистрации для дальнейшего перехода на страницу логинизации
+
         return response
     },
     setNameOrAvatar: (payload: { name?: string, avatar?: string }): AppThunk => (dispatch) => {
         dispatch(actionsApp.setAppStatus('loading'))
         const response = APIAuth.updateNickOrAvatar(payload)
-            .then((res) => {
-                dispatch(actionsAuth.setLoginData({...res.data.updatedUser, isAuthorized: true}))
+            .then((response) => {
+                dispatch(actionsAuth.setLoginData(response))
             })
         //утилитка переключения  статуса Апп
         //если вызвать в try то сработает только при успешном запросе
@@ -86,11 +73,10 @@ export const thunkAuth = {
 
     login: (loginPayload: LoginPayloadType): AppThunk => (dispatch) => {
 
-
         const response = APIAuth.login(loginPayload)
             .then((response) => {
                 if (response.statusText === 'OK') {
-                    dispatch(actionsAuth.setLoginData({...response.data}))
+                    dispatch(actionsAuth.setLoginData(response.data))
                 }
             })
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
@@ -101,18 +87,7 @@ export const thunkAuth = {
         const response = APIAuth.logOut()
             .then((response) => {
                 if (response.statusText === 'OK') {
-                    dispatch(actionsAuth.setLoginData(
-                            {
-                                _id: '',
-                                email: '',
-                                name: '',
-                                avatar: '',
-                                publicCardPacksCount: null,
-                                isAdmin: false,
-                                token: '',
-                                isAuthorized: false,
-                            }
-                        )
+                    dispatch(actionsAuth.setLoginData({})
                     )
                 }
             })

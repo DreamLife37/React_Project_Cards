@@ -18,7 +18,7 @@ export const PacksListPage = NavigateIfNotAuthorised( () => {
 
     const cardPackEntity = useSelectorApp(state => state.packs.packsData.cardPacks)
     const headCells = useSelectorApp(state => state.packs.initHeadCells)
-    const isAuthorized = useSelectorApp(state => state.auth.isAuthorized)
+    const isAuthorized = useSelectorApp(state => state.auth.authData.isAuthorized)
 
     const dispatch = useDispatchApp()
 

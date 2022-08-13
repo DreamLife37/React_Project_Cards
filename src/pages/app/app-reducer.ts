@@ -5,7 +5,7 @@ import {thunkAuth} from "../auth/auth-reducer";
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'|'initialize'
 
 const initialState: InitialStateType = {
-    statusApp: 'initialize',
+    statusApp: 'idle',
 
 }
 type InitialStateType = {
