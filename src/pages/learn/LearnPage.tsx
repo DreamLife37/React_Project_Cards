@@ -65,7 +65,9 @@ export const LearnPage = NavigateIfNotAuthorised( () => {
         setOpen(false)
         setCurrentGrade('')
     }, [randomCard, currentGrade, cards])
+
     if(cards&&cards.length===0){navigate(Path.packsList)}
+
     return (
         <Learn grades={grades}
                open={open}
