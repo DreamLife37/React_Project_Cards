@@ -115,7 +115,6 @@ export const CardsPage: FC = NavigateIfNotAuthorised(memo(() => {
                     headCells={headCells}
                     status={statusCards}
                 />
-                {statusCards === "loading" && <LinearProgress/>}
             </Grid>
         );
     }

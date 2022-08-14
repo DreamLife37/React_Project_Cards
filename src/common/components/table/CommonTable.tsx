@@ -65,12 +65,8 @@ export const CommonTable: FC<CommonTable> = memo((props) => {
                             <EnhancedTableBody rows={rows}/>
                         </Table>
                     </TableContainer>
-                    {(statusApp === 'idle') ?
-                        !isAuthorized
-                            ? <>You no authorized</>
-                            : (rows.length === 0 && status !== "loading" ) && <>Packs/cards not
-                            found</>
-                        : <>Loading</>
+                    {(statusApp === 'idle') &&
+                        (rows.length === 0 && status !== "loading") && <>Packs/cards not found</>
                     }
                     <TablePagination
                         rowsPerPageOptions={[4, 10, 20]}
