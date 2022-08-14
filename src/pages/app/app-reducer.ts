@@ -3,13 +3,16 @@ import {AppThunk} from "./store";
 import {thunkAuth} from "../auth/auth-reducer";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'|'initialize'
+export type AuthTimeStatusType= "idle"|"timeToUpdateToken"|"timeToDie"
+
+type InitialStateType = {
+    statusApp: RequestStatusType
+    authTimeStatus:AuthTimeStatusType
+}
 
 const initialState: InitialStateType = {
     statusApp: 'idle',
-
-}
-type InitialStateType = {
-    statusApp: RequestStatusType
+    authTimeStatus:"idle"
 
 }
 
@@ -20,6 +23,9 @@ type InitialStateType = {
         setAppStatus:(state:Draft<InitialStateType>, action:PayloadAction<RequestStatusType>)=>{
             state.statusApp=action.payload
         },
+        setIsAuthTime:(state:Draft<InitialStateType>, action:PayloadAction<AuthTimeStatusType>)=>{
+            state.authTimeStatus=action.payload
+        }
     }
 })
 

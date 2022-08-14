@@ -66,6 +66,7 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                         const moveOnLearnPage = () => {
                             dispatch(actionsCards.setPackId(pack._id))
                             dispatch(actionsCards.getTitle(pack.name))
+                            dispatch(actionsCards.setQueryParams({pageCount:pack.cardsCount}))
                             navigate(Path.learn)
                         }
                         return [

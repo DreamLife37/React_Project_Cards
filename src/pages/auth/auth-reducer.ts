@@ -7,12 +7,12 @@ import {
 } from "../../DAL/API-Auth";
 
 import {actionsApp} from "../app/app-reducer";
-import {AppDispatchType, AppThunk, InferActionsType} from "../app/store";
+import {AppDispatchType, AppThunk} from "../app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 
 type InitialStateType = {
-    authData: EntityUser & { isAuthorized: boolean } | Record<string, never>
+    authData: EntityUser & { isAuthorized: boolean }| Record<string, never>
 }
 
 const initialState: InitialStateType = {
@@ -24,8 +24,13 @@ const authSlice = createSlice({
     name: 'AUTH',
     initialState,
     reducers: {
-        setLoginData: (state, action: PayloadAction<InitialStateType["authData"]>) => {
-            state.authData = action.payload
+        setLoginData: (state, action: PayloadAction<InitialStateType["authData"]|{}>) => {
+            if(Object.keys(action.payload).length===0) {
+                state.authData = action.payload
+            }else {
+                state.authData = {...action.payload, ...action.payload}
+            }
+
         }
     }
 })
@@ -41,6 +46,7 @@ export const thunkAuth = {
         const response = APIAuth.authMe().then((response) => {
                 if (response.statusText === 'OK') {
                     dispatch(actionsAuth.setLoginData(response.data))
+                    dispatch(actionsApp.setIsAuthTime("idle"))
                 }
             }
         )
@@ -87,8 +93,8 @@ export const thunkAuth = {
         const response = APIAuth.logOut()
             .then((response) => {
                 if (response.statusText === 'OK') {
-                    dispatch(actionsAuth.setLoginData({})
-                    )
+                    dispatch(actionsAuth.setLoginData({}))
+                    dispatch(actionsApp.setIsAuthTime("idle"))
                 }
             })
         HandleToggleStatusAppAndInterceptorErrors(dispatch, [response])
