@@ -12,6 +12,7 @@ import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
 import {actionsErrors} from "../../error/ErrorsReducer";
 
 import {HeadCell} from "../../common/components/table/CommonTable";
+import {actionsApp} from "../app/app-reducer";
 
 
 type QueryParamsT = {
@@ -74,10 +75,10 @@ const cardsSlice = createSlice({
             state.cardsData = action.payload
         },
         setQueryParams: (state, action: PayloadAction<QueryParamsT>) => {
-            if(Object.keys(action.payload).length === 0){
-                state.queryParams={}
+            if (Object.keys(action.payload).length === 0) {
+                state.queryParams = {}
             }
-            state.queryParams = {...state.queryParams,...action.payload}
+            state.queryParams = {...state.queryParams, ...action.payload}
         },
         getTitle: (state, action: PayloadAction<string>) => {
             state.packTitle = action.payload
@@ -99,8 +100,8 @@ const cardsSlice = createSlice({
         setStatusCards: (state, action: PayloadAction<'idle' | 'loading'>) => {
             state.statusCards = action.payload
         },
-        setPackId:(state, action: PayloadAction<string>) => {
-            state.cardsPack_id=action.payload
+        setPackId: (state, action: PayloadAction<string>) => {
+            state.cardsPack_id = action.payload
         }
     }
 
@@ -122,24 +123,28 @@ export const thunksCards = {
             const packName = restoreFromStorage("packName")
             dispatch(actionsCards.getTitle(packName))
         }
+        dispatch(actionsApp.setAppStatus('loading'))
         dispatch(actionsCards.setStatusCards("loading"))
         Promise.all([promise])
             .then(() => {
-                APICards.getCards({...getState().cards.queryParams,cardsPack_id:getState().cards.cardsPack_id})
+                APICards.getCards({...getState().cards.queryParams, cardsPack_id: getState().cards.cardsPack_id})
                     .then((response) => {
                         dispatch(actionsCards.getCards(response))
                         dispatch(actionsCards.setStatusCards("idle"))
+                        dispatch(actionsApp.setAppStatus('idle'))
                         if (!!cardId) {
                             dispatch(actionsCards.deleteIdInRequestPendingList(cardId))
                         }
-                    }).catch((e)=>{
+                    }).catch((e) => {
                     handlerNetworkError(dispatch, e)
+                    dispatch(actionsApp.setAppStatus('idle'))
                     dispatch(actionsCards.setStatusCards("idle"))
                 })
 
             }).catch((e) => {
             handlerNetworkError(dispatch, e)
             dispatch(actionsCards.setStatusCards("idle"))
+            dispatch(actionsApp.setAppStatus('idle'))
             if (!!cardId) {
                 dispatch(actionsCards.deleteIdInRequestPendingList(cardId))
             }
@@ -154,7 +159,7 @@ export const thunksCards = {
     updateCard: (updateCardPayload: UpdateCardPayload): AppThunk => (dispatch) => {
         dispatch(actionsCards.setRequestPendingList(updateCardPayload._id))
         const response = APICards.updateCard(updateCardPayload)
-        dispatch(thunksCards.getCards(response,updateCardPayload._id))
+        dispatch(thunksCards.getCards(response, updateCardPayload._id))
     },
     deleteCard: (id: string): AppThunk => (dispatch) => {
         dispatch(actionsCards.setRequestPendingList(id))
@@ -179,14 +184,14 @@ export const thunksCards = {
         dispatch(actionsCards.setQueryParams({pageCount}))
         dispatch(thunksCards.getCards())
     },
-    updateCardGrade:(gradeCardPayLoad:GradeCardPayLoad):AppThunk=>(dispatch)=>{
-       if (gradeCardPayLoad.grade<=5&&gradeCardPayLoad.grade>0){
+    updateCardGrade: (gradeCardPayLoad: GradeCardPayLoad): AppThunk => (dispatch) => {
+        if (gradeCardPayLoad.grade <= 5 && gradeCardPayLoad.grade > 0) {
 
-           const promise = APICards.updateGradeCard(gradeCardPayLoad)
-           dispatch(thunksCards.getCards(promise))
-       }else{
-           dispatch(actionsErrors.changeError(`оценка не может быть больше 5 и меньше 0. Вы поставли ${gradeCardPayLoad.grade}`))
-       }
+            const promise = APICards.updateGradeCard(gradeCardPayLoad)
+            dispatch(thunksCards.getCards(promise))
+        } else {
+            dispatch(actionsErrors.changeError(`оценка не может быть больше 5 и меньше 0. Вы поставли ${gradeCardPayLoad.grade}`))
+        }
     }
 
 
