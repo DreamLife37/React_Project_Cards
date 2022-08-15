@@ -9,25 +9,18 @@ import {
 import {AppDispatchType, AppThunk} from "../app/store";
 import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
 import {HeadCell} from "../../common/components/table/CommonTable";
+import {actionsApp} from "../app/app-reducer";
 
-type InitialState = {
-    packsData: GetCardsPackResponse
-    queryParams: getCardPacksPayload,
+type InitialStateType = {
+    packsData: GetCardsPackResponse | Record<string, never>
+    queryParams: getCardPacksPayload | Record<string, never>,
     isMyPacks: boolean,
     initHeadCells: HeadCell[]
 }
 
-const initialState: InitialState = {
-    packsData: {} as GetCardsPackResponse,
-    queryParams: {
-        packName: undefined,
-        min: undefined,
-        max: undefined,
-        page: undefined,
-        pageCount: undefined,
-        user_id: undefined,
-        sortPacks: undefined
-    } as getCardPacksPayload,
+const initialState: InitialStateType = {
+    packsData: {},
+    queryParams: {},
     isMyPacks: true,
     initHeadCells: [
         {
@@ -68,11 +61,18 @@ const packsSlice = createSlice({
     name: "Packs",
     initialState,
     reducers: {
-        getPack: (state, action) => {
+        getPack: (state, action: PayloadAction<GetCardsPackResponse>) => {
             state.packsData = action.payload
         },
-        setQuery: (state, action) => {
-            state.queryParams = {...state.queryParams, ...action.payload}
+        setQuery: (state, action: PayloadAction<getCardPacksPayload | {}>) => {
+            //если передан пустой объект, то замещает им объект с параметрами
+            if (Object.keys(action.payload).length === 0) {
+                state.queryParams = action.payload
+            } else {
+                //если не пустой объект то дополняет старый объект новым
+                state.queryParams = {...state.queryParams, ...action.payload}
+            }
+
         },
         filterMyPacks: (state, action) => {
             state.isMyPacks = action.payload
@@ -90,39 +90,47 @@ export const packs = packsSlice.reducer
 export const actionsPacks = packsSlice.actions
 
 export const thunksPack = {
-    getPack: (responseMore?: any): AppThunk => (dispatch: AppDispatchType, getState) => {
-        Promise.allSettled([responseMore])
-            .then(() => {
-                const response = APIPacks.getCardPacks(getState().packs.queryParams)
-                    .then((response: GetCardsPackResponse) => {
-                            dispatch(actionsPacks.getPack(response))
-                        }
-                    )
-                HandleToggleStatusAppAndInterceptorErrors(dispatch, [response, responseMore])
+    getPack: (lastPromise?: Promise<any>): AppThunk => (dispatch: AppDispatchType, getState) => {
+        //здесь включается статус не дожидаясь когда запустится Promise.allSettled
+        dispatch(actionsApp.setAppStatus("loading"))
+        Promise.allSettled([lastPromise])
+            .then((value) => {
+                //если предыдущий промис успешен то запрашивает колоды
+                //если нет, диспачит ошибку и выключает статус
+                if (value[0].status === "fulfilled") {
+                    const promise = APIPacks.getCardPacks(getState().packs.queryParams)
+                        .then((response: GetCardsPackResponse) => {
+                                dispatch(actionsPacks.getPack(response))
+                            }
+                        )
+                    HandleToggleStatusAppAndInterceptorErrors(dispatch, [promise, lastPromise])
+                } else {
+                    HandleToggleStatusAppAndInterceptorErrors(dispatch, [lastPromise])
+                }
             })
     },
 
-    createPack: (payload: CreateNewCardPackPayload): AppThunk => (dispatch: AppDispatchType) => {
+    createPack: (payload: CreateNewCardPackPayload): AppThunk => (dispatch) => {
         const response = APIPacks.createNewCardPack(payload)
         dispatch(thunksPack.getPack(response))
     },
 
-    updatePack: (payload: UpdateCardPackPayload): AppThunk => (dispatch: AppDispatchType) => {
+    updatePack: (payload: UpdateCardPackPayload): AppThunk => (dispatch) => {
         const response = APIPacks.updateCardPack(payload)
         dispatch(thunksPack.getPack(response))
     },
 
-    deletePack: (packId: string): AppThunk => (dispatch: AppDispatchType) => {
+    deletePack: (packId: string): AppThunk => (dispatch) => {
         const response = APIPacks.deleteCardPack(packId)
         dispatch(thunksPack.getPack(response))
     },
-    searchOnName: (packName: string): AppThunk => (dispatch: AppDispatchType) => {
+    searchOnName: (packName: string): AppThunk => (dispatch) => {
         //ни чего больше писать не надо все случится автоматически
         //нужно только поменять в стейте квери параметр и вызвать санку getPack
         dispatch(actionsPacks.setQuery({packName}))
         dispatch(thunksPack.getPack())
     },
-    filterMyPacks: (user_id: string): AppThunk => (dispatch: AppDispatchType) => {
+    filterMyPacks: (user_id: string): AppThunk => (dispatch) => {
         dispatch(actionsPacks.setQuery({user_id}))
         dispatch(thunksPack.getPack())
     },
@@ -133,7 +141,7 @@ export const thunksPack = {
         dispatch(thunksPack.getPack())
     },
 
-    sortPackMinMax: (min: number, max: number): AppThunk => (dispatch: AppDispatchType) => {
+    sortPackMinMax: (min: number, max: number): AppThunk => (dispatch) => {
         dispatch(actionsPacks.setQuery({min, max}))
         dispatch(thunksPack.getPack())
     },

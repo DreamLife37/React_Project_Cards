@@ -7,7 +7,7 @@ import {configureStore} from "@reduxjs/toolkit";
 import {actionsPacks, packs} from "../packsList/PackReducer";
 import {actionsCards, cards} from "../cardsList/CardsReducer";
 import {restoreFromStorage, saveInStorage} from "../../utils/LocalStorageUtils";
-import {getTime} from "../../utils/getTime";
+
 
 
 const reducers = combineReducers({
@@ -16,7 +16,6 @@ const reducers = combineReducers({
     app: appReducer,
     packs,
     cards
-
 })
 
 
@@ -41,7 +40,7 @@ store.subscribe(() => {
     //сохраняет в localStorage аутентификационные данные из стейта при условии что authData не пуст
     if (Object.keys(store.getState().auth.authData).length !== 0) {
         saveInStorage("authData", store.getState().auth.authData)
-        console.log((store.getState().auth.authData.tokenDeathTime - Date.now()))
+        // console.log((store.getState().auth.authData.tokenDeathTime - Date.now()))
         // за час до конца жизни токена переводит тригер в "timeToUpdateToken" при условии что не был в этом состояние,
         // на  этот тригер реагирует useEffect  в компоненте App и вызывает санку authMe,
         // в authMe идет запрос и при успехе переводит тригер в "idle"
@@ -73,7 +72,6 @@ store.subscribe(() => {
         return
     }
     saveInStorage("packName", store.getState().cards.packTitle)
-
 })
 
 // @ts-ignore
