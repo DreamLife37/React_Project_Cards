@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import {useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
 import {useEffect, useState} from "react";
-import {thunksPack} from "./PackReducer";
+import {actionsPacks, thunksPack} from "./PackReducer";
 import {styled} from "@mui/material/styles";
 import {TablePacks} from "./TablePacks";
 import {ModalFormikPackType} from "./modals/FormikFormPackModal";
@@ -25,6 +25,13 @@ export const PacksListPage = NavigateIfNotAuthorised( () => {
     const [open, setOpen] = useState(false)
     const handleOpen = (): void => setOpen(true)
     const handleClose = (): void => setOpen(false)
+
+    useEffect(()=>{
+        dispatch(thunksPack.getPack())
+        return ()=>{
+            dispatch(actionsPacks.setQuery({}))
+        }
+    },[])
 
     const addNewPack = (e: ModalFormikPackType) => {
         dispatch(thunksPack.createPack({name: e.namePack, private: e.privatePack}))

@@ -17,13 +17,16 @@ export function NumberOfCards() {
 
     };
 
-    useDebouncedEffect(() => {
-        dispatch(thunksPack.sortPackMinMax(value[0], value[1]))
-    }, [value], 1000);
+   const handleChangeCommitted = (event: React.SyntheticEvent | Event, value: number | Array<number>) => {
+      if(value instanceof Array<number>) {
+          dispatch(thunksPack.sortPackMinMax(value[0], value[1]))
+      }
+   }
 
     return (
         <Box sx={{width: 300}}>
             <Slider
+                onChangeCommitted={handleChangeCommitted}
                 getAriaLabel={() => 'Min and Max cards'}
                 value={value}
                 valueLabelDisplay="on"
