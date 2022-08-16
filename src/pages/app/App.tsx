@@ -18,11 +18,14 @@ function App() {
     const dispatch = useDispatchApp();
 
     useEffect(()=>{
+        //если токен подходит к завершению, обновляет токен
         if (authTimeStatus==="timeToUpdateToken") {
             console.log("auth time!!")
            dispatch(thunkAuth.authMe())
         }
+        //если токен просрочен, вылогинивает юзера
         if (authTimeStatus==="timeToDie"){
+            console.log("time to die!!")
             dispatch(thunkAuth.logout())
         }
     },[authTimeStatus])
