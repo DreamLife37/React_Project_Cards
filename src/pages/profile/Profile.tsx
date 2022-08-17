@@ -1,17 +1,17 @@
-import {Button, TextField} from "@mui/material";
-import image from './profileAvatar.png';
-import {FC, useState} from "react";
+import {Button, Container, TextField} from "@mui/material";
+import React, {ChangeEvent, FC, useState} from "react";
 import {Link, Navigate} from "react-router-dom";
 import {thunkAuth} from '../auth/auth-reducer';
 import style from './Profile.module.css';
 import {useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
 import {Path} from "../Routes";
-import {Container} from "@mui/material";
 import Grid from '@mui/material/Grid';
-import React from "react"
 import {NavigateIfNotAuthorised} from "../../common/HOC/NavigateIfNotAuthorised";
+import {convertFileToBase64} from "../../utils/convertFileToBase64";
+import defaultAva from "../../assets/images/defaultAva.jpg"
+import {actionsErrors} from "../../error/ErrorsReducer";
 
-export const Profile: FC = NavigateIfNotAuthorised( () => {
+export const Profile: FC = NavigateIfNotAuthorised(() => {
 
     const dispatch = useDispatchApp();
 
@@ -36,6 +36,24 @@ export const Profile: FC = NavigateIfNotAuthorised( () => {
         setInputValue(event.target.value);
     }
 
+    const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length) {
+            const file = e.target.files[0]
+            if (file.size < 4000000) {
+                convertFileToBase64(file, (file64: string) => {
+                    dispatch(thunkAuth.setNameOrAvatar({avatar: file64}))
+                })
+            } else {
+                dispatch(actionsErrors.changeError('File is too big'))
+            }
+        }
+    }
+
+    const errorHandler = () => {
+        dispatch(thunkAuth.setNameOrAvatar({avatar: ' '}))
+        dispatch(actionsErrors.changeError('Type file no correct'))
+    }
+
     if (!isAuthorized) {
         return <Navigate to={Path.login}/>
     }
@@ -53,9 +71,11 @@ export const Profile: FC = NavigateIfNotAuthorised( () => {
                         <div className={style.personalInfo}>
                             <h1 className={style.title}>Personal Information</h1>
 
-                            <img src={!!avatar ? avatar : image} className={style.avatar} alt={"AVA"}/>
+                            <img src={avatar.length === 1 ? defaultAva : avatar} className={style.avatar} alt={"avatar"}
+                                 onError={errorHandler}/>
 
-                            <input type='file' className={style.setAvatarInput} id='fileInput'/>
+                            <input type='file' className={style.setAvatarInput} id='fileInput'
+                                   onChange={uploadHandler}/>
                             <label className={style.setAvatarInputLabel} htmlFor='fileInput'/>
 
                             <div className={style.changeNameWrapper}>

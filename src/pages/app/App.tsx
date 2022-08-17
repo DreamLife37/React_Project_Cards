@@ -7,7 +7,6 @@ import {ResponsiveAppBar} from "./AppBar";
 import {useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
 import {thunkApp} from "./app-reducer";
 import {BackDropWrap} from "./BackDropWrap";
-import {store} from "./store";
 import {thunkAuth} from "../auth/auth-reducer";
 
 function App() {
@@ -17,15 +16,15 @@ function App() {
     //useDispatchApp кастомный хук типизировать не надо
     const dispatch = useDispatchApp();
 
-    useEffect(()=>{
-        if (authTimeStatus==="timeToUpdateToken") {
+    useEffect(() => {
+        if (authTimeStatus === "timeToUpdateToken") {
             console.log("auth time!!")
-           dispatch(thunkAuth.authMe())
+            dispatch(thunkAuth.authMe())
         }
-        if (authTimeStatus==="timeToDie"){
+        if (authTimeStatus === "timeToDie") {
             dispatch(thunkAuth.logout())
         }
-    },[authTimeStatus])
+    }, [authTimeStatus])
 
     useEffect(() => {
         if (!isAuthorized) {
