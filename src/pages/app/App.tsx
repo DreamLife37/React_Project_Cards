@@ -7,7 +7,6 @@ import {ResponsiveAppBar} from "./AppBar";
 import {useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
 import {thunkApp} from "./app-reducer";
 import {BackDropWrap} from "./BackDropWrap";
-import {store} from "./store";
 import {thunkAuth} from "../auth/auth-reducer";
 
 function App() {
