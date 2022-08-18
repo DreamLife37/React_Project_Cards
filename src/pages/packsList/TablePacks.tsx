@@ -2,7 +2,7 @@ import * as React from 'react';
 import {memo, ReactNode, useCallback, useMemo} from 'react';
 import {CommonTable, HeadCell, Numeric} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
-import {getTime} from "../../utils/getTime";
+import {getTime} from "../../common/utils/getTime";
 import {Grid} from "@mui/material";
 import {styled} from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
@@ -70,6 +70,15 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                             navigate(Path.learn)
                         }
                         return [
+                            {
+                                optionsCell: 'center',
+                                cell: <TableCell>
+                                    <span onClick={moveOnCardList}
+                                          style={{cursor: 'pointer'}}>{pack.deckCover}</span>
+                                    {pack.private && <span style={{paddingLeft: '10px'}}><VisibilityOffIcon fontSize={"small"}/>
+                                                    </span>}
+                                </TableCell>
+                            },
                             {
                                 optionsCell: 'center',
                                 cell: <TableCell>

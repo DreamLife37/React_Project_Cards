@@ -3,7 +3,7 @@ import {FC, memo, ReactNode, useCallback, useEffect, useMemo} from 'react';
 import {ExtendedCardEntity} from "../../DAL/API-Cards";
 import {CommonTable, HeadCell, Numeric} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
-import {getTime} from "../../utils/getTime";
+import {getTime} from "../../common/utils/getTime";
 import {Grid, LinearProgress, Rating} from "@mui/material";
 import {actionsCards, thunksCards} from "./CardsReducer";
 import {CommonAction} from "./CommonActionCards";

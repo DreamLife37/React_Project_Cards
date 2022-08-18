@@ -9,7 +9,7 @@ import {
 import {actionsApp} from "../app/app-reducer";
 import {AppDispatchType, AppThunk} from "../app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
+import {HandleToggleStatusAppAndInterceptorErrors} from "../../common/utils/HandleToggleStatusAppAndInterceptorErrors";
 
 type InitialStateType = {
     authData: EntityUser & { isAuthorized: boolean }| Record<string, never>

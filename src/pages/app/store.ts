@@ -6,7 +6,7 @@ import {actionsApp, appReducer} from "./app-reducer";
 import {configureStore} from "@reduxjs/toolkit";
 import {actionsPacks, packs} from "../packsList/PackReducer";
 import {actionsCards, cards} from "../cardsList/CardsReducer";
-import {restoreFromStorage, saveInStorage} from "../../utils/LocalStorageUtils";
+import {restoreFromStorage, saveInStorage} from "../../common/utils/LocalStorageUtils";
 
 
 

@@ -1,7 +1,7 @@
 import {AxiosError} from "axios";
-import {actionsErrors} from "../error/ErrorsReducer";
-import {AppDispatchType} from "../pages/app/store";
-import {actionsAuth, thunkAuth} from "../pages/auth/auth-reducer";
+import {actionsErrors} from "../../error/ErrorsReducer";
+import {AppDispatchType} from "../../pages/app/store";
+import {actionsAuth, thunkAuth} from "../../pages/auth/auth-reducer";
 
 type ErrorResponse={
     emailRegExp: any

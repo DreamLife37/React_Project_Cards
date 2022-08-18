@@ -7,7 +7,7 @@ import {
     UpdateCardPackPayload
 } from "../../DAL/API-CardsPack";
 import {AppDispatchType, AppThunk} from "../app/store";
-import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
+import {HandleToggleStatusAppAndInterceptorErrors} from "../../common/utils/HandleToggleStatusAppAndInterceptorErrors";
 import {HeadCell} from "../../common/components/table/CommonTable";
 import {actionsApp} from "../app/app-reducer";
 
@@ -23,6 +23,12 @@ const initialState: InitialStateType = {
     queryParams: {},
     isMyPacks: true,
     initHeadCells: [
+        {
+            id: 'picture',
+            numeric: "center",
+            label: 'Picture',
+            order: undefined
+        },
         {
             id: 'name',
             numeric: "center",
