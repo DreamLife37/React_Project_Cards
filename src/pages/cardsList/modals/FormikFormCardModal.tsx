@@ -1,4 +1,3 @@
-import {useDispatchApp, useSelectorApp} from "../../../customHooks/CustomHooks";
 import {useFormik} from "formik";
 import {Container, FormControlLabel} from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -21,55 +20,55 @@ type PropsType = {
     submit: (values: any) => void
     question: string
     answer: string
-    answerImg:string
-    questionImg:string
+    answerImg: string
+    questionImg: string
 }
 
 export type ModalFormikCardType = {
     question: string
     answer: string
-    answerImg:string
-    questionImg:string
+    answerImg: string
+    questionImg: string
     typeQuestion?: string
 }
 
 
-export const FormikFormCardModal: FC<PropsType> = ({handleClose, submit, question, answer,questionImg,answerImg}) => {
-    const [currentImgQuestion,setCurrentImgQuestion]=useState(!!questionImg?questionImg:"")
-    const [currentImgAnswer,setCurrentImgAnswer]=useState(!!answerImg?answerImg:"")
+export const FormikFormCardModal: FC<PropsType> = ({handleClose, submit, question, answer, questionImg, answerImg}) => {
+    const [currentImgQuestion, setCurrentImgQuestion] = useState(!!questionImg ? questionImg : "")
+    const [currentImgAnswer, setCurrentImgAnswer] = useState(!!answerImg ? answerImg : "")
 
     const formik = useFormik({
         initialValues: {
             typeQuestion: '',
             question: question,
             answer: answer,
-
         },
         validate: (values) => {
+            debugger
             const errors: FormikErrorType = {};
-            if (!values.question) {
+            if (!values.question && !currentImgQuestion) {
                 errors.question = 'Required';
-            } else if (!values.answer) {
+            } else if (!values.answer && !currentImgAnswer) {
                 errors.answer = 'Required';
             }
             return errors;
         },
 
         onSubmit: values => {
-            submit({...values,questionImg:currentImgQuestion,answerImg:currentImgAnswer})
+            submit({...values, questionImg: currentImgQuestion, answerImg: currentImgAnswer})
             formik.resetForm()
         },
     })
 
     const onAnswerUpload = (e: ChangeEvent<HTMLInputElement>) => {
-        uploadFile(e,setCurrentImgAnswer)
+        uploadFile(e, setCurrentImgAnswer)
     }
     const onQuestionUpload = (e: ChangeEvent<HTMLInputElement>) => {
-        uploadFile(e,setCurrentImgQuestion)
+        uploadFile(e, setCurrentImgQuestion)
     }
 
-    const disabledButton = (!(!formik.errors.question && !formik.errors.answer &&
-        formik.values.question && formik.values.answer))
+    const disabledButton = false
+    //(!(formik.values.question && formik.values.answer &&        formik.values.question && formik.values.answer))
 
     return <div>
         <Container fixed>
@@ -79,32 +78,32 @@ export const FormikFormCardModal: FC<PropsType> = ({handleClose, submit, questio
                         <FormControl>
                             <FormGroup>
                                 <FormControlLabel
-                                    sx={{marginLeft:0, color:"blue", textDecoration:"underline", cursor:"pointer"}}
+                                    sx={{marginLeft: 0, color: "blue", textDecoration: "underline", cursor: "pointer"}}
                                     label={"change question img"}
                                     control={
                                         <input type="file"
                                                style={{display: 'none'}}
                                                onChange={onQuestionUpload}
                                         />
-                                    } />
-                                <MediaCard height={"100"} content={currentImgQuestion} />
+                                    }/>
+                                <MediaCard height={"100"} content={currentImgQuestion}/>
 
-                                <TextField label="Question" margin="normal" autoFocus={true}
+                                <TextField label="Question" margin="normal"
                                            {...formik.getFieldProps('question')}
                                 />
                                 {formik.touched.question && formik.errors.question
                                     ? <div style={{color: '#9d1717', fontSize: '14px'}}>{formik.errors.question}</div>
                                     : null}
                                 <FormControlLabel
-                                    sx={{marginLeft:0, color:"blue", textDecoration:"underline", cursor:"pointer"}}
+                                    sx={{marginLeft: 0, color: "blue", textDecoration: "underline", cursor: "pointer"}}
                                     label={"change answer img"}
                                     control={
                                         <input type="file"
                                                style={{display: 'none'}}
                                                onChange={onAnswerUpload}
                                         />
-                                    } />
-                                <MediaCard height={"100"} content={currentImgAnswer} />
+                                    }/>
+                                <MediaCard height={"100"} content={currentImgAnswer}/>
                                 <TextField label="Answer" margin="normal"
                                            {...formik.getFieldProps('answer')}
                                 />
@@ -112,14 +111,14 @@ export const FormikFormCardModal: FC<PropsType> = ({handleClose, submit, questio
                                     ? <div style={{color: '#9d1717', fontSize: '14px'}}>{formik.errors.answer}</div>
                                     : null}
                                 <Grid container
-                                      justifyContent={"space-between"} direction="row" >
-                                    <Grid item >
+                                      justifyContent={"space-between"} direction="row">
+                                    <Grid item>
                                         <Button variant={'contained'} color={'primary'} onClick={handleClose}
                                         >
                                             Cancel
                                         </Button>
                                     </Grid>
-                                    <Grid item marginLeft={'50px'} >
+                                    <Grid item marginLeft={'50px'}>
                                         <Button type={'submit'} variant={'contained'} color={"success"}
                                                 disabled={disabledButton}>
                                             Save
