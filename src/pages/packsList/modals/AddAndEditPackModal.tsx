@@ -46,7 +46,7 @@ export const AddAndEditPackModal: React.FC<PropsType> = ({
                 </Grid>
                 <p className={s.horizontalLine}/>
 
-                <FormikFormPackModal deckCover={deckCover}  handleClose={handleClose} submit={submit} privatePack={privatePack} namePack={namePack}/>
+                <FormikFormPackModal deckCover={deckCover}  handleClose={handleClose} submit={submit} privatePack={privatePack} name={namePack}/>
             </div>
         </CustomModal>
     );
