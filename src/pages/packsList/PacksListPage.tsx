@@ -33,8 +33,9 @@ export const PacksListPage = NavigateIfNotAuthorised( () => {
         }
     },[])
 
-    const addNewPack = (e: ModalFormikPackType) => {
-        dispatch(thunksPack.createPack({name: e.namePack, private: e.privatePack}))
+    const addNewPack = (payload: ModalFormikPackType) => {
+
+        dispatch(thunksPack.createPack(payload))
     }
 
     const StyledButton = styled(Button)`
@@ -48,7 +49,7 @@ export const PacksListPage = NavigateIfNotAuthorised( () => {
                 <Grid item xs={6}>PacksList</Grid>
                 {isAuthorized &&
                     <Grid item xs={6}>
-                        <AddAndEditPackModal callback={addNewPack} handleClose={handleClose} open={open}
+                        <AddAndEditPackModal callback={addNewPack} deckCover={null} handleClose={handleClose} open={open}
                                              title={'Add new pack'} privatePack={false} namePack={''}/>
                         <StyledButton color="inherit" variant='contained' onClick={handleOpen}>
                             Add new pack

@@ -3,13 +3,15 @@ import {FC, memo, ReactNode, useCallback, useEffect, useMemo} from 'react';
 import {ExtendedCardEntity} from "../../DAL/API-Cards";
 import {CommonTable, HeadCell, Numeric} from "../../common/components/table/CommonTable";
 import {useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
-import {getTime} from "../../utils/getTime";
+import {getTime} from "../../common/utils/getTime";
 import {Grid, LinearProgress, Rating} from "@mui/material";
 import {actionsCards, thunksCards} from "./CardsReducer";
 import {CommonAction} from "./CommonActionCards";
 import Typography from '@material-ui/core/Typography';
 import {CardsTableToolbar} from './CardsTableToolbar';
 import {NavigateIfNotAuthorised} from "../../common/HOC/NavigateIfNotAuthorised";
+import {ModalFormikCardType} from "./modals/FormikFormCardModal";
+import {MediaCard} from "../../common/components/ImageCard/MediaCard";
 
 
 export type Row = {
@@ -58,8 +60,8 @@ export const CardsPage: FC = NavigateIfNotAuthorised(memo(() => {
         const deleteCard = (id: string) => {
             dispatch(thunksCards.deleteCard(id))
         }
-        const editCard = (_id: string, newQuestion: string, newAnswer: string) => {
-            dispatch(thunksCards.updateCard({_id, question: newQuestion, answer: newAnswer}))
+        const editCard = (_id: string, payload:ModalFormikCardType) => {
+            dispatch(thunksCards.updateCard({_id, ...payload}))
         }
 
         const rows: Array<Row[]> = useMemo(
@@ -68,11 +70,19 @@ export const CardsPage: FC = NavigateIfNotAuthorised(memo(() => {
                     [
                         {
                             optionsCell: "left",
-                            cell: <Typography component="span">{card.question}</Typography>
+                            cell: <Typography component="span">
+                                {!!card.questionImg?
+                                    <MediaCard height={"100"} content={card.questionImg} />
+                                    :card.question}
+                            </Typography>
                         },
                         {
                             optionsCell: "left",
-                            cell: <Typography component="span">{card.answer}</Typography>
+                            cell: <Typography component="span">
+                                {!!card.answerImg?
+                                    <MediaCard height={"100"} content={card.answerImg} />
+                                    :card.answer}
+                            </Typography>
                         },
                         {
                             optionsCell: "center",
@@ -88,6 +98,8 @@ export const CardsPage: FC = NavigateIfNotAuthorised(memo(() => {
                         {
                             optionsCell: "center",
                             cell: <CommonAction handleDelete={deleteCard}
+                                                answerImg={card.answerImg}
+                                                questionImg={card.questionImg}
                                                 handleEdit={editCard}
                                                 disabled={requestPendingList[card._id]}
                                                 id={card._id}
@@ -102,7 +114,7 @@ export const CardsPage: FC = NavigateIfNotAuthorised(memo(() => {
         return (
 
             <Grid>
-                <CardsTableToolbar isMyPack={isMyPack} title={packName} cardsPack_id={cardsPack_id}/>
+                <CardsTableToolbar answerImg={""} questionImg={""} isMyPack={isMyPack} title={packName} cardsPack_id={cardsPack_id}/>
 
                 <CommonTable
                     onPageChangeHandler={onPageChangeHandler}

@@ -13,6 +13,8 @@ type PropsType = {
     callback: (values: ModalFormikCardType) => void;
     question: string
     answer: string
+    questionImg:string
+    answerImg:string
 }
 
 export const AddAndEditCardModal: React.FC<PropsType> = ({
@@ -21,7 +23,9 @@ export const AddAndEditCardModal: React.FC<PropsType> = ({
                                                              callback,
                                                              title,
                                                              question,
-                                                             answer
+                                                             answer,
+                                                             answerImg,
+                                                             questionImg
                                                          }) => {
     const submit = (values: ModalFormikCardType): void => {
         callback(values)
@@ -42,8 +46,8 @@ export const AddAndEditCardModal: React.FC<PropsType> = ({
                         </IconButton>
                     </Grid>
                 </Grid>
-                    <p className={s.horizontalLine}></p>
-                {<FormikFormCardModal handleClose={handleClose} submit={submit} question={question}
+                    <p className={s.horizontalLine}/>
+                {<FormikFormCardModal answerImg={answerImg} questionImg={questionImg} handleClose={handleClose} submit={submit} question={question}
                                       answer={answer}/>}
             </div>
         </CustomModal>

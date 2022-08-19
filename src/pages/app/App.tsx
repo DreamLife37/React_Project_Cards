@@ -16,15 +16,18 @@ function App() {
     //useDispatchApp кастомный хук типизировать не надо
     const dispatch = useDispatchApp();
 
-    useEffect(() => {
-        if (authTimeStatus === "timeToUpdateToken") {
+    useEffect(()=>{
+        //если токен подходит к завершению, обновляет токен
+        if (authTimeStatus==="timeToUpdateToken") {
             console.log("auth time!!")
-            dispatch(thunkAuth.authMe())
+           dispatch(thunkAuth.authMe())
         }
-        if (authTimeStatus === "timeToDie") {
+        //если токен просрочен, вылогинивает юзера
+        if (authTimeStatus==="timeToDie"){
+            console.log("time to die!!")
             dispatch(thunkAuth.logout())
         }
-    }, [authTimeStatus])
+    },[authTimeStatus])
 
     useEffect(() => {
         if (!isAuthorized) {

@@ -7,9 +7,10 @@ import {useDispatchApp, useSelectorApp} from "../../customHooks/CustomHooks";
 import {Path} from "../Routes";
 import Grid from '@mui/material/Grid';
 import {NavigateIfNotAuthorised} from "../../common/HOC/NavigateIfNotAuthorised";
-import {convertFileToBase64} from "../../utils/convertFileToBase64";
+import {convertFileToBase64} from "../../common/utils/convertFileToBase64";
 import defaultAva from "../../assets/images/defaultAva.jpg"
 import {actionsErrors} from "../../error/ErrorsReducer";
+import {uploadFile} from "../../common/utils/uploadFile";
 
 export const Profile: FC = NavigateIfNotAuthorised(() => {
 
@@ -28,15 +29,19 @@ export const Profile: FC = NavigateIfNotAuthorised(() => {
     }
 
     const onChangeNameStatus = () => {
+        if(inputValue===profileName){
+            setChangeNameStatus(false)
+            return
+        }
         dispatch(thunkAuth.setNameOrAvatar({name: inputValue}))
-        setChangeNameStatus(!changeNameStatus)
+        setChangeNameStatus(false)
     }
 
     const onChangeInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
     }
 
-    const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onUploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length) {
             const file = e.target.files[0]
             if (file.size < 4000000) {
@@ -75,7 +80,7 @@ export const Profile: FC = NavigateIfNotAuthorised(() => {
                                  onError={errorHandler}/>
 
                             <input type='file' className={style.setAvatarInput} id='fileInput'
-                                   onChange={uploadHandler}/>
+                                   onChange={onUploadHandler}/>
                             <label className={style.setAvatarInputLabel} htmlFor='fileInput'/>
 
                             <div className={style.changeNameWrapper}>
@@ -107,7 +112,9 @@ export const Profile: FC = NavigateIfNotAuthorised(() => {
                                     <>
                                         <p className={style.name}>{profileName}</p>
                                         <button type='button' className={style.changeNameBtn}
-                                                onClick={onChangeNameStatus}/>
+                                                onClick={()=> {
+                                                    setChangeNameStatus(true)
+                                                }}/>
                                     </>
                                 }
                             </div>

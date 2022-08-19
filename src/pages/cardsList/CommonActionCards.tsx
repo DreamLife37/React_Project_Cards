@@ -11,13 +11,15 @@ import {DeleteCardModal} from "./modals/DeleteCardModal";
 
 type CommonActionT = {
     handleDelete: (id: string) => void
-    handleEdit: (id: string, question: string, answer: string) => void
+    handleEdit: (id: string, payload:ModalFormikCardType) => void
     id: string
     disabled: boolean
     card: ExtendedCardEntity
     isMyPack: boolean
+    questionImg:string
+    answerImg:string
 }
-export const CommonAction: FC<CommonActionT> = ({handleDelete, handleEdit, id, disabled, card, isMyPack}) => {
+export const CommonAction: FC<CommonActionT> = ({answerImg,questionImg,handleDelete, handleEdit, id, disabled, card, isMyPack}) => {
 
     const [openModalAdd, setOpenModalAdd] = useState(false)
     const handleOpenModalAdd = (): void => setOpenModalAdd(true)
@@ -30,13 +32,13 @@ export const CommonAction: FC<CommonActionT> = ({handleDelete, handleEdit, id, d
     const onDelete = () => {
         handleDelete(id)
     }
-    const onEdite = (e: ModalFormikCardType) => {
-        handleEdit(id, e.question, e.answer)
+    const onEdite = (payload: ModalFormikCardType) => {
+        handleEdit(id, payload)
     }
 
     return (
         <div>
-            <AddAndEditCardModal callback={onEdite} handleClose={handleCloseModalAdd} open={openModalAdd}
+            <AddAndEditCardModal questionImg={questionImg} answerImg={answerImg} callback={onEdite} handleClose={handleCloseModalAdd} open={openModalAdd}
                                  title={'Edit name title'} question={card.question} answer={card.answer}/>
             <DeleteCardModal open={openModalDelete} handleClose={handleCloseModalDelete} title={'Deleted card'}
                              callback={onDelete} titleCard={card.question}/>

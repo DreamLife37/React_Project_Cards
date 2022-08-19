@@ -9,7 +9,7 @@ import {
 import {actionsApp} from "../app/app-reducer";
 import {AppDispatchType, AppThunk} from "../app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {HandleToggleStatusAppAndInterceptorErrors} from "../../utils/HandleToggleStatusAppAndInterceptorErrors";
+import {HandleToggleStatusAppAndInterceptorErrors} from "../../common/utils/HandleToggleStatusAppAndInterceptorErrors";
 
 type InitialStateType = {
     authData: EntityUser & { isAuthorized: boolean }| Record<string, never>
@@ -42,7 +42,6 @@ export const actionsAuth = authSlice.actions
 export const thunkAuth = {
 
     authMe: (): AppThunk => (dispatch) => {
-
         const response = APIAuth.authMe().then((response) => {
                 if (response.statusText === 'OK') {
                     dispatch(actionsAuth.setLoginData(response.data))
@@ -78,7 +77,6 @@ export const thunkAuth = {
     },
 
     login: (loginPayload: LoginPayloadType): AppThunk => (dispatch) => {
-
         const response = APIAuth.login(loginPayload)
             .then((response) => {
                 if (response.statusText === 'OK') {
@@ -89,7 +87,6 @@ export const thunkAuth = {
     },
 
     logout: (): AppThunk => (dispatch: AppDispatchType) => {
-
         const response = APIAuth.logOut()
             .then((response) => {
                 if (response.statusText === 'OK') {

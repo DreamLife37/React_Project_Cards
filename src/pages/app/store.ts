@@ -6,7 +6,7 @@ import {actionsApp, appReducer} from "./app-reducer";
 import {configureStore} from "@reduxjs/toolkit";
 import {actionsPacks, packs} from "../packsList/PackReducer";
 import {actionsCards, cards} from "../cardsList/CardsReducer";
-import {restoreFromStorage, saveInStorage} from "../../utils/LocalStorageUtils";
+import {restoreFromStorage, saveInStorage} from "../../common/utils/LocalStorageUtils";
 
 
 
@@ -44,7 +44,8 @@ store.subscribe(() => {
         // за час до конца жизни токена переводит тригер в "timeToUpdateToken" при условии что не был в этом состояние,
         // на  этот тригер реагирует useEffect  в компоненте App и вызывает санку authMe,
         // в authMe идет запрос и при успехе переводит тригер в "idle"
-        if (store.getState().auth.authData.tokenDeathTime - Date.now() <= 1350000) {
+        // console.log(store.getState().auth.authData.tokenDeathTime - Date.now())
+        if (store.getState().auth.authData.tokenDeathTime - Date.now() <= 1079661) {
             //условие нужно для того чтобы dispatch вызвался единожды, а не каждый раз при изменении стейта
             if (store.getState().app.authTimeStatus!=="timeToUpdateToken") {
                 store.dispatch(actionsApp.setIsAuthTime("timeToUpdateToken"))

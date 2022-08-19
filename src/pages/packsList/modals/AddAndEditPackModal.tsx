@@ -13,10 +13,12 @@ type PropsType = {
     callback: (values: ModalFormikPackType) => void;
     privatePack: boolean
     namePack: string
+    deckCover:string|null
 }
 
 export const AddAndEditPackModal: React.FC<PropsType> = ({
                                                              open,
+                                                             deckCover,
                                                              handleClose,
                                                              callback,
                                                              title,
@@ -42,8 +44,9 @@ export const AddAndEditPackModal: React.FC<PropsType> = ({
                         </IconButton>
                     </Grid>
                 </Grid>
-                <p className={s.horizontalLine}></p>
-                {<FormikFormPackModal handleClose={handleClose} submit={submit} privatePack={privatePack} namePack={namePack}/>}
+                <p className={s.horizontalLine}/>
+
+                <FormikFormPackModal deckCover={deckCover}  handleClose={handleClose} submit={submit} privatePack={privatePack} namePack={namePack}/>
             </div>
         </CustomModal>
     );

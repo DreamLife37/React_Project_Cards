@@ -1,4 +1,3 @@
-import {useDispatchApp, useSelectorApp} from "../../../customHooks/CustomHooks";
 import {useFormik} from "formik";
 import {Checkbox, Container, FormControlLabel} from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -7,27 +6,35 @@ import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import * as React from "react";
-import {FC} from "react";
+import {ChangeEvent, FC, useState} from "react";
+import {MediaCard} from "../../../common/components/ImageCard/MediaCard";
+import {uploadFile} from "../../../common/utils/uploadFile";
 
 type FormikErrorType = {
     namePack?: string
     privatePack?: string
+    file?:string
 }
 
 type PropsType = {
     handleClose: () => void;
-    submit: (values: any) => void
+    submit: (values: ModalFormikPackType) => void
     privatePack: boolean
     namePack: string
+    deckCover:string|null
 }
 
 export type ModalFormikPackType = {
     namePack: string
+    deckCover:string
     privatePack: boolean
 }
 
 
-export const FormikFormPackModal: FC<PropsType> = ({handleClose, submit, privatePack, namePack}) => {
+export const FormikFormPackModal: FC<PropsType> = ({ deckCover,handleClose, submit, privatePack, namePack}) => {
+
+    const [currentDeckCover,setCurrentDeckCover]=useState(!!deckCover?deckCover:"")
+
     const formik = useFormik({
         initialValues: {
             namePack: namePack,
@@ -43,10 +50,14 @@ export const FormikFormPackModal: FC<PropsType> = ({handleClose, submit, private
             return errors;
         },
         onSubmit: values => {
-            submit(values)
+            submit({...values,deckCover:currentDeckCover})
             formik.resetForm()
         },
     })
+    const onUpload = (e: ChangeEvent<HTMLInputElement>) => {
+        uploadFile(e,setCurrentDeckCover)
+    }
+
 
     const disabledButton = (!(formik.values.namePack && !formik.errors.namePack))
 
@@ -57,6 +68,16 @@ export const FormikFormPackModal: FC<PropsType> = ({handleClose, submit, private
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl>
                             <FormGroup>
+                                <FormControlLabel
+                                    sx={{marginLeft:0, color:"blue", textDecoration:"underline", cursor:"pointer"}}
+                                    label={"change deck cover"}
+                                    control={
+                                        <input type="file"
+                                               style={{display: 'none'}}
+                                               onChange={onUpload}
+                                        />
+                                } />
+                                <MediaCard height={"100"} content={currentDeckCover} />
                                 <TextField label="Name pack" margin="normal" autoFocus={true}
                                            {...formik.getFieldProps('namePack')}
                                 />
@@ -95,3 +116,4 @@ export const FormikFormPackModal: FC<PropsType> = ({handleClose, submit, private
         </Container>
     </div>
 }
+

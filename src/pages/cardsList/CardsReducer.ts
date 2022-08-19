@@ -7,8 +7,8 @@ import {
     UpdateCardPayload
 } from "../../DAL/API-Cards";
 import {AppThunk} from "../app/store";
-import {restoreFromStorage} from "../../utils/LocalStorageUtils";
-import {handlerNetworkError} from "../../utils/HandlerErrorsUtils";
+import {restoreFromStorage} from "../../common/utils/LocalStorageUtils";
+import {handlerNetworkError} from "../../common/utils/HandlerErrorsUtils";
 import {actionsErrors} from "../../error/ErrorsReducer";
 
 import {HeadCell} from "../../common/components/table/CommonTable";
