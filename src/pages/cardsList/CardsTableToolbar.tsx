@@ -16,9 +16,11 @@ type EnhancedTableToolbar = {
     title: string
     cardsPack_id: string
     isMyPack: boolean
+    answerImg:string
+    questionImg:string
 }
 
-export const CardsTableToolbar: FC<EnhancedTableToolbar> = memo(({isMyPack, title, cardsPack_id}) => {
+export const CardsTableToolbar: FC<EnhancedTableToolbar> = memo(({isMyPack, title, cardsPack_id,questionImg,answerImg}) => {
 
         const [open, setOpen] = useState(false)
         const handleOpen = (): void => setOpen(true)
@@ -41,7 +43,7 @@ export const CardsTableToolbar: FC<EnhancedTableToolbar> = memo(({isMyPack, titl
                       justifyContent="center" paddingTop={'40px'}>
                     <Grid item xs={6}>{title}</Grid>
                     <Grid item xs={6}>
-                        <AddAndEditCardModal callback={addNewCard} handleClose={handleClose} open={open}
+                        <AddAndEditCardModal questionImg={questionImg} answerImg={answerImg} callback={addNewCard} handleClose={handleClose} open={open}
                                              title={'Add new card'} answer={''} question={''}/>
                         {isMyPack && <StyledButton onClick={handleOpen} color="inherit" variant='contained'>
                             Add new card

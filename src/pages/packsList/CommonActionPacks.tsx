@@ -13,7 +13,7 @@ type CommonActionType = {
     row: CardPacksEntityWithDeckCover
     userId: string
     deleteRowHandler: (id: string) => void
-    editRowHandler: (id: string, newNamePack: string, privatePack: boolean) => void
+    editRowHandler: (id: string, e:ModalFormikPackType) => void
     children?: ReactElement
     childrenTitle?: string
     titlePack: string
@@ -28,8 +28,8 @@ export const CommonAction = (props: CommonActionType) => {
     const handleOpenModalDelete = (): void => setOpenModalDelete(true)
     const handleCloseModalDelete = (): void => setOpenModalDelete(false)
 
-    const editPack = (e: ModalFormikPackType) => {
-        props.editRowHandler(props.row._id, e.namePack, e.privatePack)
+    const editPack = (payload: ModalFormikPackType) => {
+        props.editRowHandler(props.row._id, payload)
     }
 
     const deletePack = () => {
@@ -37,7 +37,7 @@ export const CommonAction = (props: CommonActionType) => {
     }
     return (
         <div>
-            <AddAndEditPackModal callback={editPack} handleClose={handleCloseModalAdd} open={openModalAdd}
+            <AddAndEditPackModal callback={editPack} deckCover={props.row.deckCover} handleClose={handleCloseModalAdd} open={openModalAdd}
                                  title={'Edit name pack'} privatePack={props.row.private} namePack={props.row.name}/>
             <DeletePackModal open={openModalDelete} handleClose={handleCloseModalDelete} title={'Deleted pack'}
                              callback={deletePack} titlePack={props.titlePack}/>

@@ -42,7 +42,16 @@ export const Profile: FC = NavigateIfNotAuthorised(() => {
     }
 
     const onUploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        uploadFile(e,dispatch)
+        if (e.target.files && e.target.files.length) {
+            const file = e.target.files[0]
+            if (file.size < 4000000) {
+                convertFileToBase64(file, (file64: string) => {
+                    dispatch(thunkAuth.setNameOrAvatar({avatar: file64}))
+                })
+            } else {
+                dispatch(actionsErrors.changeError('File is too big'))
+            }
+        }
     }
 
     const errorHandler = () => {

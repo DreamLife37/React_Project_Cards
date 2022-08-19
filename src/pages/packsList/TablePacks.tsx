@@ -15,6 +15,8 @@ import TableCell from '@material-ui/core/TableCell';
 import {School} from "@mui/icons-material";
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {CommonAction} from "./CommonActionPacks";
+import {MediaCard} from "../../common/components/ImageCard/MediaCard";
+import {ModalFormikPackType} from "./modals/FormikFormPackModal";
 
 export type Row = {
     optionsCell: Numeric,
@@ -51,8 +53,8 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
             dispatch(thunksPack.deletePack(packId))
         }
 
-        const editPackHandler = (packId: string, newNamePack: string, privatePack: boolean) => {
-            dispatch(thunksPack.updatePack({_id: packId, name: newNamePack, private: privatePack}))
+        const editPackHandler = (packId: string, payload: ModalFormikPackType) => {
+            dispatch(thunksPack.updatePack({_id: packId, ...payload}))
         }
 
         const rows: Array<Row[]> = useMemo(
@@ -66,15 +68,14 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                         const moveOnLearnPage = () => {
                             dispatch(actionsCards.setPackId(pack._id))
                             dispatch(actionsCards.getTitle(pack.name))
-                            dispatch(actionsCards.setQueryParams({pageCount:pack.cardsCount}))
+                            dispatch(actionsCards.setQueryParams({pageCount: pack.cardsCount}))
                             navigate(Path.learn)
                         }
                         return [
                             {
                                 optionsCell: 'center',
-                                cell: <TableCell>
-                                    <span onClick={moveOnCardList}
-                                          style={{cursor: 'pointer'}}>{pack.deckCover}</span>
+                                cell: <TableCell onClick={moveOnCardList} style={{cursor: 'pointer'}}>
+                                    <MediaCard content={pack.deckCover}/>
                                     {pack.private && <span style={{paddingLeft: '10px'}}><VisibilityOffIcon fontSize={"small"}/>
                                                     </span>}
                                 </TableCell>
@@ -102,9 +103,14 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                             },
                             {
                                 optionsCell: "center",
-                                cell: <CommonAction row={pack} userId={userId}
-                                                    children={<IconButton
-                                                        onClick={moveOnLearnPage}><School/></IconButton>}
+                                cell: <CommonAction row={pack}
+                                                    userId={userId}
+                                                    children={
+                                                        <IconButton
+                                                            onClick={moveOnLearnPage}>
+                                                            <School/>
+                                                        </IconButton>
+                                                    }
                                                     childrenTitle='Learn'
                                                     deleteRowHandler={deletePackHandler}
                                                     editRowHandler={editPackHandler}
