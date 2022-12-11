@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/React_Project_Cards/static/css/main.202650da.css",
-    "main.js": "/React_Project_Cards/static/js/main.4bdac400.js",
+    "main.css": "/React_Project_Cards/static/css/main.f199e2a3.css",
+    "main.js": "/React_Project_Cards/static/js/main.faf176db.js",
     "static/js/787.819b2de1.chunk.js": "/React_Project_Cards/static/js/787.819b2de1.chunk.js",
     "static/media/defaultAva.jpg": "/React_Project_Cards/static/media/defaultAva.30163748540e9f657042.jpg",
     "static/media/Edit.svg": "/React_Project_Cards/static/media/Edit.a169cd90c950b39da314.svg",
     "static/media/Group 61.svg": "/React_Project_Cards/static/media/Group 61.f44d951526acbd5ef97e.svg",
     "index.html": "/React_Project_Cards/index.html",
     "static/media/logout.svg": "/React_Project_Cards/static/media/logout.1731b0b18f5a96bdef82.svg",
-    "main.202650da.css.map": "/React_Project_Cards/static/css/main.202650da.css.map",
-    "main.4bdac400.js.map": "/React_Project_Cards/static/js/main.4bdac400.js.map",
+    "main.f199e2a3.css.map": "/React_Project_Cards/static/css/main.f199e2a3.css.map",
+    "main.faf176db.js.map": "/React_Project_Cards/static/js/main.faf176db.js.map",
     "787.819b2de1.chunk.js.map": "/React_Project_Cards/static/js/787.819b2de1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.202650da.css",
-    "static/js/main.4bdac400.js"
+    "static/css/main.f199e2a3.css",
+    "static/js/main.faf176db.js"
   ]
 }
