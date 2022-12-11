@@ -14,7 +14,6 @@ type FormikErrorType = {
 }
 
 export const Login = () => {
-
     const isAuthorized = useSelectorApp(state => state.auth.authData.isAuthorized)
     const status = useSelectorApp(state => state.app.statusApp)
     const dispatch = useDispatchApp()
@@ -47,6 +46,10 @@ export const Login = () => {
     })
 
     const disabledButton = (formik.values.email && formik.values.password.length > 7 && formik.values.password.length > 7 && !formik.errors.password && !formik.errors.email) ? false : true
+
+    if (isAuthorized) {
+        return <Navigate to={'/'}/>
+    }
 
     return (
         <Grid container justifyContent='center' bgcolor='white' padding={1} borderRadius={1} m={1}>

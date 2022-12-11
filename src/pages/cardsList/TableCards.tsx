@@ -71,17 +71,13 @@ export const CardsPage: FC = NavigateIfNotAuthorised(memo(() => {
                         {
                             optionsCell: "left",
                             cell: <Typography component="span">
-                                {!!card.questionImg?
-                                    <MediaCard height={"100"} content={card.questionImg} />
-                                    :card.question}
+                                    {card.question}
                             </Typography>
                         },
                         {
                             optionsCell: "left",
                             cell: <Typography component="span">
-                                {!!card.answerImg?
-                                    <MediaCard height={"100"} content={card.answerImg} />
-                                    :card.answer}
+                                {card.answer}
                             </Typography>
                         },
                         {

@@ -67,16 +67,16 @@ export const FormikFormPackModal: FC<PropsType> = ({deckCover, handleClose, subm
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl>
                             <FormGroup>
-                                <FormControlLabel
-                                    sx={{marginLeft: 0, color: "blue", textDecoration: "underline", cursor: "pointer"}}
-                                    label={"change deck cover"}
-                                    control={
-                                        <input type="file"
-                                               style={{display: 'none'}}
-                                               onChange={onUpload}
-                                        />
-                                    }/>
-                                <MediaCard height={"100"} content={currentDeckCover}/>
+                                {/*<FormControlLabel*/}
+                                {/*    sx={{marginLeft: 0, color: "blue", textDecoration: "underline", cursor: "pointer"}}*/}
+                                {/*    label={"change deck cover"}*/}
+                                {/*    control={*/}
+                                {/*        <input type="file"*/}
+                                {/*               style={{display: 'none'}}*/}
+                                {/*               onChange={onUpload}*/}
+                                {/*        />*/}
+                                {/*    }/>*/}
+                                {/*<MediaCard height={"100"} content={currentDeckCover}/>*/}
                                 <TextField label="Name pack" margin="normal" autoFocus={true}
                                            {...formik.getFieldProps('name')}
                                 />

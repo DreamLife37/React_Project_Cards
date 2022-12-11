@@ -77,16 +77,16 @@ export const FormikFormCardModal: FC<PropsType> = ({handleClose, submit, questio
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl>
                             <FormGroup>
-                                <FormControlLabel
-                                    sx={{marginLeft: 0, color: "blue", textDecoration: "underline", cursor: "pointer"}}
-                                    label={"change question img"}
-                                    control={
-                                        <input type="file"
-                                               style={{display: 'none'}}
-                                               onChange={onQuestionUpload}
-                                        />
-                                    }/>
-                                <MediaCard height={"100"} content={currentImgQuestion}/>
+                                {/*<FormControlLabel*/}
+                                {/*    sx={{marginLeft: 0, color: "blue", textDecoration: "underline", cursor: "pointer"}}*/}
+                                {/*    label={"change question img"}*/}
+                                {/*    control={*/}
+                                {/*        <input type="file"*/}
+                                {/*               style={{display: 'none'}}*/}
+                                {/*               onChange={onQuestionUpload}*/}
+                                {/*        />*/}
+                                {/*    }/>*/}
+                                {/*<MediaCard height={"100"} content={currentImgQuestion}/>*/}
 
                                 <TextField label="Question" margin="normal"
                                            {...formik.getFieldProps('question')}
@@ -94,16 +94,16 @@ export const FormikFormCardModal: FC<PropsType> = ({handleClose, submit, questio
                                 {formik.touched.question && formik.errors.question
                                     ? <div style={{color: '#9d1717', fontSize: '14px'}}>{formik.errors.question}</div>
                                     : null}
-                                <FormControlLabel
-                                    sx={{marginLeft: 0, color: "blue", textDecoration: "underline", cursor: "pointer"}}
-                                    label={"change answer img"}
-                                    control={
-                                        <input type="file"
-                                               style={{display: 'none'}}
-                                               onChange={onAnswerUpload}
-                                        />
-                                    }/>
-                                <MediaCard height={"100"} content={currentImgAnswer}/>
+                                {/*<FormControlLabel*/}
+                                {/*    sx={{marginLeft: 0, color: "blue", textDecoration: "underline", cursor: "pointer"}}*/}
+                                {/*    label={"change answer img"}*/}
+                                {/*    control={*/}
+                                {/*        <input type="file"*/}
+                                {/*               style={{display: 'none'}}*/}
+                                {/*               onChange={onAnswerUpload}*/}
+                                {/*        />*/}
+                                {/*    }/>*/}
+                                {/*<MediaCard height={"100"} content={currentImgAnswer}/>*/}
                                 <TextField label="Answer" margin="normal"
                                            {...formik.getFieldProps('answer')}
                                 />
