@@ -21,7 +21,7 @@ type LearnPropsType = {
 }
 export const Learn: FC<LearnPropsType> = memo((props) => {
 
-        //ковертирует оценку в число
+        //конвертирует оценку в число
         const gradeNumber = useMemo(() =>
                 props.grades.findIndex((grade) => grade === props.currentGrade) + 1
             , [props.currentGrade])
@@ -64,9 +64,9 @@ export const Learn: FC<LearnPropsType> = memo((props) => {
                     </LearnTitleBox>
                     <LearnQuestionContentBox>
                         {
-                            props.statusCards === "loading" ?
-                                <CircularProgress/>
-                                :
+                            // props.statusCards === "loading" ?
+                            //     <CircularProgress/>
+                            //     :
                                 <Box>
 
                                     <Typography>Question: {props.randomCard.question}</Typography>

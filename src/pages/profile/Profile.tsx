@@ -29,7 +29,7 @@ export const Profile: FC = NavigateIfNotAuthorised(() => {
     }
 
     const onChangeNameStatus = () => {
-        if(inputValue===profileName){
+        if (inputValue === profileName) {
             setChangeNameStatus(false)
             return
         }
@@ -76,7 +76,8 @@ export const Profile: FC = NavigateIfNotAuthorised(() => {
                         <div className={style.personalInfo}>
                             <h1 className={style.title}>Personal Information</h1>
 
-                            <img src={avatar.length === 1 ? defaultAva : avatar} className={style.avatar} alt={"avatar"}
+                            <img src={avatar?.length ? avatar : defaultAva} className={style.avatar}
+                                 alt={"avatar"}
                                  onError={errorHandler}/>
 
                             <input type='file' className={style.setAvatarInput} id='fileInput'
@@ -112,7 +113,7 @@ export const Profile: FC = NavigateIfNotAuthorised(() => {
                                     <>
                                         <p className={style.name}>{profileName}</p>
                                         <button type='button' className={style.changeNameBtn}
-                                                onClick={()=> {
+                                                onClick={() => {
                                                     setChangeNameStatus(true)
                                                 }}/>
                                     </>

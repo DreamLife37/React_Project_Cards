@@ -72,14 +72,14 @@ export const TablePacks: React.FC<TablePacksType> = memo(({headCells, packs}) =>
                             navigate(Path.learn)
                         }
                         return [
-                            {
-                                optionsCell: 'center',
-                                cell: <TableCell onClick={moveOnCardList} style={{cursor: 'pointer'}}>
-                                    <MediaCard content={pack.deckCover}/>
-                                    {pack.private && <span style={{paddingLeft: '10px'}}><VisibilityOffIcon fontSize={"small"}/>
-                                                    </span>}
-                                </TableCell>
-                            },
+                            // {
+                            //     optionsCell: 'center',
+                            //     cell: <TableCell onClick={moveOnCardList} style={{cursor: 'pointer'}}>
+                            //         {/*<MediaCard content={pack.deckCover}/>*/}
+                            //         {pack.private && <span style={{paddingLeft: '10px'}}><VisibilityOffIcon fontSize={"small"}/>
+                            //                         </span>}
+                            //     </TableCell>
+                            // },
                             {
                                 optionsCell: 'center',
                                 cell: <TableCell>

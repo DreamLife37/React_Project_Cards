@@ -23,12 +23,12 @@ const initialState: InitialStateType = {
     queryParams: {},
     isMyPacks: true,
     initHeadCells: [
-        {
-            id: 'picture',
-            numeric: "center",
-            label: 'Picture',
-            order: undefined
-        },
+        // {
+        //     id: 'picture',
+        //     numeric: "center",
+        //     label: 'Picture',
+        //     order: undefined
+        // },
         {
             id: 'name',
             numeric: "center",
